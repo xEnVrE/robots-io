@@ -3,18 +3,18 @@
 Small C++ library to ease access to some devices of a robot using standard
 formats from `Eigen` and `OpenCV`. **Please note that this is a WIP.**
 
-## Dependencies
+### Dependencies
 
 - [`Eigen 3`](http://eigen.tuxfamily.org/index.php?title=Main_Page)
 - [`OpenCV`](https://opencv.org/)
 
-### Optional
+#### Optional
 If the following are enabled, some functionalities related to the iCub robot and/or YARP are also available.
 
 - [`ICUB`](https://github.com/robotology/icub-main)
 - [`YARP`](https://github.com/robotology/yarp)
 
-## Camera
+### Camera
 In namespace `RobotsIO::Camera` classes related to cameras are available. Using these cameras, it is possible to read depth as `Eigen::MatrixXf`, rgb as a `cv::Mat` and the camera pose as a `Eigen::Transform<double, 3, Eigen::Affine>`.
 
 Implemented classes are:
@@ -33,7 +33,7 @@ To be done:
 
 `YARP` is required to build `YarpCamera` and `YARP + ICUB` are required to build `iCubCamera` and `iCubCameraRelative`.
 
-## Hand
+### Hand
 
 The namespace `RobotsIO::Hand` only contains the `iCubHand` class that
 provides a measure of the encoders of all the joints of the iCub hand (i.e. of all the fingers).
@@ -57,7 +57,7 @@ be filled with the bounds and is installed in a dedicated context within the `iC
 To be done:
 - an abstract class `Hand`.
 
-## Probes
+### Probes
 
 In namespace `RobotsIO::Utils`, the main classes are `ProbeContainer`
 and `Probe`. The idea behind a `ProbeContainer` is to provide any class 
