@@ -79,7 +79,7 @@ The method `Probe::set_data()` accepts data in the form of
 `RobotsUtils::Utils::any` that is an implementation of `std::any` working also
 with `C++ 11` enabled compilers taken from
 [here](https://github.com/robotology/bayes-filters-lib/blob/master/src/BayesFilters/include/BayesFilters/any.h). It
-means that it can accept any kind of data, provided data the specific probe you are using knowns how to process it.
+means that it can accept any kind of data, provided data the specific probe you are using knows how to process it.
 
 Available classes are
 - `YarpVectorOfProbe<T, class U = yarp::sig::VectorOf<T>>` for
