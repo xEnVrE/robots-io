@@ -124,11 +124,10 @@ target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC "$<BUILD_INTERFACE:${CM
 target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC Eigen3::Eigen ${OpenCV_LIBS})
 
 if (USE_YARP)
-    target_link_libraries(${LIBRARY_TARGET_NAME} PRIVATE
+    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC
                           YARP::YARP_cv
                           YARP::YARP_dev
                           YARP::YARP_eigen
-                          PUBLIC
                           YARP::YARP_init
                           YARP::YARP_os
                           YARP::YARP_sig
@@ -136,7 +135,7 @@ if (USE_YARP)
 endif()
 
 if (USE_ICUB)
-    target_link_libraries(${LIBRARY_TARGET_NAME} PRIVATE ${ICUB_LIBRARIES})
+    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${ICUB_LIBRARIES})
 endif()
 
 # Specify installation targets, typology and destination folders.
