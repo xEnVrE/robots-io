@@ -9,7 +9,7 @@ formats from `Eigen` and `OpenCV`. **Please note that this is a WIP.**
 - [`OpenCV`](https://opencv.org/)
 
 ### Optional
-If the following are enabled, some functionalities related to the iCub robot or to YARP are also available.
+If the following are enabled, some functionalities related to the iCub robot and/or YARP are also available.
 
 - [`ICUB`](https://github.com/robotology/icub-main)
 - [`YARP`](https://github.com/robotology/yarp)
