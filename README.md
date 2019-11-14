@@ -5,17 +5,23 @@ formats from `Eigen` and `OpenCV`. **Please note that this is a WIP.**
 
 ## Dependencies
 
-Mostly `Eigen` and `OpenCV`.  If `YARP` and/or `ICUB` are also available, some functionalities related to the iCub robot or YARP are also available.
+- [`Eigen 3`](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+- [`OpenCV`](https://opencv.org/)
+
+### Optional
+If the following are enabled, some functionalities related to the iCub robot or to YARP are also available.
+
+- [`ICUB`](https://github.com/robotology/icub-main)
+- [`YARP`](https://github.com/robotology/yarp)
 
 ## Camera
-In namespace `RobotsIO::Camera` you will find classes related to cameras. Using
-these you will be able to read depth as `Eigen::MatrixXf`, rgb as a `cv::Mat` and the camera pose as a `Eigen::Transform<double, 3, Eigen::Affine>`.
+In namespace `RobotsIO::Camera` classes related to cameras are available. Using these cameras, it is possible to read depth as `Eigen::MatrixXf`, rgb as a `cv::Mat` and the camera pose as a `Eigen::Transform<double, 3, Eigen::Affine>`.
 
 Implemented classes are:
 - `Camera`, base class ready to be used if loading data from a disk. The same class provides logging facilities to inheriting classes;
 - `CameraParameters`, hosting mostly `width`, `height` and intrinsic parameters of the camera;
 - `iCubCamera`, class for the iCub robot inheriting from `Camera` and supporting
-  depth and rgb from YARP ports and the camera pose from `IGazeControl` or `IEncoders` or raw YARP ports. It also loads the camera parameters from the `IGazeControl` interface if available;
+  depth and rgb from YARP ports and the camera pose from `IGazeControl` or `IEncoders` or raw YARP ports. It also loads the camera parameters from the `IGazeControl` interface, if available;
 - `iCubCameraRelative`, similar to `iCubCamera` but representing the right
   camera with pose expressed relative to the left camera. Useful for experiments dealing with the stereo setup of the robot only;
 - `YarpCamera`, class inheriting from `Camera` and supporting depth and rgb from raw YARP ports and parameters from the class constructor.
@@ -25,12 +31,12 @@ To be done:
 - `RealSense` (using ROS);
 - `R1Camera` inheriting from `RealSense` (YARP version).
 
-Of course, you need `YARP` to build `YarpCamera` and `YARP + ICUB` to build `iCubCamera` and `iCubCameraRelative`.
+`YARP` is required to build `YarpCamera` and `YARP + ICUB` are required to build `iCubCamera` and `iCubCameraRelative`.
 
 ## Hand
 
-Right now namespace `RobotsIO::Hand` only contains the `iCubHand` class that
-provides you with a measure of the encoders of all the joints of the iCub hand (i.e. of all the fingers).
+The namespace `RobotsIO::Hand` only contains the `iCubHand` class that
+provides a measure of the encoders of all the joints of the iCub hand (i.e. of all the fingers).
 
 This class supports reading from `IEncoders` or raw YARP ports and combines all
 inputs available (i.e. readings from the hand motors + readings from the analog
@@ -46,16 +52,16 @@ bounds.
 The library provides a template `icub_hand_configuration.ini.template` that can
 be filled with the bounds and is installed in a dedicated context within the `iCUBContrib` ecosystem.
 
-Again, you need `YARP + ICUB` to build this class.
+`YARP + ICUB` are required to build this class.
 
 To be done:
 - an abstract class `Hand`.
 
 ## Probes
 
-In namespace `RobotsIO::Utils` the most important classes are `ProbeContainer`
-and `Probe`. The idea behind a `ProbeContainer` is to provide any class of your
-interest with the ability to store some *probes* in it and retrieve them given
+In namespace `RobotsIO::Utils`, the main classes are `ProbeContainer`
+and `Probe`. The idea behind a `ProbeContainer` is to provide any class 
+with the ability to store some *probes* in it and retrieve them given
 their name. A `Probe` is something that can be used to *send* data somewhere.
 
 ```
@@ -94,10 +100,9 @@ Cartesian coordintes and an axis-angle representation)
 internally using `yarp::cv::fromCvMat<T>`. `T` can be any kind of
 `yarp::sig::Pixel*` given that it is supported by `yarp::cv::fromCvMat<T>`.
 
-Using this kind of probes, you can, e.g., write your code in a generic way and,
-only if you need to send to YARP ports on a specific system, install `RobotsIO`
-with `YARP` support. Since it is possible to check whether a probe exists or
-not, you can place probes whenever you want in your code and let them work only if you added them.
+Using this kind of probes, it is possible to, e.g., write code in a generic way and,
+only if it is required to use YARP ports on a specific system, install `RobotsIO`
+with `YARP` support.
 
 To be done:
 - Probes for saving images and data on disk
