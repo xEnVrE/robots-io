@@ -1,7 +1,8 @@
 # RobotsIO
+## [WIP]
 
 Small C++ library to ease access to some devices of a robot using standard
-formats from `Eigen` and `OpenCV` [WIP].
+formats from `Eigen` and `OpenCV`.
 ### Dependencies
 
 - [`Eigen 3`](http://eigen.tuxfamily.org/index.php?title=Main_Page)
