@@ -13,7 +13,6 @@ using namespace RobotsIO::Camera;
 iCubCameraRelative::iCubCameraRelative
 (
     const std::string& robot_name,
-    const std::string& laterality,
     const std::string& port_prefix,
     const std::string& fallback_context_name,
     const std::string& fallback_configuration_name,
@@ -32,7 +31,6 @@ iCubCameraRelative::iCubCameraRelative
 
 iCubCameraRelative::iCubCameraRelative
 (
-    const std::string& laterality,
     const std::string& data_path_left,
     const std::string& data_path_right,
     const std::size_t& width,
