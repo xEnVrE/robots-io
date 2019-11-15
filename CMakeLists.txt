@@ -41,6 +41,8 @@ if(WIN32)
     endif()
 endif()
 
+option(BUILD_SHARED_LIBS "Build libraries as shared as opposed to static" ON)
+
 # Enable RPATH
 include(AddInstallRPATHSupport)
 add_install_rpath_support(BIN_DIRS "${CMAKE_INSTALL_FULL_BINDIR}"
