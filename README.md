@@ -25,6 +25,13 @@ cmake -DCMAKE_PREFIX_PATH=<installation_path> [-DUSE_ICUB=ON] [-DUSE_YARP=ON] ..
 make install
 ```
 
+In order to use the library within a `CMake` project
+```
+find_package(RobotsViz REQUIRED)
+(...)
+target_link_libraries(... RobotsIO::RobotsIO ...)
+```
+
 ### Camera
 In namespace `RobotsIO::Camera` classes related to cameras are available. Using these cameras, it is possible to read depth as `Eigen::MatrixXf`, rgb as a `cv::Mat` and the camera pose as a `Eigen::Transform<double, 3, Eigen::Affine>`.
 
