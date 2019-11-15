@@ -39,7 +39,7 @@ if(WIN32)
         set(CMAKE_CXX_FLAGS "/MP /EHsc")
         set(CMAKE_C_FLAGS "/MP /EHsc")
     endif()
-  endif()
+endif()
 
 # Enable RPATH
 include(AddInstallRPATHSupport)
@@ -91,7 +91,7 @@ include(InstallBasicPackageFiles)
 install_basic_package_files(${PROJECT_NAME}
                             VERSION ${${PROJECT_NAME}_VERSION}
                             COMPATIBILITY ExactVersion
-                            TARGETS_PROPERTY ${PROJECT_NAME}_TARGETS
+                            EXPORT ${PROJECT_NAME}
                             NO_SET_AND_CHECK_MACRO
                             VARS_PREFIX ${PROJECT_NAME}
                             NO_CHECK_REQUIRED_COMPONENTS_MACRO
