@@ -83,7 +83,7 @@ add_subdirectory(src)
 # It seems that we need to force dependencies here for YARP and ICUB
 set(DEPENDENCIES "")
 if (USE_YARP)
-  set(DEPENDENCIES ${DEPENDENCIES} "YARP" "YARP COMPONENTS cv eigen")
+  set(DEPENDENCIES ${DEPENDENCIES} "YARP COMPONENTS cv dev eigen os sig")
 endif()
 if (USE_ICUB)
   set(DEPENDENCIES ${DEPENDENCIES} "ICUB")
