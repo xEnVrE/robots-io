@@ -81,7 +81,7 @@ add_subdirectory(src)
 # Install the files necessary to call find_package(RobotsIO) in CMake projects
 
 # It seems that we need to force dependencies here for YARP and ICUB
-set(DEPENDENCIES "")
+set(DEPENDENCIES "Eigen3")
 if (USE_YARP)
   set(DEPENDENCIES ${DEPENDENCIES} "YARP COMPONENTS cv dev eigen os sig")
 endif()
