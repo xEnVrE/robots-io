@@ -21,7 +21,7 @@ class RobotsIO::Camera::iCubCameraRelative : public RobotsIO::Camera::iCubCamera
 {
 public:
 
-    iCubCameraRelative(const std::string& robot_name, const std::string& port_context, const std::string& fallback_context_name, const std::string& fallback_configuration_name, const bool& use_calibration = false, const std::string& calibration_path = "");
+    iCubCameraRelative(const std::string& robot_name, const std::string& port_prefix, const std::string& fallback_context_name, const std::string& fallback_configuration_name, const bool& use_calibration = false, const std::string& calibration_path = "");
 
     iCubCameraRelative(const std::string& data_path_left, const std::string& data_path_right, const std::size_t& width, const std::size_t& height, const double& fx_l, const double& cx_l, const double& fy_l, const double& cy_l, const double& fx_r, const double& cx_r, const double& fy_r, const double& cy_r, const bool& load_encoders_data, const bool& use_calibration = false, const std::string& calibration_path = "");
 
