@@ -5,6 +5,10 @@
  * GPL-2+ license. See the accompanying LICENSE file for details.
  */
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #include <RobotsIO/Camera/Camera.h>
 
 #include <iostream>
@@ -54,6 +58,101 @@ std::pair<bool, CameraParameters> Camera::parameters() const
         return std::make_pair(false, CameraParameters());
 
     return std::make_pair(true, parameters_);
+}
+
+
+std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
+(
+    const bool& blocking,
+    const double& maximum_depth,
+    const bool& use_root_frame,
+    const bool& enable_colors
+)
+{
+    /* Get rgb, if required. */
+    bool valid_rgb = false;
+    cv::Mat rgb;
+    if (enable_colors)
+    {
+        std::tie(valid_rgb, rgb) = this->rgb(blocking);
+        if (!valid_rgb)
+            return std::make_pair(false, MatrixXd());
+    }
+
+    /* Get depth. */
+    bool valid_depth = false;
+    MatrixXf depth;
+    std::tie(valid_depth, depth) = this->depth(blocking);
+    if (!valid_depth)
+        return std::make_pair(false, MatrixXd());
+
+
+    /* Get pose, if required. */
+    bool valid_pose = false;
+    Transform<double, 3, Affine> camera_pose;
+    if (use_root_frame)
+    {
+        std::tie(valid_pose, camera_pose) = this->pose(blocking);
+        if (!valid_pose)
+            return std::make_pair(false, MatrixXd());
+    }
+
+    /* Find 3D points having positive and less than max_depth_ depth. */
+    MatrixXi valid_points(parameters_.height, parameters_.width);
+#pragma omp parallel for collapse(2)
+    for (std::size_t v = 0; v < parameters_.height; v++)
+    {
+        for (std::size_t u = 0; u < parameters_.width; u++)
+        {
+            valid_points(v, u) = 0;
+
+            float depth_u_v = depth(v, u);
+
+            if ((depth_u_v > 0) && (depth_u_v < maximum_depth))
+                valid_points(v, u) = 1;
+        }
+    }
+    const std::size_t number_valids = valid_points.sum();
+
+    if (number_valids == 0)
+        return std::make_pair(false, MatrixXd());
+
+    /* Get deprojection matrix. */
+    bool valid_deprojection_matrix = false;
+    MatrixXd deprojection_matrix;
+    std::tie(valid_deprojection_matrix, deprojection_matrix) = this->deprojection_matrix();
+    if (!valid_deprojection_matrix)
+        return std::make_pair(false, MatrixXd());
+
+    /* Store points in the output matrix. */
+    const std::size_t number_rows = enable_colors ? 6 : 3;
+    MatrixXd cloud(number_rows, number_valids);
+    std::size_t counter = 0;
+    for (std::size_t v = 0; v < parameters_.height; v++)
+        for (std::size_t u = 0; u < parameters_.width; u++)
+        {
+            if (valid_points(v, u) == 1)
+            {
+                /* Set 3D point. */
+                cloud.col(counter).head<3>() = deprojection_matrix.col(u * parameters_.height + v) * depth(v, u);
+
+                if (enable_colors)
+                {
+                    /* Set RGB channels. */
+                    cv::Vec3b cv_color = rgb.at<cv::Vec3b>(cv::Point2d(u, v));
+                    cloud.col(counter)(3) = cv_color[2];
+                    cloud.col(counter)(4) = cv_color[1];
+                    cloud.col(counter)(5) = cv_color[0];
+                }
+                counter++;
+            }
+        }
+
+    /* Express taking into account the camera pose, if required. */
+    if (use_root_frame)
+        cloud.topRows<3>() = camera_pose * cloud.topRows<3>().colwise().homogeneous();
+
+    return std::make_pair(true, cloud);
 }
 
 

@@ -12,6 +12,7 @@
 
 #include <Eigen/Dense>
 
+#include <limits>
 #include <opencv2/opencv.hpp>
 
 #include <cstdint>
@@ -49,6 +50,8 @@ public:
      */
 
     virtual std::pair<bool, Eigen::MatrixXf> depth(const bool& blocking) = 0;
+
+    virtual std::pair<bool, Eigen::MatrixXd> point_cloud(const bool& blocking, const double& maximum_depth = std::numeric_limits<double>::infinity(), const bool& use_root_frame = false, const bool& enable_colors = false);
 
     virtual std::pair<bool, Eigen::Transform<double, 3, Eigen::Affine>> pose(const bool& blocking) = 0;
 
