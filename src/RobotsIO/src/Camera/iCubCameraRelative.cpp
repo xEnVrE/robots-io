@@ -61,6 +61,12 @@ iCubCameraRelative::~iCubCameraRelative()
 {}
 
 
+bool iCubCameraRelative::status()
+{
+    return iCubCamera::status() && get_relative_camera().status();
+}
+
+
 bool iCubCameraRelative::step_frame()
 {
     bool ok = iCubCamera::step_frame();
