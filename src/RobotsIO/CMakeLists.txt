@@ -7,6 +7,8 @@
 #
 #===============================================================================
 
+option(USE_OPENMP "Use OpenMP" OFF)
+
 set(LIBRARY_TARGET_NAME RobotsIO)
 
 # Eigen3
@@ -14,6 +16,10 @@ find_package(Eigen3 REQUIRED)
 
 # OpenCV
 find_package(OpenCV REQUIRED)
+
+if (USE_OPENMP)
+  find_package(OpenMP REQUIRED)
+endif()
 
 if (USE_YARP)
     find_package(YARP REQUIRED COMPONENTS
@@ -122,6 +128,19 @@ target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC "$<BUILD_INTERFACE:${CM
 
 # Linker configuration
 target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC Eigen3::Eigen ${OpenCV_LIBS})
+
+if (USE_OPENMP)
+    if(NOT TARGET OpenMP::OpenMP_CXX)
+        find_package(Threads REQUIRED)
+        add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
+        set_property(TARGET OpenMP::OpenMP_CXX
+                     PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
+        # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
+        set_property(TARGET OpenMP::OpenMP_CXX
+                     PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
+    endif()
+    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 if (USE_YARP)
     target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC
