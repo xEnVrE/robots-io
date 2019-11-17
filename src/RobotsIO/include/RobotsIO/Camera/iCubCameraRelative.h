@@ -41,6 +41,11 @@ public:
 
     bool set_frame_index(const std::int32_t& index) override;
 
+protected:
+    RobotsIO::Camera::iCubCamera& get_relative_camera();
+
+    const RobotsIO::Camera::iCubCamera& get_relative_camera() const;
+
 private:
     /**
      * Log name to be used in messages printed by the class.

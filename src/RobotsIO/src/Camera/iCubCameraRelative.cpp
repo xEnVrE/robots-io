@@ -80,11 +80,23 @@ bool iCubCameraRelative::set_frame_index(const std::int32_t& index)
 }
 
 
+RobotsIO::Camera::iCubCamera& iCubCameraRelative::get_relative_camera()
+{
+    return *left_camera_;
+}
+
+
+const RobotsIO::Camera::iCubCamera& iCubCameraRelative::get_relative_camera() const
+{
+    return *left_camera_;
+}
+
+
 std::pair<bool, Eigen::Transform<double, 3, Eigen::Affine>> iCubCameraRelative::pose(const bool& blocking)
 {
     bool valid_left = false;
     Eigen::Transform<double, 3, Eigen::Affine> pose_left;
-    std::tie(valid_left, pose_left) = left_camera_->pose(false);
+    std::tie(valid_left, pose_left) = get_relative_camera().pose(false);
     if (!valid_left)
         return std::make_pair(false, Eigen::Transform<double, 3, Eigen::Affine>());
 
