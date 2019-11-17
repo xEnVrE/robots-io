@@ -83,6 +83,7 @@ endif()
 if (USE_YARP AND USE_ICUB)
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
          include/RobotsIO/Camera/iCubCamera.h
+         include/RobotsIO/Camera/iCubCameraDepth.h
          include/RobotsIO/Camera/iCubCameraRelative.h
     )
 
@@ -92,6 +93,7 @@ if (USE_YARP AND USE_ICUB)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_CAMERA
          src/Camera/iCubCamera.cpp
+         src/Camera/iCubCameraDepth.cpp
          src/Camera/iCubCameraRelative.cpp
     )
 
