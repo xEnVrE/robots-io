@@ -152,6 +152,7 @@ iCubCamera::iCubCamera
 
     /* Configure head.
        We require this anyway in order to provide inputs to the calibration model. */
+    properties.put("device", "remote_controlboard");
     properties.put("local", "/" + port_prefix + "/head:i");
     properties.put("remote", "/" + robot_name + "/head");
     ok = drv_head_.open(properties) && drv_head_.view(ihead_) && (ihead_ != nullptr);
