@@ -277,7 +277,7 @@ std::pair<bool, Transform<double, 3, Affine>> iCubCamera::pose(const bool& block
         return std::make_pair(false, Transform<double, 3, Affine>());
 
     /* If calibration was loaded and eye encoders are available, correct pose of right eye. */
-    if (laterality() == "right" && use_calibration_)
+    if ((laterality() == "right") && use_calibration_)
     {
         bool valid_encoders_input = false;
         if ((ihead_ != nullptr) || (load_encoders_data_))
