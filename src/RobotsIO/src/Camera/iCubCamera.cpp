@@ -259,6 +259,15 @@ bool iCubCamera::look_at(const Eigen::Vector3d& fixation_point)
 }
 
 
+bool iCubCamera::stop_motion()
+{
+    if (use_driver_gaze_)
+        return gaze_control_->stopControl();
+
+    return false;
+}
+
+
 std::pair<bool, MatrixXf> iCubCamera::depth(const bool& blocking)
 {
     if (is_offline())

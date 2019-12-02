@@ -46,6 +46,8 @@ public:
 
     bool look_at(const Eigen::Vector3d& fixation_point);
 
+    bool stop_motion();
+
     /**
      * RGB-D and pose.
      */
