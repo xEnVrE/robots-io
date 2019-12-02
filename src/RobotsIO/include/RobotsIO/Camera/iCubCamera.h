@@ -44,6 +44,8 @@ public:
 
     ~iCubCamera();
 
+    bool look_at(const Eigen::Vector3d& fixation_point);
+
     /**
      * RGB-D and pose.
      */

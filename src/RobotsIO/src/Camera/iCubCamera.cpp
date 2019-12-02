@@ -245,6 +245,20 @@ iCubCamera::~iCubCamera()
 }
 
 
+bool iCubCamera::look_at(const Eigen::Vector3d& fixation_point)
+{
+    if (use_driver_gaze_)
+    {
+        yarp::sig::Vector vector(3);
+        toEigen(vector) = fixation_point;
+
+        return gaze_control_->lookAtFixationPointSync(vector);
+    }
+
+    return false;
+}
+
+
 std::pair<bool, MatrixXf> iCubCamera::depth(const bool& blocking)
 {
     if (is_offline())
