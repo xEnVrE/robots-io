@@ -27,7 +27,7 @@ make install
 
 In order to use the library within a `CMake` project
 ```
-find_package(RobotsViz REQUIRED)
+find_package(RobotsIO REQUIRED)
 (...)
 target_link_libraries(... RobotsIO::RobotsIO ...)
 ```
