@@ -77,27 +77,10 @@ yarp::sig::VectorOf<T> RobotsIO::Utils::YarpVectorOfProbe<T, U>::convert_from(co
 
 
 template <>
-yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::VectorXd>::convert_from(const Eigen::VectorXd& data)
-{
-    yarp::sig::VectorOf<double> tmp(data.size());
-    yarp::eigen::toEigen(tmp) = data;
-
-    return tmp;
-}
+yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::VectorXd>::convert_from(const Eigen::VectorXd& data);
 
 
 template <>
-yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Transform<double, 3, Eigen::Affine>>::convert_from(const Eigen::Transform<double, 3, Eigen::Affine>& data)
-{
-    /* Assume by default transformation to x-y-z-axis-angle. */
-    yarp::sig::VectorOf<double> tmp(7);
-    yarp::eigen::toEigen(tmp).head<3>() = data.translation();
-
-    Eigen::AngleAxisd axis_angle(data.rotation());
-    yarp::eigen::toEigen(tmp).segment<3>(3) = axis_angle.axis();
-    yarp::eigen::toEigen(tmp)(6) = axis_angle.angle();
-
-    return tmp;
-}
+yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Transform<double, 3, Eigen::Affine>>::convert_from(const Eigen::Transform<double, 3, Eigen::Affine>& data);
 
 #endif /* ROBOTSIO_YARPVECTOROFPROBE_H */

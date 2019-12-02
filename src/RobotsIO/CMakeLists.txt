@@ -62,6 +62,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
+    src/Utils/YarpVectorOfProbe.cpp
 )
 
 if (USE_YARP)
