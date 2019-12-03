@@ -49,7 +49,7 @@ To be done:
 - `RealSense` (using YARP);
 - `RealSense` (using ROS);
 - `R1Camera` inheriting from `RealSense` (YARP version)
-- an abstract `DepthCamera` class to produce a depth map from stereo images using a `StereoMatcher` class. Possible implementation of `StereoMatcher` include `OpenCV SGBM` (CPU and CUDA version) and NVidia Optical Flow SDK.
+- an abstract `DepthCamera` class to produce a depth map from stereo images using a `StereoMatcher` class. Possible implementation of `StereoMatcher` include `OpenCV SGBM` (CPU and CUDA version) and the `NVIDIA Optical Flow SDK`.
 
 `YARP` is required to build `YarpCamera` and `YARP + ICUB` are required to build `iCubCamera` and `iCubCameraRelative`.
 
