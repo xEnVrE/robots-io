@@ -42,12 +42,14 @@ Implemented classes are:
   depth and rgb from YARP ports and the camera pose from `IGazeControl` or `IEncoders` or raw YARP ports. It also loads the camera parameters from the `IGazeControl` interface, if available;
 - `iCubCameraRelative`, similar to `iCubCamera` but representing the right
   camera with pose expressed relative to the left camera. Useful for experiments dealing with the stereo setup of the robot only;
+- `iCubCameraDepth`, produces a depth map starting from stereo images and the poses of iCub eyes. It uses `OpenCV SGBM`.
 - `YarpCamera`, class inheriting from `Camera` and supporting depth and rgb from raw YARP ports and parameters from the class constructor.
 
 To be done:
 - `RealSense` (using YARP);
 - `RealSense` (using ROS);
-- `R1Camera` inheriting from `RealSense` (YARP version).
+- `R1Camera` inheriting from `RealSense` (YARP version)
+- an abstract `DepthCamera` class to produce a depth map from stereo images using a `StereoMatcher` class. Possible implementation of `StereoMatcher` include `OpenCV SGBM` (CPU and CUDA version) and NVidia Optical Flow SDK.
 
 `YARP` is required to build `YarpCamera` and `YARP + ICUB` are required to build `iCubCamera` and `iCubCameraRelative`.
 
