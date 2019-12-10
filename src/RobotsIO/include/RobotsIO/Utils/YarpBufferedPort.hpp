@@ -40,6 +40,7 @@ protected:
     const std::string log_name_ = "YarpBufferedPort";
 };
 
+
 template<class T>
 RobotsIO::Utils::YarpBufferedPort<T>::YarpBufferedPort(const std::string& port_name)
 {
