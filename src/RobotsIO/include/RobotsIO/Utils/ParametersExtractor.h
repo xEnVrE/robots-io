@@ -29,6 +29,8 @@ public:
 
     virtual void extract_field(const std::string& key, const std::string& value) = 0;
 
+    virtual void extract_field(const std::string& key, const std::size_t& value) = 0;
+
     virtual void extract_field(const std::string& key, const int& value) = 0;
 
     virtual void extract_field(const std::string& key, const double& value) = 0;

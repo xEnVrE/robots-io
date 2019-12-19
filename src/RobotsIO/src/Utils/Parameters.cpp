@@ -37,6 +37,9 @@ using namespace RobotsIO::Utils;
 robots_io_std_field_getter_impl(string);
 
 
+robots_io_std_field_getter_impl(size_t);
+
+
 robots_io_field_getter_impl(double);
 
 
@@ -47,6 +50,9 @@ robots_io_field_getter_impl(bool);
 
 
 robots_io_std_field_setter_impl(string);
+
+
+robots_io_std_field_setter_impl(size_t);
 
 
 robots_io_field_setter_impl(double);

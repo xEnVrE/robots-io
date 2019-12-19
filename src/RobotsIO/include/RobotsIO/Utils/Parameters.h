@@ -146,6 +146,8 @@ protected:
      */
     robots_io_std_field_getter(string);
 
+    robots_io_std_field_getter(size_t);
+
     robots_io_field_getter(double);
 
     robots_io_field_getter(int);
@@ -156,6 +158,8 @@ protected:
      * Setters
      */
     robots_io_std_field_setter(string);
+
+    robots_io_std_field_setter(size_t);
 
     robots_io_field_setter(double);
 
@@ -168,6 +172,8 @@ private:
      * Key-value pairs storage
      */
     robots_io_std_field_storage(string);
+
+    robots_io_std_field_storage(size_t);
 
     robots_io_field_storage(double);
 
