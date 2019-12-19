@@ -98,11 +98,11 @@ std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
     }
 
     /* Find 3D points having positive and less than max_depth_ depth. */
-    MatrixXi valid_points(parameters_.height, parameters_.width);
+    MatrixXi valid_points(parameters_.height(), parameters_.width());
 #pragma omp parallel for collapse(2)
-    for (std::size_t v = 0; v < parameters_.height; v++)
+    for (std::size_t v = 0; v < parameters_.height(); v++)
     {
-        for (std::size_t u = 0; u < parameters_.width; u++)
+        for (std::size_t u = 0; u < parameters_.width(); u++)
         {
             valid_points(v, u) = 0;
 
@@ -128,13 +128,13 @@ std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
     const std::size_t number_rows = enable_colors ? 6 : 3;
     MatrixXd cloud(number_rows, number_valids);
     std::size_t counter = 0;
-    for (std::size_t v = 0; v < parameters_.height; v++)
-        for (std::size_t u = 0; u < parameters_.width; u++)
+    for (std::size_t v = 0; v < parameters_.height(); v++)
+        for (std::size_t u = 0; u < parameters_.width(); u++)
         {
             if (valid_points(v, u) == 1)
             {
                 /* Set 3D point. */
-                cloud.col(counter).head<3>() = deprojection_matrix.col(u * parameters_.height + v) * depth(v, u);
+                cloud.col(counter).head<3>() = deprojection_matrix.col(u * parameters_.height() + v) * depth(v, u);
 
                 if (enable_colors)
                 {
@@ -316,16 +316,16 @@ bool Camera::evaluate_deprojection_matrix()
         throw(std::runtime_error(log_name_ + "::reset. Camera parameters not initialized. Did you initialize the class member 'parameters_' in the derived class?."));
 
     /* Allocate storage. */
-    deprojection_matrix_.resize(3, parameters_.width * parameters_.height);
+    deprojection_matrix_.resize(3, parameters_.width() * parameters_.height());
 
     // Evaluate deprojection matrix
     int i = 0;
-    for (std::size_t u = 0; u < parameters_.width; u++)
+    for (std::size_t u = 0; u < parameters_.width(); u++)
     {
-        for (std::size_t v = 0; v < parameters_.height; v++)
+        for (std::size_t v = 0; v < parameters_.height(); v++)
         {
-            deprojection_matrix_(0, i) = (u - parameters_.cx) / parameters_.fx;
-            deprojection_matrix_(1, i) = (v - parameters_.cy) / parameters_.fy;
+            deprojection_matrix_(0, i) = (u - parameters_.cx()) / parameters_.fx();
+            deprojection_matrix_(1, i) = (v - parameters_.cy()) / parameters_.fy();
             deprojection_matrix_(2, i) = 1.0;
 
             i++;
@@ -352,12 +352,12 @@ Camera::Camera
     offline_mode_(true)
 {
     /* Set intrinsic parameters. */
-    parameters_.width = width;
-    parameters_.height = height;
-    parameters_.fx = fx;
-    parameters_.cx = cx;
-    parameters_.fy = fy;
-    parameters_.cy = cy;
+    parameters_.width(width);
+    parameters_.height(height);
+    parameters_.fx(fx);
+    parameters_.cx(cx);
+    parameters_.fy(fy);
+    parameters_.cy(cy);
     parameters_.set_initialized();
 
     /* Fix data path. */
@@ -366,11 +366,11 @@ Camera::Camera
 
     /* Log parameters. */
     std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
-    std::cout << log_name_ + "    - width: " << parameters_.width << std::endl;
-    std::cout << log_name_ + "    - height: " << parameters_.height << std::endl;
-    std::cout << log_name_ + "    - fx: " << parameters_.fx << std::endl;
-    std::cout << log_name_ + "    - fy: " << parameters_.fy << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cx << std::endl;
+    std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
+    std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
+    std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
+    std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
 }
 
 
@@ -458,7 +458,7 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
         std::cout << log_name_ << "::rgb_offline. Warning: frame " << file_name << " is empty!" << std::endl;
         return std::make_pair(false, cv::Mat());
     }
-    cv::resize(image, image, cv::Size(parameters_.width, parameters_.height));
+    cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
 
     return std::make_pair(true, image);
 }
