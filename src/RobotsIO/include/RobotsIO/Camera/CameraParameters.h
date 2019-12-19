@@ -34,12 +34,7 @@ public:
 
     robots_io_declare_field(CameraParameters, double, fy);
 
-    bool is_initialized() const;
-
-    void set_initialized();
-
-private:
-    bool initialized_ = false;
+    robots_io_declare_field(CameraParameters, bool, initialized);
 };
 
 #endif /* ROBOTSIO_CAMERAPARAMETERS_H */

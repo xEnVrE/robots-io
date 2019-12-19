@@ -54,7 +54,7 @@ std::pair<bool, MatrixXd> Camera::deprojection_matrix() const
 
 std::pair<bool, CameraParameters> Camera::parameters() const
 {
-    if (!parameters_.is_initialized())
+    if (!(parameters_.initialized()))
         return std::make_pair(false, CameraParameters());
 
     return std::make_pair(true, parameters_);
@@ -312,7 +312,7 @@ bool Camera::initialize()
 
 bool Camera::evaluate_deprojection_matrix()
 {
-    if (!parameters_.is_initialized())
+    if (!parameters_.initialized())
         throw(std::runtime_error(log_name_ + "::reset. Camera parameters not initialized. Did you initialize the class member 'parameters_' in the derived class?."));
 
     /* Allocate storage. */
@@ -357,7 +357,7 @@ Camera::Camera
     parameters_.cx(cx);
     parameters_.fy(fy);
     parameters_.cy(cy);
-    parameters_.set_initialized();
+    parameters_.initialized(true);
 
     /* Set dataset parameters. */
     dataset_parameters_.path(data_path);

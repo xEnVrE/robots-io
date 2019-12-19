@@ -30,13 +30,4 @@ robots_io_declare_field_impl(CameraParameters, double, fx);
 robots_io_declare_field_impl(CameraParameters, double, fy);
 
 
-bool CameraParameters::is_initialized() const
-{
-    return initialized_;
-}
-
-
-void CameraParameters::set_initialized()
-{
-    initialized_ = true;
-}
+robots_io_declare_field_impl(CameraParameters, bool, initialized);
