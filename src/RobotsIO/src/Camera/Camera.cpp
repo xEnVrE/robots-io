@@ -428,7 +428,7 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
 
 std::pair<bool, Transform<double, 3, Affine>> Camera::pose_offline()
 {
-    if (dataset_parameters_.pose_available)
+    if (dataset_parameters_.pose_available())
     {
         VectorXd data = data_.col(frame_index_);
 
@@ -465,7 +465,7 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
 
 std::pair<bool, VectorXd> Camera::auxiliary_data_offline()
 {
-    if (dataset_parameters_.pose_available)
+    if (dataset_parameters_.pose_available())
     {
         VectorXd data = data_.col(frame_index_);
 
