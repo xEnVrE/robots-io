@@ -45,6 +45,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/Data.h
+    include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/Probe.h
     include/RobotsIO/Utils/ProbeContainer.h
     include/RobotsIO/Utils/any.h
@@ -60,6 +61,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_CAMERA
 set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
+    src/Utils/Parameters.cpp
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
     src/Utils/YarpVectorOfProbe.cpp
