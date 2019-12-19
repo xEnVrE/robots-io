@@ -107,7 +107,7 @@ protected:
     /**
      * Constructor for offline playback.
      */
-    Camera(const std::string& data_path, const std::size_t& width, const double& height, const double& fx, const double& cx, const double& fy, const double& cy);
+    Camera(const std::string& data_path, const std::size_t& width, const std::size_t& height, const double& fx, const double& cx, const double& fy, const double& cy);
 
     /**
      * RGB-D and pose for offline playback.

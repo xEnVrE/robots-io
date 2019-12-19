@@ -342,7 +342,7 @@ Camera::Camera
 (
     const std::string& data_path,
     const std::size_t& width,
-    const double& height,
+    const std::size_t& height,
     const double& fx,
     const double& cx,
     const double& fy,
