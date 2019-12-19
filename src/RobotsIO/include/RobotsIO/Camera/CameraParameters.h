@@ -8,6 +8,8 @@
 #ifndef ROBOTSIO_CAMERAPARAMETERS_H
 #define ROBOTSIO_CAMERAPARAMETERS_H
 
+#include <RobotsIO/Utils/Parameters.h>
+
 namespace RobotsIO {
     namespace Camera {
         struct CameraParameters;
@@ -15,16 +17,22 @@ namespace RobotsIO {
 }
 
 
-struct RobotsIO::Camera::CameraParameters
+class RobotsIO::Camera::CameraParameters : public RobotsIO::Utils::Parameters
 {
 public:
-    int width;
-    int height;
+    robots_io_accessor(CameraParameters);
 
-    double cx;
-    double cy;
-    double fx;
-    double fy;
+    robots_io_declare_field(CameraParameters, int, width);
+
+    robots_io_declare_field(CameraParameters, int, height);
+
+    robots_io_declare_field(CameraParameters, double, cx);
+
+    robots_io_declare_field(CameraParameters, double, cy);
+
+    robots_io_declare_field(CameraParameters, double, fx);
+
+    robots_io_declare_field(CameraParameters, double, fy);
 
     bool is_initialized() const;
 

@@ -9,6 +9,26 @@
 
 using namespace RobotsIO::Camera;
 
+robots_io_accessor_impl(CameraParameters);
+
+
+robots_io_declare_field_impl(CameraParameters, int, width);
+
+
+robots_io_declare_field_impl(CameraParameters, int, height);
+
+
+robots_io_declare_field_impl(CameraParameters, double, cx);
+
+
+robots_io_declare_field_impl(CameraParameters, double, cy);
+
+
+robots_io_declare_field_impl(CameraParameters, double, fx);
+
+
+robots_io_declare_field_impl(CameraParameters, double, fy);
+
 
 bool CameraParameters::is_initialized() const
 {
