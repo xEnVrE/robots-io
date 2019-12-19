@@ -383,8 +383,8 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
 
     if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
     {
-        std::cout << log_name_ << "::depth_offline. Error: cannot load depth frame " + file_name;
-        return std::make_pair(true, MatrixXf());
+        std::cout << log_name_ << "::depth_offline. Error: cannot load depth frame " + file_name << std::endl;;
+        return std::make_pair(false, MatrixXf());
     }
 
     /* Load image size .*/
