@@ -395,11 +395,38 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
         return std::make_pair(false, MatrixXf());
 
+    std::fclose(in);
+
     /* Store image. */
     MatrixXf float_image(dims[1], dims[0]);
     float_image = Map<Matrix<float, -1, -1, RowMajor>>(float_image_raw, dims[1], dims[0]);
 
-    std::fclose(in);
+    /* Resize image. */
+    MatrixXf depth;
+    if ((float_image.cols() > parameters_.width()) && (float_image.rows() > parameters_.height()))
+    {
+        if ((float_image.cols() % parameters_.width() == 0) && ((float_image.rows() % parameters_.height() == 0)))
+        {
+            std::size_t ratio = float_image.cols() / parameters_.width();
+            if (ratio == (float_image.rows() / parameters_.height()))
+            {
+                depth.resize(parameters_.height(), parameters_.width());
+                for (std::size_t i = 0; i < float_image.rows(); i += ratio)
+                    for (std::size_t j = 0; j < float_image.cols(); j += ratio)
+                        depth(i / ratio, j / ratio) = float_image(i, j);
+            }
+        }
+    }
+    else
+        depth = float_image;
+
+    /* Probe for depth output. */
+    if (is_probe("depth_output"))
+    {
+        cv::Mat depth_cv;
+        cv::eigen2cv(depth, depth_cv);
+        get_probe("depth_output").set_data(depth_cv);
+    }
 
     return std::make_pair(true, float_image);
 }
