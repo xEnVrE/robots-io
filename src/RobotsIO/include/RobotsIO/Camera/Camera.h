@@ -9,6 +9,7 @@
 #define ROBOTSIO_CAMERA_H
 
 #include <RobotsIO/Camera/CameraParameters.h>
+#include <RobotsIO/Camera/DatasetParameters.h>
 
 #include <Eigen/Dense>
 
@@ -129,19 +130,17 @@ protected:
      * Offline playback.
      */
 
+    std::string compose_index(const std::size_t& index);
+
     virtual std::pair<bool, Eigen::MatrixXd> load_data();
 
+    RobotsIO::Camera::DatasetParameters dataset_parameters_;
+
     const bool offline_mode_ = false;
-
-    std::string data_path_;
-
-    std::ifstream data_in_;
 
     Eigen::MatrixXd data_;
 
     std::int32_t frame_index_ = -1;
-
-    static constexpr std::size_t standard_data_offset_ = 8;
 
     /*
      * Data logging.

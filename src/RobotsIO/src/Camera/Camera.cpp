@@ -171,7 +171,7 @@ std::size_t Camera::auxiliary_data_size() const
 std::int32_t Camera::frame_index() const
 {
     if (is_offline())
-        return frame_index_;
+        return frame_index_ + dataset_parameters_.index_offset();
 
     return -1;
 }
@@ -188,7 +188,7 @@ bool Camera::set_frame_index(const std::int32_t& index)
     if (int(index) < 0)
         frame_index_ = -1;
     else
-        frame_index_ = index;
+        frame_index_ = index - dataset_parameters_.index_offset();
 
     return true;
 }
@@ -249,7 +249,7 @@ bool Camera::log_frame(const bool& log_depth)
     angle(0) = angle_axis.angle();
 
     if (valid_rgb)
-        cv::imwrite(log_path_ + "rgb_" + std::to_string(log_index_) + ".png", rgb_image);
+        cv::imwrite(log_path_ + "rgb_" + std::to_string(log_index_) + "." + dataset_parameters_.rgb_format(), rgb_image);
     if (valid_depth)
         ;
     log_ << log_index_ << " "
@@ -303,7 +303,7 @@ bool Camera::initialize()
         bool valid_data = false;
         std::tie(valid_data, data_) = load_data();
         if (!valid_data)
-            throw(std::runtime_error(log_name_ + "::initialize. Cannot load offline data from " + data_path_));
+            throw(std::runtime_error(log_name_ + "::initialize. Cannot load offline data from " + dataset_parameters_.path()));
     }
 
     return ok;
@@ -348,7 +348,6 @@ Camera::Camera
     const double& fy,
     const double& cy
 ) :
-    data_path_(data_path),
     offline_mode_(true)
 {
     /* Set intrinsic parameters. */
@@ -360,9 +359,12 @@ Camera::Camera
     parameters_.cy(cy);
     parameters_.set_initialized();
 
+    /* Set dataset parameters. */
+    dataset_parameters_.path(data_path);
+
     /* Fix data path. */
-    if (data_path_.back() != '/')
-        data_path_ += '/';
+    if (dataset_parameters_.path().back() != '/')
+        dataset_parameters_.path(dataset_parameters_.path() + '/');
 
     /* Log parameters. */
     std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
@@ -377,7 +379,7 @@ Camera::Camera
 std::pair<bool, MatrixXf> Camera::depth_offline()
 {
     std::FILE* in;
-    const std::string file_name = data_path_ + "depth_" + std::to_string(frame_index_) + ".float";
+    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.depth_prefix() + compose_index(frame_index()) + "." + dataset_parameters_.depth_format();
 
     if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
     {
@@ -420,38 +422,35 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     else
         depth = float_image;
 
-    /* Probe for depth output. */
-    if (is_probe("depth_output"))
-    {
-        cv::Mat depth_cv;
-        cv::eigen2cv(depth, depth_cv);
-        get_probe("depth_output").set_data(depth_cv);
-    }
-
     return std::make_pair(true, float_image);
 }
 
 
 std::pair<bool, Transform<double, 3, Affine>> Camera::pose_offline()
 {
-    VectorXd data = data_.col(frame_index_);
+    if (dataset_parameters_.pose_available)
+    {
+        VectorXd data = data_.col(frame_index_);
 
-    Vector3d position = data.segment<3>(1);
-    VectorXd axis_angle = data.segment<4>(1 + 3);
-    AngleAxisd angle_axis(axis_angle(3), axis_angle.head<3>());
+        Vector3d position = data.segment<3>(1);
+        VectorXd axis_angle = data.segment<4>(1 + 3);
+        AngleAxisd angle_axis(axis_angle(3), axis_angle.head<3>());
 
-    Transform<double, 3, Affine> pose;
-    pose = Translation<double, 3>(position);
-    pose.rotate(angle_axis);
+        Transform<double, 3, Affine> pose;
+        pose = Translation<double, 3>(position);
+        pose.rotate(angle_axis);
 
-    return std::make_pair(true, pose);
+        return std::make_pair(true, pose);
+    }
+
+    return std::make_pair(true, Transform<double, 3, Affine>::Identity());
 }
 
 
 std::pair<bool, cv::Mat> Camera::rgb_offline()
 {
-    const std::string file_name = data_path_ + "rgb_" + std::to_string(frame_index_) + ".png";
-    cv::Mat image = cv::imread(data_path_ + "rgb_" + std::to_string(frame_index_) + ".png", cv::IMREAD_COLOR);
+    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.rgb_prefix() + compose_index(frame_index()) + "." + dataset_parameters_.rgb_format();
+    cv::Mat image = cv::imread(file_name, cv::IMREAD_COLOR);
 
     if (image.empty())
     {
@@ -466,20 +465,33 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
 
 std::pair<bool, VectorXd> Camera::auxiliary_data_offline()
 {
-    VectorXd data = data_.col(frame_index_);
+    if (dataset_parameters_.pose_available)
+    {
+        VectorXd data = data_.col(frame_index_);
 
-    if (auxiliary_data_size() == 0)
-        return std::make_pair(false, VectorXd());
+        if (auxiliary_data_size() == 0)
+            return std::make_pair(false, VectorXd());
 
-    return std::make_pair(true, data.segment(standard_data_offset_, auxiliary_data_size()));
+        return std::make_pair(true, data.segment(dataset_parameters_.standard_data_offset(), auxiliary_data_size()));
+    }
+
+    return std::make_pair(false, VectorXd());
+}
+
+
+std::string Camera::compose_index(const std::size_t& index)
+{
+    std::ostringstream ss;
+    ss << std::setw(dataset_parameters_.heading_zeros()) << std::setfill('0') << index;
+    return ss.str();
 }
 
 
 std::pair<bool, MatrixXd> Camera::load_data()
 {
     MatrixXd data;
-    const std::string file_name = data_path_ + "data.txt";
-    const std::size_t num_fields = standard_data_offset_ + auxiliary_data_size();
+    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.data_prefix() + "data." + dataset_parameters_.data_format();
+    const std::size_t num_fields = dataset_parameters_.standard_data_offset() + auxiliary_data_size();
 
     std::ifstream istrm(file_name);
     if (!istrm.is_open())
