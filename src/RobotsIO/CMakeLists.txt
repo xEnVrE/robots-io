@@ -39,6 +39,7 @@ endif()
 set(${LIBRARY_TARGET_NAME}_HDR_CAMERA
     include/RobotsIO/Camera/Camera.h
     include/RobotsIO/Camera/CameraParameters.h
+    include/RobotsIO/Camera/DatasetCamera.h
     include/RobotsIO/Camera/DatasetParameters.h
 )
 
@@ -58,6 +59,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
 set(${LIBRARY_TARGET_NAME}_SRC_CAMERA
     src/Camera/Camera.cpp
     src/Camera/CameraParameters.cpp
+    src/Camera/DatasetCamera.cpp
     src/Camera/DatasetParameters.cpp
 )
 
