@@ -53,7 +53,7 @@ DatasetParameters::DatasetParameters()
 
     index_offset(0);
 
-    standard_data_offset(0);
+    standard_data_offset(8);
 
     pose_available(false);
 }
