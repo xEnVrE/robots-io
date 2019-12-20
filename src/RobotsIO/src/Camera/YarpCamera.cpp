@@ -37,13 +37,13 @@ YarpCamera::YarpCamera
     }
 
     /* Store parameters. */
-    parameters_.width = width;
-    parameters_.height = height;
-    parameters_.fx = fx;
-    parameters_.cx = cx;
-    parameters_.fy = fy;
-    parameters_.cy = cy;
-    parameters_.set_initialized();
+    parameters_.width(width);
+    parameters_.height(height);
+    parameters_.fx(fx);
+    parameters_.cx(cx);
+    parameters_.fy(fy);
+    parameters_.cy(cy);
+    parameters_.initialized(true);
 
     /* Open rgb input port. */
     if (!(port_rgb_.open("/" + port_prefix + "/rgbImage:i")))
@@ -63,12 +63,12 @@ YarpCamera::YarpCamera
 
     /* Log parameters. */
     std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
-    std::cout << log_name_ + "    - width: " << parameters_.width << std::endl;
-    std::cout << log_name_ + "    - height: " << parameters_.height << std::endl;
-    std::cout << log_name_ + "    - fx: " << parameters_.fx << std::endl;
-    std::cout << log_name_ + "    - fy: " << parameters_.fy << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cx << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cy << std::endl;
+    std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
+    std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
+    std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
+    std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
 }
 
 YarpCamera::YarpCamera
