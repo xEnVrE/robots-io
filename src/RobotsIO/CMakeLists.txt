@@ -78,6 +78,7 @@ if (USE_YARP)
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
+         include/RobotsIO/Utils/Parameters2YarpBottle.h
          include/RobotsIO/Utils/YarpBottleProbe.hpp
          include/RobotsIO/Utils/YarpBufferedPort.hpp
          include/RobotsIO/Utils/YarpImageOfProbe.hpp
@@ -85,6 +86,7 @@ if (USE_YARP)
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
+         src/Utils/Parameters2YarpBottle.cpp
          src/Utils/YarpBottleProbe.cpp
          src/Utils/YarpVectorOfProbe.cpp
     )
