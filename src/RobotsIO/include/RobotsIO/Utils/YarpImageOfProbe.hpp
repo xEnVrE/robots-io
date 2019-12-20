@@ -68,5 +68,4 @@ void RobotsIO::Utils::YarpImageOfProbe<T>::on_new_data()
     this->send_data(data_);
 }
 
-
 #endif /* ROBOTSIO_YARPIMAGEOFPROBE_H */
