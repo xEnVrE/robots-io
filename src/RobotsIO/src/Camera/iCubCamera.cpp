@@ -75,7 +75,7 @@ iCubCamera::iCubCamera
             std::string err = log_name_ + "::ctor. Error: cannot load iCub " + laterality_ + " camera width.";
             throw(std::runtime_error(err));
         }
-        parameters_.width = info.find(key).asInt();
+        parameters_.width(info.find(key).asInt());
 
         key = "camera_height_" + laterality_;
         if (info.find(key).isNull())
@@ -83,7 +83,7 @@ iCubCamera::iCubCamera
             std::string err = log_name_ + "::ctor. Error: cannot load iCub " + laterality_ + " camera height.";
             throw(std::runtime_error(err));
         }
-        parameters_.height = info.find(key).asInt();
+        parameters_.height(info.find(key).asInt());
 
         key = "camera_intrinsics_" + laterality_;
         if (info.find(key).isNull())
@@ -92,12 +92,12 @@ iCubCamera::iCubCamera
             throw(std::runtime_error(err));
         }
         Bottle *list = info.find(key).asList();
-        parameters_.fx = list->get(0).asDouble();
-        parameters_.cx = list->get(2).asDouble();
-        parameters_.fy = list->get(5).asDouble();
-        parameters_.cy = list->get(6).asDouble();
+        parameters_.fx(list->get(0).asDouble());
+        parameters_.cx(list->get(2).asDouble());
+        parameters_.fy(list->get(5).asDouble());
+        parameters_.cy(list->get(6).asDouble());
 
-        parameters_.set_initialized();
+        parameters_.initialized(true);
     }
     else
     {
@@ -105,23 +105,23 @@ iCubCamera::iCubCamera
         use_driver_gaze_ = false;
 
         /* TODO: take parameters from a configuration file. */
-        parameters_.width = 640.0;
-        parameters_.height = 480.0;
+        parameters_.width(640);
+        parameters_.height(480);
         if (laterality_ == "left")
         {
-            parameters_.fx = 468.672;
-            parameters_.cx = 323.045;
-            parameters_.fy = 467.73;
-            parameters_.cy = 245.784;
+            parameters_.fx(468.672);
+            parameters_.cx(323.045);
+            parameters_.fy(467.73);
+            parameters_.cy(245.784);
         }
         else
         {
-            parameters_.fx = 468.488;
-            parameters_.cx = 301.274;
-            parameters_.fy = 467.427;
-            parameters_.cy = 245.503;
+            parameters_.fx(468.488);
+            parameters_.cx(301.274);
+            parameters_.fy(467.427);
+            parameters_.cy(245.503);
         }
-        parameters_.set_initialized();
+        parameters_.initialized(true);
 
         /* Configure torso. */
         Property properties;
@@ -188,11 +188,12 @@ iCubCamera::iCubCamera
 
     /* Log parameters. */
     std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
-    std::cout << log_name_ + "    - width: " << parameters_.width << std::endl;
-    std::cout << log_name_ + "    - height: " << parameters_.height << std::endl;
-    std::cout << log_name_ + "    - fx: " << parameters_.fx << std::endl;
-    std::cout << log_name_ + "    - fy: " << parameters_.fy << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cx << std::endl;
+    std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
+    std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
+    std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
+    std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
+    std::cout << log_name_ + "    - cy: " << parameters_.cy() << std::endl;
 }
 
 
