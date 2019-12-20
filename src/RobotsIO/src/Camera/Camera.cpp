@@ -382,6 +382,7 @@ Camera::Camera
     std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
     std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
     std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
+    std::cout << log_name_ + "    - cy: " << parameters_.cy() << std::endl;
 }
 
 
