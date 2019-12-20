@@ -70,7 +70,6 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/ParametersExtractor.cpp
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
-    src/Utils/YarpVectorOfProbe.cpp
 )
 
 if (USE_YARP)
@@ -82,6 +81,10 @@ if (USE_YARP)
          include/RobotsIO/Utils/YarpBufferedPort.hpp
          include/RobotsIO/Utils/YarpImageOfProbe.hpp
          include/RobotsIO/Utils/YarpVectorOfProbe.hpp
+    )
+
+    list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
+         src/Utils/YarpVectorOfProbe.cpp
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_CAMERA
