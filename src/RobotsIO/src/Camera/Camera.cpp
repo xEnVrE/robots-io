@@ -574,5 +574,4 @@ std::pair<bool, MatrixXd> Camera::load_data()
     istrm.close();
 
     return std::make_pair(true, data);
-
 }
