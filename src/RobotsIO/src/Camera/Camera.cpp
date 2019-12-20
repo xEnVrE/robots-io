@@ -542,31 +542,42 @@ std::pair<bool, MatrixXd> Camera::load_data()
     std::size_t found_lines = 0;
     for (auto line : istrm_strings)
     {
-        if (dataset_parameters_.pose_available())
+        std::size_t found_fields = 0;
+        std::string number_str;
+        std::istringstream iss(line);
+
+        while (iss >> number_str)
         {
-            std::size_t found_fields = 0;
-            std::string number_str;
-            std::istringstream iss(line);
-
-            while (iss >> number_str)
-            {
-                if (found_fields > num_fields)
-                {
-                    std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
-                    std::cout << log_name_ + "::read_data_from_file.        Found more than expected fields. Skipping content parsing.";
-                    dataset_parameters_.pose_available(false);
-                }
-
-                std::size_t index = (num_fields * found_lines) + found_fields;
-                *(data.data() + index) = std::stod(number_str);
-                found_fields++;
-            }
-            if (num_fields != found_fields)
+            if (found_fields > num_fields)
             {
                 std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
-                std::cout << log_name_ + "::read_data_from_file.        Found less than expected fields. Skipping content parsing.";
+                std::cout << log_name_ + "::read_data_from_file.        Found more than expected fields. Skipping content parsing." << std::endl;
                 dataset_parameters_.pose_available(false);
+                return std::make_pair(true, data);
             }
+
+            try
+            {
+                std::size_t index = (num_fields * found_lines) + found_fields;
+                *(data.data() + index) = std::stod(number_str);
+            }
+            catch (std::invalid_argument)
+            {
+                std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
+                std::cout << log_name_ + "::read_data_from_file.        Found unexpected fields. Skipping content parsing." << std::endl;
+                dataset_parameters_.pose_available(false);
+                return std::make_pair(true, data);
+            }
+
+            found_fields++;
+        }
+
+        if (found_fields != num_fields)
+        {
+            std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
+            std::cout << log_name_ + "::read_data_from_file.        Found less than expected fields. Skipping content parsing." << std::endl;
+            dataset_parameters_.pose_available(false);
+            return std::make_pair(true, data);
         }
         found_lines++;
     }
