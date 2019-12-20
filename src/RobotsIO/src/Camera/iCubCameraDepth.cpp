@@ -220,16 +220,16 @@ void iCubCameraDepth::configure_sgbm()
     /* Configure intrinsics for OpenCV. */
 
     intrinsic_left_ = cv::Mat::eye(3,3,CV_64FC1);
-    intrinsic_left_.at<double>(0,0) = parameters_left.fx;
-    intrinsic_left_.at<double>(0,2) = parameters_left.cx;
-    intrinsic_left_.at<double>(1,1) = parameters_left.fy;
-    intrinsic_left_.at<double>(1,2) = parameters_left.cy;
+    intrinsic_left_.at<double>(0,0) = parameters_left.fx();
+    intrinsic_left_.at<double>(0,2) = parameters_left.cx();
+    intrinsic_left_.at<double>(1,1) = parameters_left.fy();
+    intrinsic_left_.at<double>(1,2) = parameters_left.cy();
 
     intrinsic_right_ = cv::Mat::eye(3,3,CV_64FC1);
-    intrinsic_right_.at<double>(0,0) = parameters_right.fx;
-    intrinsic_right_.at<double>(0,2) = parameters_right.cx;
-    intrinsic_right_.at<double>(1,1) = parameters_right.fy;
-    intrinsic_right_.at<double>(1,2) = parameters_right.cy;
+    intrinsic_right_.at<double>(0,0) = parameters_right.fx();
+    intrinsic_right_.at<double>(0,2) = parameters_right.cx();
+    intrinsic_right_.at<double>(1,1) = parameters_right.fy();
+    intrinsic_right_.at<double>(1,2) = parameters_right.cy();
 
     /* Configure distortion for OpenCV.
      We expect that the images are already undistorted. */
