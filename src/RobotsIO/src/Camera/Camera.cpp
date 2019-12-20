@@ -11,6 +11,8 @@
 
 #include <RobotsIO/Camera/Camera.h>
 
+#include <opencv2/core/eigen.hpp>
+
 #include <iostream>
 
 using namespace Eigen;
@@ -198,6 +200,13 @@ bool Camera::step_frame()
 {
     if (is_offline())
     {
+        /* Probes for parameters output. */
+        if (is_probe("camera_parameters_output"))
+            get_probe("camera_parameters_output").set_data(parameters_);
+
+        if (is_probe("dataset_parameters_output"))
+            get_probe("dataset_parameters_output").set_data(dataset_parameters_);
+
         frame_index_++;
 
         if ((frame_index_ + 1) > data_.cols())
@@ -422,6 +431,12 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     else
         depth = float_image;
 
+    /* Probe for depth output. */
+    cv::Mat depth_cv;
+    cv::eigen2cv(depth, depth_cv);
+    if (is_probe("depth_output"))
+        get_probe("depth_output").set_data(depth_cv);
+
     return std::make_pair(true, float_image);
 }
 
@@ -439,6 +454,10 @@ std::pair<bool, Transform<double, 3, Affine>> Camera::pose_offline()
         Transform<double, 3, Affine> pose;
         pose = Translation<double, 3>(position);
         pose.rotate(angle_axis);
+
+        /* Probe for pose output. */
+        if (is_probe("pose_output"))
+            get_probe("pose_output").set_data(pose);
 
         return std::make_pair(true, pose);
     }
@@ -459,6 +478,10 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
     }
     cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
 
+    /* Probe for rgb output. */
+    if (is_probe("rgb_output"))
+        get_probe("rgb_output").set_data(image);
+
     return std::make_pair(true, image);
 }
 
@@ -471,6 +494,10 @@ std::pair<bool, VectorXd> Camera::auxiliary_data_offline()
 
         if (auxiliary_data_size() == 0)
             return std::make_pair(false, VectorXd());
+
+        /* Probe for auxiliary data output. */
+        if (is_probe("auxiliary_data_output"))
+            get_probe("auxiliary_data__output").set_data(data);
 
         return std::make_pair(true, data.segment(dataset_parameters_.standard_data_offset(), auxiliary_data_size()));
     }

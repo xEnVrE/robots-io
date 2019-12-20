@@ -10,6 +10,7 @@
 
 #include <RobotsIO/Camera/CameraParameters.h>
 #include <RobotsIO/Camera/DatasetParameters.h>
+#include <RobotsIO/Utils/ProbeContainer.h>
 
 #include <Eigen/Dense>
 
@@ -27,7 +28,7 @@ namespace RobotsIO {
 }
 
 
-class RobotsIO::Camera::Camera
+class RobotsIO::Camera::Camera : public RobotsIO::Utils::ProbeContainer
 {
 public:
     Camera();
