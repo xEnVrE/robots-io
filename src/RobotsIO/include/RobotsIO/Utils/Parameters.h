@@ -10,6 +10,7 @@
 
 #include <RobotsIO/Utils/ParametersExtractor.h>
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -139,6 +140,11 @@ public:
      * Field keys accessor
      */
     virtual std::vector<std::string> keys() const = 0;
+
+    /**
+     * Pointer to the base class object.
+     */
+    const Parameters* parameters() const;
 
 protected:
     /**

@@ -62,3 +62,9 @@ robots_io_field_setter_impl(int);
 
 
 robots_io_field_setter_impl(bool);
+
+
+const Parameters* Parameters::parameters() const
+{
+    return this;
+}
