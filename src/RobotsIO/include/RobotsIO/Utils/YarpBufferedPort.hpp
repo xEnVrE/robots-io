@@ -32,6 +32,8 @@ public:
 
     void send_data(const T& data);
 
+    T* receive_data(const bool& blocking);
+
 protected:
     yarp::os::Network yarp_;
 
@@ -72,6 +74,13 @@ void RobotsIO::Utils::YarpBufferedPort<T>::send_data(const T& data)
     data_to_be_sent = data;
 
     port_.write();
+}
+
+
+template <class T>
+T* RobotsIO::Utils::YarpBufferedPort<T>::receive_data(const bool& blocking)
+{
+    return port_.read(blocking);
 }
 
 #endif /* ROBOTSIO_YARPBUFFEREDPORT_H */
