@@ -440,7 +440,7 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     if (is_probe("depth_output"))
         get_probe("depth_output").set_data(depth_cv);
 
-    return std::make_pair(true, float_image);
+    return std::make_pair(true, depth);
 }
 
 
