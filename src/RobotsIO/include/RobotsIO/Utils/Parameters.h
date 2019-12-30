@@ -9,8 +9,8 @@
 #define ROBOTSIO_PARAMETERS_H
 
 #include <RobotsIO/Utils/ParametersExtractor.h>
+#include <RobotsIO/Utils/ParametersFiller.h>
 
-#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -48,6 +48,9 @@ namespace RobotsIO {
     { \
         public: \
         void extract_field(const class_name &parameters, RobotsIO::Utils::ParametersExtractor& extractor) const override; \
+        \
+        bool fill_field(class_name &parameters, const RobotsIO::Utils::ParametersFiller& extractor) override; \
+        \
     }; \
     \
     friend class Field_##name;
@@ -61,20 +64,29 @@ namespace RobotsIO {
     { \
         public: \
         void extract_field(const class_name &parameters, RobotsIO::Utils::ParametersExtractor& extractor) const override; \
+        \
+        bool fill_field(class_name &parameters, const RobotsIO::Utils::ParametersFiller& extractor) override; \
+        \
     }; \
     \
     friend class Field_##name;
 
 #define robots_io_accessor(class_name) \
+    class_name(const RobotsIO::Utils::ParametersFiller& filler); \
+    \
     class Field \
     { \
     public: \
         virtual void extract_field(const class_name& parameters, RobotsIO::Utils::ParametersExtractor& extractor) const = 0; \
+        \
+        virtual bool fill_field(class_name& parameters, const RobotsIO::Utils::ParametersFiller& filler) = 0; \
     }; \
     \
     std::unordered_map<std::string, Field*> fields_; \
     \
     void extract_field(const std::string& key, RobotsIO::Utils::ParametersExtractor& extractor) const override; \
+    \
+    bool fill_field(const std::string& key, const RobotsIO::Utils::ParametersFiller& filler) override; \
     \
     std::vector<std::string> keys() const override;
 
@@ -95,6 +107,19 @@ namespace RobotsIO {
     { \
         extractor.extract_field(#name, parameters.name()); \
     } \
+    \
+    bool class_name::Field_##name::fill_field(class_name& parameters, const RobotsIO::Utils::ParametersFiller& filler) \
+    { \
+        bool is_value = false; \
+        type value; \
+        std::tie(is_value, value) = filler.fill_##type(#name); \
+        if (!is_value) \
+            return false; \
+        \
+        parameters.name(value); \
+        \
+        return true; \
+    } \
 
 #define robots_io_declare_std_field_impl(class_name, type, name) \
     std::type class_name::name() const \
@@ -113,11 +138,39 @@ namespace RobotsIO {
     { \
         extractor.extract_field(#name, parameters.name()); \
     } \
+    \
+    bool class_name::Field_##name::fill_field(class_name& parameters, const RobotsIO::Utils::ParametersFiller& filler) \
+    { \
+        bool is_value = false; \
+        std::type value;                                       \
+        std::tie(is_value, value) = filler.fill_##type(#name); \
+        if (!is_value) \
+            return false; \
+        \
+        parameters.name(value); \
+        \
+        return true; \
+    }
 
 #define robots_io_accessor_impl(class_name) \
+    class_name::class_name(const RobotsIO::Utils::ParametersFiller& filler) \
+        : class_name() \
+    { \
+        for (const std::string& key : keys()) \
+            if (!fill_field(key, filler)) \
+            { \
+                throw(std::runtime_error(std::string(#class_name) + "::ctor. Field " + key + " not available in provided filler.")); \
+            } \
+    } \
+    \
     void class_name::extract_field(const std::string& key, RobotsIO::Utils::ParametersExtractor& extractor) const \
     { \
         fields_.at(key)->extract_field(*this, extractor); \
+    } \
+    \
+    bool class_name::fill_field(const std::string& key, const RobotsIO::Utils::ParametersFiller& filler) \
+    { \
+        return fields_.at(key)->fill_field(*this, filler); \
     } \
     \
     std::vector<std::string> class_name::keys() const\
@@ -131,6 +184,11 @@ namespace RobotsIO {
 class RobotsIO::Utils::Parameters
 {
 public:
+    /**
+     * Field filler from name
+     */
+    virtual bool fill_field(const std::string& key, const RobotsIO::Utils::ParametersFiller& filler) = 0;
+
     /**
      * Field extractor from name
      */
