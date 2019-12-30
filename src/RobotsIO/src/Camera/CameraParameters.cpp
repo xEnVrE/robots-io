@@ -31,3 +31,26 @@ robots_io_declare_field_impl(CameraParameters, double, fy);
 
 
 robots_io_declare_field_impl(CameraParameters, bool, initialized);
+
+
+CameraParameters::CameraParameters()
+{
+    /* Set default values. */
+    width(0);
+
+    height(0);
+
+    cx(0);
+
+    cy(0);
+
+    fx(0);
+
+    fy(0);
+
+    initialized(false);
+}
+
+
+CameraParameters::~CameraParameters()
+{}

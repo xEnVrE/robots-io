@@ -20,6 +20,10 @@ namespace RobotsIO {
 class RobotsIO::Camera::CameraParameters : public RobotsIO::Utils::Parameters
 {
 public:
+    CameraParameters();
+
+    virtual ~CameraParameters();
+
     robots_io_accessor(CameraParameters);
 
     robots_io_declare_field(CameraParameters, int, width);
