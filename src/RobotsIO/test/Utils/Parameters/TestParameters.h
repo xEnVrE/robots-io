@@ -11,6 +11,10 @@
 class TestParameters : public RobotsIO::Utils::Parameters
 {
 public:
+    TestParameters();
+
+    virtual ~TestParameters();
+
     robots_io_accessor(TestParameters);
 
     robots_io_declare_field(TestParameters, int, field0);
