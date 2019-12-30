@@ -10,6 +10,7 @@
 #endif
 
 #include <RobotsIO/Camera/Camera.h>
+#include <RobotsIO/Utils/Parameters.h>
 
 #include <opencv2/core/eigen.hpp>
 
@@ -17,6 +18,7 @@
 
 using namespace Eigen;
 using namespace RobotsIO::Camera;
+using namespace RobotsIO::Utils;
 
 
 Camera::Camera()
@@ -202,10 +204,10 @@ bool Camera::step_frame()
     {
         /* Probes for parameters output. */
         if (is_probe("camera_parameters_output"))
-            get_probe("camera_parameters_output").set_data(parameters_);
+            get_probe("camera_parameters_output").set_data(parameters_.parameters());
 
         if (is_probe("dataset_parameters_output"))
-            get_probe("dataset_parameters_output").set_data(dataset_parameters_);
+            get_probe("dataset_parameters_output").set_data(dataset_parameters_.parameters());
 
         frame_index_++;
 
