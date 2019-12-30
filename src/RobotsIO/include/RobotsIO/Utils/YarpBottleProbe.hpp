@@ -8,15 +8,13 @@
 #ifndef ROBOTSIO_YARPBOTTLEPROBE_H
 #define ROBOTSIO_YARPBOTTLEPROBE_H
 
-#include <RobotsIO/Camera/DatasetParameters.h>
-#include <RobotsIO/Camera/CameraParameters.h>
+#include <RobotsIO/Utils/Parameters.h>
 #include <RobotsIO/Utils/Probe.h>
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
 
 #include <yarp/os/Bottle.h>
 
 #include <string>
-#include "RobotsIO/Camera/Camera.h"
 
 namespace RobotsIO {
     namespace Utils {
@@ -75,10 +73,11 @@ yarp::os::Bottle RobotsIO::Utils::YarpBottleProbe<T>::convert_from(const T& data
 
 
 template <>
-yarp::os::Bottle RobotsIO::Utils::YarpBottleProbe<RobotsIO::Camera::CameraParameters>::convert_from(const RobotsIO::Camera::CameraParameters& data);
+void RobotsIO::Utils::YarpBottleProbe<RobotsIO::Utils::Parameters>::on_new_data();
 
 
 template <>
-yarp::os::Bottle RobotsIO::Utils::YarpBottleProbe<RobotsIO::Camera::DatasetParameters>::convert_from(const RobotsIO::Camera::DatasetParameters& data);
+yarp::os::Bottle RobotsIO::Utils::YarpBottleProbe<RobotsIO::Utils::Parameters>::convert_from(const RobotsIO::Utils::Parameters& data);
+
 
 #endif /* ROBOTSIO_YARPBOTTLEPROBE_H */
