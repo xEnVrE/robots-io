@@ -49,8 +49,10 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/Data.h
     include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/ParametersExtractor.h
+    include/RobotsIO/Utils/ParametersFiller.h
     include/RobotsIO/Utils/Probe.h
     include/RobotsIO/Utils/ProbeContainer.h
+    include/RobotsIO/Utils/Transform.h
     include/RobotsIO/Utils/any.h
 )
 
@@ -79,6 +81,8 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
          include/RobotsIO/Utils/Parameters2YarpBottle.h
+         include/RobotsIO/Utils/ParametersYarpPort.h
+         include/RobotsIO/Utils/TransformYarpPort.h
          include/RobotsIO/Utils/YarpBottleProbe.hpp
          include/RobotsIO/Utils/YarpBufferedPort.hpp
          include/RobotsIO/Utils/YarpImageOfProbe.hpp
@@ -87,6 +91,8 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
          src/Utils/Parameters2YarpBottle.cpp
+         src/Utils/ParametersYarpPort.cpp
+         src/Utils/TransformYarpPort.cpp
          src/Utils/YarpBottleProbe.cpp
          src/Utils/YarpVectorOfProbe.cpp
     )
