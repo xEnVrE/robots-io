@@ -6,17 +6,68 @@
  */
 
 #include <RobotsIO/Camera/YarpCamera.h>
+#include <RobotsIO/Utils/ParametersYarpPort.h>
 
 #include <iostream>
+#include <thread>
 
 #include <yarp/cv/Cv.h>
 #include <yarp/eigen/Eigen.h>
+#include <yarp/os/LogStream.h>
+#include <yarp/os/Value.h>
 
 using namespace Eigen;
 using namespace RobotsIO::Camera;
+using namespace RobotsIO::Utils;
 using namespace yarp::cv;
 using namespace yarp::eigen;
+using namespace yarp::os;
 using namespace yarp::sig;
+
+
+YarpCamera::YarpCamera(const std::string& port_prefix)
+{
+    /* Check YARP network. */
+    if (!yarp_.checkNetwork())
+    {
+        throw(std::runtime_error(log_name_ + "::ctor. Error: YARP network is not available."));
+    }
+
+    /* Open rgb input port. */
+    if (!(port_rgb_.open("/" + port_prefix + "/rgb:i")))
+    {
+        std::string err = log_name_ + "::ctor. Error: cannot open rgb input port.";
+        throw(std::runtime_error(err));
+    }
+
+    /* Open depth input port. */
+    if (!(port_depth_.open("/" + port_prefix + "/depth:i")))
+    {
+        std::string err = log_name_ + "::ctor. Error: cannot open depth input port.";
+        throw(std::runtime_error(err));
+    }
+
+    /* Read camera parameters from network. */
+    ParametersYarpPort network_parameters("/" + port_prefix + "/camera_parameters:i");
+    while (!(network_parameters.receive_parameters()))
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        yInfo() << log_name_ + "::ctor. Waiting for camera parameters on port " + "/" + port_prefix + "/dataset/camera_parameters:i";
+    }
+    parameters_ = CameraParameters(network_parameters);
+
+    Camera::initialize();
+
+    /* Log parameters. */
+    std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
+    std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
+    std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
+    std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
+    std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
+    std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
+}
 
 
 YarpCamera::YarpCamera
