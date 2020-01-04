@@ -171,14 +171,14 @@ iCubCamera::iCubCamera
         }
 
     /* Open rgb input port. */
-    if (!(port_rgb_.open("/" + port_prefix + "/rgbImage:i")))
+    if (!(port_rgb_.open("/" + port_prefix + "/rgb:i")))
     {
         std::string err = log_name_ + "::ctor. Error: cannot open rgb input port.";
         throw(std::runtime_error(err));
     }
 
     /* Open depth input port. */
-    if (!(port_depth_.open("/" + port_prefix + "/depthImage:i")))
+    if (!(port_depth_.open("/" + port_prefix + "/depth:i")))
     {
         std::string err = log_name_ + "::ctor. Error: cannot open depth input port.";
         throw(std::runtime_error(err));
