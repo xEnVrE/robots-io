@@ -25,7 +25,7 @@ using namespace yarp::os;
 using namespace yarp::sig;
 
 
-YarpCamera::YarpCamera(const std::string& port_prefix)
+YarpCamera::YarpCamera(const std::string& port_prefix, const bool& network_bootstrap)
 {
     /* Check YARP network. */
     if (!yarp_.checkNetwork())
@@ -47,26 +47,29 @@ YarpCamera::YarpCamera(const std::string& port_prefix)
         throw(std::runtime_error(err));
     }
 
-    /* Read camera parameters from network. */
-    ParametersYarpPort network_parameters("/" + port_prefix + "/camera_parameters:i");
-    while (!(network_parameters.receive_parameters()))
+    if (network_bootstrap)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        /* Read camera parameters from network. */
+        ParametersYarpPort network_parameters("/" + port_prefix + "/camera_parameters:i");
+        while (!(network_parameters.receive_parameters()))
+        {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        yInfo() << log_name_ + "::ctor. Waiting for camera parameters on port " + "/" + port_prefix + "/dataset/camera_parameters:i";
+            yInfo() << log_name_ + "::ctor. Waiting for camera parameters on port " + "/" + port_prefix + "/dataset/camera_parameters:i";
+        }
+        parameters_ = CameraParameters(network_parameters);
+
+        Camera::initialize();
+
+        /* Log parameters. */
+        std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
+        std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
+        std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
+        std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
+        std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
+        std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
+        std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
     }
-    parameters_ = CameraParameters(network_parameters);
-
-    Camera::initialize();
-
-    /* Log parameters. */
-    std::cout << log_name_ + "::ctor. Camera parameters:" << std::endl;
-    std::cout << log_name_ + "    - width: " << parameters_.width() << std::endl;
-    std::cout << log_name_ + "    - height: " << parameters_.height() << std::endl;
-    std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
-    std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
 }
 
 
