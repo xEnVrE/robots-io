@@ -76,6 +76,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
 
 if (USE_YARP)
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
+         include/RobotsIO/Camera/RealsenseCameraYarp.h
          include/RobotsIO/Camera/YarpCamera.h
     )
 
@@ -99,6 +100,7 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_CAMERA
          src/Camera/YarpCamera.cpp
+         src/Camera/RealsenseCameraYarp.cpp
     )
 endif()
 
