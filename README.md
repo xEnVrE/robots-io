@@ -42,11 +42,11 @@ Implemented classes are:
   depth and rgb from YARP ports and the camera pose from `IGazeControl` or `IEncoders` or raw YARP ports. It also loads the camera parameters from the `IGazeControl` interface, if available;
 - `iCubCameraRelative`, similar to `iCubCamera` but representing the right
   camera with pose expressed relative to the left camera. Useful for experiments dealing with the stereo setup of the robot only;
-- `iCubCameraDepth`, produces a depth map starting from stereo images and the poses of iCub eyes. It uses `OpenCV SGBM`.
-- `YarpCamera`, class inheriting from `Camera` and supporting depth and rgb from raw YARP ports and parameters from the class constructor.
+- `iCubCameraDepth`, produces a depth map starting from stereo images and the poses of iCub eyes. It uses `OpenCV SGBM`;
+- `YarpCamera`, class inheriting from `Camera` and supporting depth and rgb from raw YARP ports and parameters from the class constructor;
+- `RealsenseCameraYarp`, class inheriting from `YarpCamera` and supporting depth and rgb from raw YARP ports and parameters from a `yarpdev` enabled `Realsense`.
 
 To be done:
-- `RealSense` (using YARP);
 - `RealSense` (using ROS);
 - `R1Camera` inheriting from `RealSense` (YARP version)
 - an abstract `DepthCamera` class to produce a depth map from stereo images using a `StereoMatcher` class. Possible implementation of `StereoMatcher` include `OpenCV SGBM` (CPU and CUDA version) and the `NVIDIA Optical Flow SDK`.
@@ -80,7 +80,7 @@ To be done:
 ### Probes
 
 In namespace `RobotsIO::Utils`, the main classes are `ProbeContainer`
-and `Probe`. The idea behind a `ProbeContainer` is to provide any class 
+and `Probe`. The idea behind a `ProbeContainer` is to provide any class
 with the ability to store some *probes* in it and retrieve them given
 their name. A `Probe` is something that can be used to *send* data somewhere.
 
