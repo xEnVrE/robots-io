@@ -34,6 +34,8 @@ public:
 
     T* receive_data(const bool& blocking);
 
+    std::size_t flush();
+
 protected:
     yarp::os::Network yarp_;
 
@@ -81,6 +83,17 @@ template <class T>
 T* RobotsIO::Utils::YarpBufferedPort<T>::receive_data(const bool& blocking)
 {
     return port_.read(blocking);
+}
+
+
+template <class T>
+std::size_t RobotsIO::Utils::YarpBufferedPort<T>::flush()
+{
+    std::size_t pending_reads = port_.getPendingReads();
+    for (std::size_t i = 0; i < pending_reads; i++)
+        port_.read(false);
+
+    return pending_reads;
 }
 
 #endif /* ROBOTSIO_YARPBUFFEREDPORT_H */
