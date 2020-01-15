@@ -165,7 +165,7 @@ if (USE_OPENMP)
         set_property(TARGET OpenMP::OpenMP_CXX
                      PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
     endif()
-    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC OpenMP::OpenMP_CXX)
+    target_link_libraries(${LIBRARY_TARGET_NAME} PRIVATE OpenMP::OpenMP_CXX)
 endif()
 
 if (USE_YARP)
