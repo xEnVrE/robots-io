@@ -23,9 +23,12 @@ class RobotsIO::Camera::RealsenseCameraYarp : public RobotsIO::Camera::YarpCamer
 public:
     RealsenseCameraYarp(const std::string& port_prefix);
 
+    RealsenseCameraYarp(const std::string& port_prefix, const std::size_t& width, const std::size_t& height);
+
     ~RealsenseCameraYarp();
 
 private:
+    RealsenseCameraYarp(const std::string& port_prefix, const bool& enforce_resolution = false, const std::size_t& width = -1, const std::size_t& height = -1);
     /**
      * Log name to be used in messages printed by the class.
      */

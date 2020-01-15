@@ -16,7 +16,17 @@ using namespace yarp::dev;
 using namespace yarp::os;
 
 
+RealsenseCameraYarp::RealsenseCameraYarp(const std::string& port_prefix, const std::size_t& width, const std::size_t& height) :
+    RealsenseCameraYarp(port_prefix, true, width, height)
+{}
+
+
 RealsenseCameraYarp::RealsenseCameraYarp(const std::string& port_prefix) :
+    RealsenseCameraYarp(port_prefix, false)
+{}
+
+
+RealsenseCameraYarp::RealsenseCameraYarp(const std::string& port_prefix, const bool& enforce_resolution, const std::size_t& width, const std::size_t& height) :
     YarpCamera(port_prefix)
 {
     /* Extract camera parameters. */
@@ -37,12 +47,26 @@ RealsenseCameraYarp::RealsenseCameraYarp(const std::string& port_prefix) :
         Property camera_intrinsics;
         interface->getRgbIntrinsicParam(camera_intrinsics);
 
-        parameters_.width(interface->getRgbWidth());
-        parameters_.height(interface->getRgbHeight());
-        parameters_.fx(camera_intrinsics.find("focalLengthX").asFloat64());
-        parameters_.fy(camera_intrinsics.find("focalLengthY").asFloat64());
-        parameters_.cx(camera_intrinsics.find("principalPointX").asFloat64());
-        parameters_.cy(camera_intrinsics.find("principalPointY").asFloat64());
+        std::size_t camera_width = interface->getRgbWidth();
+        std::size_t camera_height = interface->getRgbHeight();
+
+        double scaler_x = 1.0;
+        double scaler_y = 1.0;
+        if (enforce_resolution)
+        {
+            if ((width > camera_width) || (height > camera_height))
+                throw(std::runtime_error(log_name_ + "::ctor. Cannot enforce a resolution higher than the source resolution"));
+
+            scaler_x = width / camera_width;
+            scaler_y = height / camera_height;
+        }
+
+        parameters_.width(camera_width * scaler_x);
+        parameters_.height(camera_height * scaler_y);
+        parameters_.fx(camera_intrinsics.find("focalLengthX").asFloat64() * scaler_x);
+        parameters_.fy(camera_intrinsics.find("focalLengthY").asFloat64() * scaler_y);
+        parameters_.cx(camera_intrinsics.find("principalPointX").asFloat64() * scaler_x);
+        parameters_.cy(camera_intrinsics.find("principalPointY").asFloat64() * scaler_y);
         parameters_.initialized(true);
 
         driver.close();
