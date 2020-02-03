@@ -10,6 +10,7 @@
 
 #include <yarp/os/BufferedPort.h>
 #include <yarp/os/Network.h>
+#include <yarp/os/Stamp.h>
 
 #include <string>
 #include <unordered_map>
@@ -33,6 +34,8 @@ public:
     void send_data(const T& data);
 
     T* receive_data(const bool& blocking);
+
+    double time_stamp();
 
     std::size_t flush();
 
@@ -83,6 +86,16 @@ template <class T>
 T* RobotsIO::Utils::YarpBufferedPort<T>::receive_data(const bool& blocking)
 {
     return port_.read(blocking);
+}
+
+
+template <class T>
+double RobotsIO::Utils::YarpBufferedPort<T>::time_stamp()
+{
+    yarp::os::Stamp stamp;
+    port_.getEnvelope(stamp);
+
+    return stamp.getTime();
 }
 
 
