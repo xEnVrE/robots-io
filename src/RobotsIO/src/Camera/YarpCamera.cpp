@@ -68,7 +68,7 @@ YarpCamera::YarpCamera(const std::string& port_prefix, const bool& network_boots
         std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
         std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
         std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
-        std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
+        std::cout << log_name_ + "    - cy: " << parameters_.cy() << std::endl;
     }
 }
 
@@ -122,7 +122,7 @@ YarpCamera::YarpCamera
     std::cout << log_name_ + "    - fx: " << parameters_.fx() << std::endl;
     std::cout << log_name_ + "    - fy: " << parameters_.fy() << std::endl;
     std::cout << log_name_ + "    - cx: " << parameters_.cx() << std::endl;
-    std::cout << log_name_ + "    - cx: " << parameters_.cy() << std::endl;
+    std::cout << log_name_ + "    - cy: " << parameters_.cy() << std::endl;
 }
 
 YarpCamera::YarpCamera
