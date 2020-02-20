@@ -19,6 +19,13 @@ namespace RobotsIO {
 class RobotsIO::Utils::SpatialVelocity
 {
 public:
+    /**
+     * @param blocking, whether the reading has to be blocking or not
+     * @return true if the reading was successful and false otherwise
+     *         the position of a point on the screw axis in the camera frame
+     *         the velocity of a point on the screw axis in the camera frame
+     *         the angular velocity expressed in the camera frame
+     */
     virtual std::tuple<bool, Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d, double> velocity(const bool& blocking = false) = 0;
 };
 
