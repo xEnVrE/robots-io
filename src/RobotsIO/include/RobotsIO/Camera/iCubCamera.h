@@ -58,6 +58,8 @@ public:
 
     std::pair<bool, cv::Mat> rgb(const bool& blocking) override;
 
+    std::pair<bool, double> time_stamp() override;
+
     /**
      * Auxiliary data.
      */
@@ -132,6 +134,14 @@ private:
      */
 
     bool load_encoders_data_ = false;
+
+    /**
+     * Timestamp.
+     */
+
+    double time_stamp_;
+
+    bool is_time_stamp_ = false;
 
     /**
      * Log name to be used in messages printed by the class.

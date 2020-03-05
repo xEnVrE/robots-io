@@ -48,6 +48,8 @@ public:
 
     std::pair<bool, Eigen::MatrixXf> depth(const bool& blocking) override;
 
+    std::pair<bool, double> time_stamp() override;
+
 private:
     yarp::os::Network yarp_;
 
@@ -58,6 +60,14 @@ private:
     yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelFloat>> port_depth_;
 
     yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb>> port_rgb_;
+
+    /**
+     * Timestamp.
+     */
+
+    double time_stamp_;
+
+    bool is_time_stamp_ = false;
 
     /**
      * Log name to be used in messages printed by the class.

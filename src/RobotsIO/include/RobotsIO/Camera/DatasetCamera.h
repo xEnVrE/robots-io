@@ -36,6 +36,8 @@ public:
 
     virtual std::pair<bool, cv::Mat> rgb(const bool& blocking) override;
 
+    virtual std::pair<bool, double> time_stamp() override;
+
 private:
     const std::string log_name_ = "DatasetCamera";
 };

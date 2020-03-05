@@ -345,9 +345,23 @@ std::pair<bool, cv::Mat> iCubCamera::rgb(const bool& blocking)
     if (image_in == nullptr)
         return std::make_pair(false, cv::Mat());
 
+    Stamp stamp;
+    port_rgb_.getEnvelope(stamp);
+    time_stamp_ = stamp.getTime();
+    is_time_stamp_ = true;
+
     cv::Mat image = yarp::cv::toCvMat(*image_in);
 
     return std::make_pair(true, image);
+}
+
+
+std::pair<bool, double> iCubCamera::time_stamp()
+{
+    if (is_offline())
+        return Camera::time_stamp_offline();
+
+    return std::make_pair(is_time_stamp_, time_stamp_);
 }
 
 

@@ -64,3 +64,9 @@ std::pair<bool, cv::Mat> DatasetCamera::rgb(const bool& blocking)
 {
     return rgb_offline();
 }
+
+
+std::pair<bool, double> DatasetCamera::time_stamp()
+{
+    return time_stamp_offline();
+}

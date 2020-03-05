@@ -59,6 +59,8 @@ public:
 
     virtual std::pair<bool, cv::Mat> rgb(const bool& blocking) = 0;
 
+    virtual std::pair<bool, double> time_stamp();
+
     /**
      * Auxiliary data.
      */
@@ -120,6 +122,8 @@ protected:
     virtual std::pair<bool, Eigen::Transform<double, 3, Eigen::Affine>> pose_offline();
 
     virtual std::pair<bool, cv::Mat> rgb_offline();
+
+    virtual std::pair<bool, double> time_stamp_offline();
 
     /**
      * Auxiliary data for offline playback.

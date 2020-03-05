@@ -5,6 +5,7 @@
  * GPL-2+ license. See the accompanying LICENSE file for details.
  */
 
+#include <utility>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
@@ -157,6 +158,12 @@ std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
         cloud.topRows<3>() = camera_pose * cloud.topRows<3>().colwise().homogeneous();
 
     return std::make_pair(true, cloud);
+}
+
+
+std::pair<bool, double> Camera::time_stamp()
+{
+    return std::make_pair(false, 0.0);
 }
 
 
@@ -486,6 +493,19 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
         get_probe("rgb_output").set_data(image);
 
     return std::make_pair(true, image);
+}
+
+
+std::pair<bool, double> Camera::time_stamp_offline()
+{
+    if (dataset_parameters_.data_available())
+    {
+        VectorXd data = data_.col(frame_index_);
+
+        return std::make_pair(true, data(0));
+    }
+
+    return std::make_pair(false, 0.0);
 }
 
 

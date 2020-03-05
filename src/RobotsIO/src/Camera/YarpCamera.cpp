@@ -14,6 +14,7 @@
 #include <yarp/cv/Cv.h>
 #include <yarp/eigen/Eigen.h>
 #include <yarp/os/LogStream.h>
+#include <yarp/os/Stamp.h>
 #include <yarp/os/Value.h>
 
 using namespace Eigen;
@@ -199,8 +200,19 @@ std::pair<bool, cv::Mat> YarpCamera::rgb(const bool& blocking)
     if (image_in == nullptr)
         return std::make_pair(false, cv::Mat());
 
+    Stamp stamp;
+    port_rgb_.getEnvelope(stamp);
+    time_stamp_ = stamp.getTime();
+    is_time_stamp_ = true;
+
     cv::Mat image = yarp::cv::toCvMat(*image_in);
     cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
 
     return std::make_pair(true, image);
+}
+
+
+std::pair<bool, double> YarpCamera::time_stamp()
+{
+    return std::make_pair(is_time_stamp_, time_stamp_);
 }
