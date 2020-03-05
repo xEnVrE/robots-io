@@ -31,7 +31,7 @@ robots_io_declare_std_field_impl(DatasetParameters, size_t, index_offset);
 
 robots_io_declare_std_field_impl(DatasetParameters, size_t, standard_data_offset);
 
-robots_io_declare_field_impl(DatasetParameters, bool, pose_available);
+robots_io_declare_field_impl(DatasetParameters, bool, data_available);
 
 
 DatasetParameters::DatasetParameters()
@@ -55,7 +55,7 @@ DatasetParameters::DatasetParameters()
 
     standard_data_offset(8);
 
-    pose_available(false);
+    data_available(false);
 }
 
 
