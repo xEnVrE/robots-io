@@ -27,23 +27,27 @@ SpatialVelocityYarpPort:: ~SpatialVelocityYarpPort()
 
 std::tuple<bool, Vector3d, Vector3d, Vector3d, double> SpatialVelocityYarpPort::velocity(const bool& blocking)
 {
-    Vector* transform_yarp = receive_data(blocking);
+    /* Data reception .*/
+    Vector* velocity_yarp = receive_data(blocking);
+    if (velocity_yarp == nullptr)
+        return std::make_tuple(false, Vector3d(), Vector3d(), Vector3d(), 0.0);
 
+    /* Elapsed time. */
     double elapsed = 0.0;
-
-    if (transform_yarp == nullptr)
-        return std::make_tuple(false, Vector3d(), Vector3d(), Vector3d(), elapsed);
-
     auto now = std::chrono::steady_clock::now();
     if (last_time_initialized_)
         elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time_).count() / 1000.0;
-
     last_time_ = now;
     last_time_initialized_ = true;
 
-    Vector3d screw_axis = toEigen(*transform_yarp).head<3>();
-    Vector3d linear_velocity = toEigen(*transform_yarp).segment<3>(3);
-    Vector3d angular_velocity = toEigen(*transform_yarp).tail<3>();
+    /* Vector composition. */
+    VectorXd velocity = toEigen(*velocity_yarp);
+    Vector3d screw_axis = velocity.head<3>();
+    Vector3d screw_direction = velocity.segment<3>(3);
+    double scalar_linear_velocity = velocity(6);
+    double scalar_angular_velocity = velocity(7);
+    Vector3d linear_velocity = scalar_linear_velocity * screw_direction;
+    Vector3d angular_velocity = scalar_angular_velocity * screw_direction;
 
     return std::make_tuple(true, screw_axis, linear_velocity, angular_velocity, elapsed);
 }
