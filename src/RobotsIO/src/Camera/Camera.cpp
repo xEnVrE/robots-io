@@ -30,7 +30,7 @@ Camera::~Camera()
 {}
 
 
-bool Camera::status()
+bool Camera::status() const
 {
     return status_;
 }
@@ -54,7 +54,6 @@ std::pair<bool, MatrixXd> Camera::deprojection_matrix() const
 
     return std::make_pair(true, deprojection_matrix_);
 }
-
 
 
 std::pair<bool, CameraParameters> Camera::parameters() const
@@ -161,7 +160,13 @@ std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
 }
 
 
-std::pair<bool, double> Camera::time_stamp()
+std::pair<bool, double> Camera::time_stamp_rgb() const
+{
+    return std::make_pair(false, 0.0);
+}
+
+
+std::pair<bool, double> Camera::time_stamp_depth() const
 {
     return std::make_pair(false, 0.0);
 }
@@ -196,7 +201,7 @@ bool Camera::is_offline() const
 
 bool Camera::set_frame_index(const std::int32_t& index)
 {
-    if (int(index) < 0)
+    if (int(index - dataset_parameters_.index_offset()) < 0)
         frame_index_ = -1;
     else
         frame_index_ = index - dataset_parameters_.index_offset();
@@ -218,7 +223,7 @@ bool Camera::step_frame()
 
         frame_index_++;
 
-        if ((frame_index_ + 1) > data_.cols())
+        if ((frame_index_ + 1) > number_frames_)
         {
             status_ = false;
 
@@ -397,9 +402,11 @@ Camera::Camera
 
 std::pair<bool, MatrixXf> Camera::depth_offline()
 {
-    std::FILE* in;
-    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.depth_prefix() + compose_index(frame_index()) + "." + dataset_parameters_.depth_format();
+    if (!status())
+        return std::make_pair(false, MatrixXf());
 
+    std::FILE* in;
+    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.depth_prefix() + compose_index(frame_index() + depth_offset_) + "." + dataset_parameters_.depth_format();
     if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
     {
         std::cout << log_name_ << "::depth_offline. Error: cannot load depth frame " + file_name << std::endl;
@@ -424,17 +431,20 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
 
     /* Resize image. */
     MatrixXf depth;
-    if ((float_image.cols() > parameters_.width()) && (float_image.rows() > parameters_.height()))
+    if ((parameters_.width() != 0) && (parameters_.height() != 0))
     {
-        if ((float_image.cols() % parameters_.width() == 0) && ((float_image.rows() % parameters_.height() == 0)))
+        if ((float_image.cols() > parameters_.width()) && (float_image.rows() > parameters_.height()))
         {
-            std::size_t ratio = float_image.cols() / parameters_.width();
-            if (ratio == (float_image.rows() / parameters_.height()))
+            if ((float_image.cols() % parameters_.width() == 0) && ((float_image.rows() % parameters_.height() == 0)))
             {
-                depth.resize(parameters_.height(), parameters_.width());
-                for (std::size_t i = 0; i < float_image.rows(); i += ratio)
-                    for (std::size_t j = 0; j < float_image.cols(); j += ratio)
-                        depth(i / ratio, j / ratio) = float_image(i, j);
+                std::size_t ratio = float_image.cols() / parameters_.width();
+                if (ratio == (float_image.rows() / parameters_.height()))
+                {
+                    depth.resize(parameters_.height(), parameters_.width());
+                    for (std::size_t i = 0; i < float_image.rows(); i += ratio)
+                        for (std::size_t j = 0; j < float_image.cols(); j += ratio)
+                            depth(i / ratio, j / ratio) = float_image(i, j);
+                }
             }
         }
     }
@@ -453,12 +463,15 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
 
 std::pair<bool, Transform<double, 3, Affine>> Camera::pose_offline()
 {
+    if (!status())
+        return std::make_pair(false, Transform<double, 3, Affine>());
+
     if (dataset_parameters_.data_available())
     {
         VectorXd data = data_.col(frame_index_);
 
-        Vector3d position = data.segment<3>(1);
-        VectorXd axis_angle = data.segment<4>(1 + 3);
+        Vector3d position = data.segment<3>(2);
+        VectorXd axis_angle = data.segment<4>(2 + 3);
         AngleAxisd angle_axis(axis_angle(3), axis_angle.head<3>());
 
         Transform<double, 3, Affine> pose;
@@ -478,7 +491,10 @@ std::pair<bool, Transform<double, 3, Affine>> Camera::pose_offline()
 
 std::pair<bool, cv::Mat> Camera::rgb_offline()
 {
-    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.rgb_prefix() + compose_index(frame_index()) + "." + dataset_parameters_.rgb_format();
+    if (!status())
+        return std::make_pair(false, cv::Mat());
+
+    const std::string file_name = dataset_parameters_.path() + dataset_parameters_.rgb_prefix() + compose_index(frame_index() + rgb_offset_) + "." + dataset_parameters_.rgb_format();
     cv::Mat image = cv::imread(file_name, cv::IMREAD_COLOR);
 
     if (image.empty())
@@ -486,7 +502,8 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
         std::cout << log_name_ << "::rgb_offline. Warning: frame " << file_name << " is empty!" << std::endl;
         return std::make_pair(false, cv::Mat());
     }
-    cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
+    if ((parameters_.width() != 0) && (parameters_.height() != 0))
+        cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
 
     /* Probe for rgb output. */
     if (is_probe("rgb_output"))
@@ -496,11 +513,11 @@ std::pair<bool, cv::Mat> Camera::rgb_offline()
 }
 
 
-std::pair<bool, double> Camera::time_stamp_offline()
+std::pair<bool, double> Camera::time_stamp_rgb_offline() const
 {
-    if (dataset_parameters_.data_available())
+    if (status() && dataset_parameters_.data_available())
     {
-        VectorXd data = data_.col(frame_index_);
+        VectorXd data = data_.col(frame_index_ + rgb_offset_);
 
         return std::make_pair(true, data(0));
     }
@@ -509,9 +526,22 @@ std::pair<bool, double> Camera::time_stamp_offline()
 }
 
 
+std::pair<bool, double> Camera::time_stamp_depth_offline() const
+{
+    if (status() && dataset_parameters_.data_available())
+    {
+        VectorXd data = data_.col(frame_index_ + depth_offset_);
+
+        return std::make_pair(true, data(1));
+    }
+
+    return std::make_pair(false, 0.0);
+}
+
+
 std::pair<bool, VectorXd> Camera::auxiliary_data_offline()
 {
-    if (dataset_parameters_.data_available())
+    if (status() && dataset_parameters_.data_available())
     {
         VectorXd data = data_.col(frame_index_);
 
@@ -605,6 +635,37 @@ std::pair<bool, MatrixXd> Camera::load_data()
     }
 
     istrm.close();
+
+    number_frames_ = data.cols();
+
+    if (dataset_parameters_.data_available())
+    {
+        // If timestamp data is available, try to synchronize rgb and depth frames.
+        double timestamp_rgb_0 = data.col(0)(0);
+        VectorXd timestamps_depth = data.row(1);
+        VectorXd delta_rgb_depth = (timestamps_depth.array() - timestamp_rgb_0).abs();
+        delta_rgb_depth.minCoeff(&depth_offset_);
+
+        double timestamp_depth_0 = data.col(0)(1);
+        VectorXd timestamps_rgb = data.row(0);
+        VectorXd delta_depth_rgb = (timestamps_rgb.array() - timestamp_depth_0).abs();
+        delta_depth_rgb.minCoeff(&rgb_offset_);
+
+        if (depth_offset_ > rgb_offset_)
+        {
+            rgb_offset_ = 0;
+            number_frames_ -= depth_offset_;
+            std::cout << log_name_ + "::read_data_from_file. RGB stream is " << depth_offset_ << " frames ahead of the depth stream.";
+        }
+        else
+        {
+            depth_offset_ = 0;
+            number_frames_ -= rgb_offset_;
+            std::cout << log_name_ + "::read_data_from_file. Depth stream is " << rgb_offset_ << " frames ahead of the RGB stream.";
+        }
+
+        std::cout << " Streams have been re-synchronized." << std::endl;
+    }
 
     return std::make_pair(true, data);
 }

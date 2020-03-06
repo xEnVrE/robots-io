@@ -280,6 +280,11 @@ std::pair<bool, MatrixXf> iCubCamera::depth(const bool& blocking)
     if (image_in == nullptr)
         return std::make_pair(false, MatrixXf());
 
+    Stamp stamp;
+    port_depth_.getEnvelope(stamp);
+    time_stamp_depth_ = stamp.getTime();
+    is_time_stamp_depth_ = true;
+
     cv::Mat image = yarp::cv::toCvMat(*image_in);
     Map<Eigen::Matrix<float, Dynamic, Dynamic, Eigen::RowMajor>> depth(image.ptr<float>(), image.rows, image.cols);
 
@@ -347,8 +352,8 @@ std::pair<bool, cv::Mat> iCubCamera::rgb(const bool& blocking)
 
     Stamp stamp;
     port_rgb_.getEnvelope(stamp);
-    time_stamp_ = stamp.getTime();
-    is_time_stamp_ = true;
+    time_stamp_rgb_ = stamp.getTime();
+    is_time_stamp_rgb_ = true;
 
     cv::Mat image = yarp::cv::toCvMat(*image_in);
 
@@ -356,12 +361,21 @@ std::pair<bool, cv::Mat> iCubCamera::rgb(const bool& blocking)
 }
 
 
-std::pair<bool, double> iCubCamera::time_stamp()
+std::pair<bool, double> iCubCamera::time_stamp_rgb() const
 {
     if (is_offline())
-        return Camera::time_stamp_offline();
+        return Camera::time_stamp_rgb_offline();
 
-    return std::make_pair(is_time_stamp_, time_stamp_);
+    return std::make_pair(is_time_stamp_rgb_, time_stamp_rgb_);
+}
+
+
+std::pair<bool, double> iCubCamera::time_stamp_depth() const
+{
+    if (is_offline())
+        return Camera::time_stamp_depth_offline();
+
+    return std::make_pair(is_time_stamp_depth_, time_stamp_depth_);
 }
 
 

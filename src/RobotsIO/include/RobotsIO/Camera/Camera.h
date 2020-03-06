@@ -35,7 +35,7 @@ public:
 
     virtual ~Camera();
 
-    virtual bool status();
+    virtual bool status() const;
 
     virtual bool reset();
 
@@ -59,7 +59,9 @@ public:
 
     virtual std::pair<bool, cv::Mat> rgb(const bool& blocking) = 0;
 
-    virtual std::pair<bool, double> time_stamp();
+    virtual std::pair<bool, double> time_stamp_rgb() const;
+
+    virtual std::pair<bool, double> time_stamp_depth() const;
 
     /**
      * Auxiliary data.
@@ -123,7 +125,9 @@ protected:
 
     virtual std::pair<bool, cv::Mat> rgb_offline();
 
-    virtual std::pair<bool, double> time_stamp_offline();
+    virtual std::pair<bool, double> time_stamp_rgb_offline() const;
+
+    virtual std::pair<bool, double> time_stamp_depth_offline() const;
 
     /**
      * Auxiliary data for offline playback.
@@ -146,6 +150,12 @@ protected:
     Eigen::MatrixXd data_;
 
     std::int32_t frame_index_ = -1;
+
+    std::size_t rgb_offset_ = 0;
+
+    std::size_t depth_offset_ = 0;
+
+    std::size_t number_frames_;
 
     /*
      * Data logging.

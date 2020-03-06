@@ -61,7 +61,7 @@ iCubCameraRelative::~iCubCameraRelative()
 {}
 
 
-bool iCubCameraRelative::status()
+bool iCubCameraRelative::status() const
 {
     return iCubCamera::status() && get_relative_camera().status();
 }

@@ -58,7 +58,9 @@ public:
 
     std::pair<bool, cv::Mat> rgb(const bool& blocking) override;
 
-    std::pair<bool, double> time_stamp() override;
+    std::pair<bool, double> time_stamp_rgb() const override;
+
+    std::pair<bool, double> time_stamp_depth() const override;
 
     /**
      * Auxiliary data.
@@ -139,9 +141,13 @@ private:
      * Timestamp.
      */
 
-    double time_stamp_;
+    double time_stamp_rgb_;
 
-    bool is_time_stamp_ = false;
+    double time_stamp_depth_;
+
+    bool is_time_stamp_rgb_ = false;
+
+    bool is_time_stamp_depth_ = false;
 
     /**
      * Log name to be used in messages printed by the class.

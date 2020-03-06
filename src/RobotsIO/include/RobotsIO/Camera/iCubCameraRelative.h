@@ -27,7 +27,7 @@ public:
 
     ~iCubCameraRelative();
 
-    virtual bool status() override;
+    virtual bool status() const override;
 
     /**
      * RGB-D and pose.

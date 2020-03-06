@@ -159,6 +159,11 @@ std::pair<bool, MatrixXf> YarpCamera::depth(const bool& blocking)
     if (image_in == nullptr)
         return std::make_pair(false, MatrixXf());
 
+    Stamp stamp;
+    port_depth_.getEnvelope(stamp);
+    time_stamp_depth_ = stamp.getTime();
+    is_time_stamp_depth_ = true;
+
     cv::Mat image = yarp::cv::toCvMat(*image_in);
     Map<Eigen::Matrix<float, Dynamic, Dynamic, Eigen::RowMajor>> float_image(image.ptr<float>(), image.rows, image.cols);
 
@@ -202,8 +207,8 @@ std::pair<bool, cv::Mat> YarpCamera::rgb(const bool& blocking)
 
     Stamp stamp;
     port_rgb_.getEnvelope(stamp);
-    time_stamp_ = stamp.getTime();
-    is_time_stamp_ = true;
+    time_stamp_rgb_ = stamp.getTime();
+    is_time_stamp_rgb_ = true;
 
     cv::Mat image = yarp::cv::toCvMat(*image_in);
     cv::resize(image, image, cv::Size(parameters_.width(), parameters_.height()));
@@ -212,7 +217,13 @@ std::pair<bool, cv::Mat> YarpCamera::rgb(const bool& blocking)
 }
 
 
-std::pair<bool, double> YarpCamera::time_stamp()
+std::pair<bool, double> YarpCamera::time_stamp_rgb() const
 {
-    return std::make_pair(is_time_stamp_, time_stamp_);
+    return std::make_pair(is_time_stamp_rgb_, time_stamp_rgb_);
+}
+
+
+std::pair<bool, double> YarpCamera::time_stamp_depth() const
+{
+    return std::make_pair(is_time_stamp_depth_, time_stamp_depth_);
 }
