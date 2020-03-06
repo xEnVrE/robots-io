@@ -32,7 +32,7 @@ public:
     std::tuple<bool, Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d, double> velocity(const bool& blocking = false) override;
 
 private:
-    std::chrono::high_resolution_clock::time_point last_time_;
+    std::chrono::steady_clock::time_point last_time_;
 
     bool last_time_initialized_ = false;
 };

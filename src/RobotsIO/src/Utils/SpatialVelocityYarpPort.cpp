@@ -24,7 +24,7 @@ SpatialVelocityYarpPort::SpatialVelocityYarpPort(const std::string& port_name) :
 SpatialVelocityYarpPort:: ~SpatialVelocityYarpPort()
 {}
 
-#include <iostream>
+
 std::tuple<bool, Vector3d, Vector3d, Vector3d, double> SpatialVelocityYarpPort::velocity(const bool& blocking)
 {
     Vector* transform_yarp = receive_data(blocking);
@@ -34,10 +34,11 @@ std::tuple<bool, Vector3d, Vector3d, Vector3d, double> SpatialVelocityYarpPort::
     if (transform_yarp == nullptr)
         return std::make_tuple(false, Vector3d(), Vector3d(), Vector3d(), elapsed);
 
+    auto now = std::chrono::steady_clock::now();
     if (last_time_initialized_)
-        elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - last_time_).count() / 1000.0;
+        elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_time_).count() / 1000.0;
 
-    last_time_ = std::chrono::high_resolution_clock::now();
+    last_time_ = now;
     last_time_initialized_ = true;
 
     Vector3d screw_axis = toEigen(*transform_yarp).head<3>();
