@@ -416,12 +416,18 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     /* Load image size .*/
     std::size_t dims[2];
     if (std::fread(dims, sizeof(dims), 1, in) != 1)
+    {
+        std::cout << log_name_ << "::depth_offline. Error: cannot load depth size for frame " + file_name << std::endl;
         return std::make_pair(false, MatrixXf());
+    }
 
     /* Load image. */
     float float_image_raw[dims[0] * dims[1]];
     if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
+    {
+        std::cout << log_name_ << "::depth_offline. Error: cannot load depth data for frame " + file_name << std::endl;
         return std::make_pair(false, MatrixXf());
+    }
 
     std::fclose(in);
 
