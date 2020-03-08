@@ -437,6 +437,7 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
 
     /* Resize image. */
     MatrixXf depth;
+    bool is_resize = false;
     if ((parameters_.width() != 0) && (parameters_.height() != 0))
     {
         if ((float_image.cols() > parameters_.width()) && (float_image.rows() > parameters_.height()))
@@ -450,11 +451,14 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
                     for (std::size_t i = 0; i < float_image.rows(); i += ratio)
                         for (std::size_t j = 0; j < float_image.cols(); j += ratio)
                             depth(i / ratio, j / ratio) = float_image(i, j);
+
+                    is_resize = true;
                 }
             }
         }
     }
-    else
+
+    if (!is_resize)
         depth = float_image;
 
     /* Probe for depth output. */
