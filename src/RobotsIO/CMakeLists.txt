@@ -49,6 +49,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/Data.h
     include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/DatasetDataStream.h
+    include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/FileToEigen.h
     include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/ParametersExtractor.h
@@ -73,6 +74,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DatasetDataStream.cpp
+    src/Utils/DatasetTransform.cpp
     src/Utils/FileToEigen.cpp
     src/Utils/Parameters.cpp
     src/Utils/ParametersExtractor.cpp
