@@ -47,6 +47,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/Data.h
+    include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/FileToEigen.h
     include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/ParametersExtractor.h
