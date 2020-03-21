@@ -8,6 +8,8 @@
 #ifndef ROBOTSIO_TRANSFORM_H
 #define ROBOTSIO_TRANSFORM_H
 
+#include <RobotsIO/Utils/DataStream.h>
+
 #include <Eigen/Dense>
 
 namespace RobotsIO {
@@ -16,10 +18,11 @@ namespace RobotsIO {
     }
 }
 
-class RobotsIO::Utils::Transform
+
+class RobotsIO::Utils::Transform : public RobotsIO::Utils::DataStream
 {
 public:
-    virtual std::pair<bool, Eigen::Transform<double, 3, Eigen::Affine>> transform(const bool& blocking = false) = 0;
+    virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
 };
 
 #endif /* ROBOTSIO_TRANSFORM_H */

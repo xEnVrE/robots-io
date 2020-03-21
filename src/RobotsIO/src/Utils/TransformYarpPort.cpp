@@ -25,17 +25,22 @@ TransformYarpPort:: ~TransformYarpPort()
 {}
 
 
-std::pair<bool, Eigen::Transform<double, 3, Affine>> TransformYarpPort::transform(const bool& blocking)
+Eigen::Transform<double, 3, Affine> TransformYarpPort::transform()
+{
+    return transform_;
+}
+
+
+bool TransformYarpPort::freeze(const bool blocking)
 {
     Vector* transform_yarp = receive_data(blocking);
 
     if (transform_yarp == nullptr)
-        return std::make_pair(false, Eigen::Transform<double, 3, Affine>());
+        return false;
 
-    Eigen::Transform<double, 3, Affine> transform;
-    transform = Translation<double, 3>(toEigen(*transform_yarp).head<3>());
+    transform_ = Translation<double, 3>(toEigen(*transform_yarp).head<3>());
     AngleAxisd rotation((*transform_yarp)(6), toEigen(*transform_yarp).segment<3>(3));
-    transform.rotate(rotation);
+    transform_.rotate(rotation);
 
-    return std::make_pair(true, transform);
+    return true;
 }

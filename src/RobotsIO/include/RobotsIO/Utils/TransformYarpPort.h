@@ -23,11 +23,18 @@ class RobotsIO::Utils::TransformYarpPort : public RobotsIO::Utils::Transform,
                                            public RobotsIO::Utils::YarpVectorOfProbe<double>
 {
 public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
     TransformYarpPort(const std::string& port_name);
 
     virtual ~TransformYarpPort();
 
-    std::pair<bool ,Eigen::Transform<double, 3, Eigen::Affine>> transform(const bool& blocking = false) override;
+    Eigen::Transform<double, 3, Eigen::Affine> transform() override;
+
+    bool freeze(const bool blocking = false) override;
+
+private:
+    Eigen::Transform<double, 3, Eigen::Affine> transform_;
 };
 
 #endif /* ROBOTSIO_TRANSFORMYARPVECTOR_H */
