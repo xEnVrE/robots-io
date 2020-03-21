@@ -29,12 +29,21 @@ public:
 
     virtual ~SpatialVelocityYarpPort();
 
-    std::tuple<bool, Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d, double> velocity(const bool& blocking = false) override;
+    bool freeze(const bool blocking = false) override;
+
+    double elapsed_time() override;
+
+protected:
+    Eigen::VectorXd twist() override;
 
 private:
     std::chrono::steady_clock::time_point last_time_;
 
+    double elapsed_time_;
+
     bool last_time_initialized_ = false;
+
+    Eigen::VectorXd twist_;
 };
 
 #endif /* ROBOTSIO_SPATIALVELOCITYYARPVECTOR_H */

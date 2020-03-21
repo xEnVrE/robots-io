@@ -10,23 +10,32 @@
 
 #include <Eigen/Dense>
 
+#include <RobotsIO/Utils/DataStream.h>
+
 namespace RobotsIO {
     namespace Utils {
         class SpatialVelocity;
     }
 }
 
-class RobotsIO::Utils::SpatialVelocity
+
+class RobotsIO::Utils::SpatialVelocity : public RobotsIO::Utils::DataStream
 {
 public:
-    /**
-     * @param blocking, whether the reading has to be blocking or not
-     * @return true if the reading was successful and false otherwise
-     *         the position of a point on the screw axis in the camera frame
-     *         the velocity of a point on the screw axis in the camera frame
-     *         the angular velocity expressed in the camera frame
-     */
-    virtual std::tuple<bool, Eigen::Vector3d, Eigen::Vector3d, Eigen::Vector3d, double> velocity(const bool& blocking = false) = 0;
+    virtual Eigen::Vector3d angular_velocity();
+
+    virtual Eigen::Vector3d linear_velocity_origin();
+
+    virtual Eigen::Vector3d linear_velocity_screw();
+
+    virtual Eigen::Vector3d screw_position();
+
+    virtual double elapsed_time() = 0;
+
+    bool is_screw_degenerate();
+
+protected:
+    virtual Eigen::VectorXd twist() = 0;
 };
 
 #endif /* ROBOTSIO_SPATIALVELOCITY_H */

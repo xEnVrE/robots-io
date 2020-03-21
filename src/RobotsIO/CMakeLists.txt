@@ -76,6 +76,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/ParametersExtractor.cpp
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
+    src/Utils/SpatialVelocity.cpp
 )
 
 if (USE_YARP)
