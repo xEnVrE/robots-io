@@ -59,10 +59,10 @@ std::pair<bool, Eigen::MatrixXd> RobotsIO::Utils::file_to_eigen(const std::strin
             if (cols < skip_cols)
                 continue;
 
-            if (found_fields > expected_cols)
+            if ((found_fields + 1) > expected_cols)
             {
                 std::cerr << "RobotsIO::Utils::file_to_eigen. Error: malformed input file " << file_path << "." << std::endl
-                          << "Detailed error: found more columns than expected." << std::endl;
+                          << "Detailed error: found more columns (" << found_fields + 1 << ") than expected (" << expected_cols << ")." << std::endl;
 
                 return std::make_pair(false, MatrixXd());
             }
@@ -88,7 +88,7 @@ std::pair<bool, Eigen::MatrixXd> RobotsIO::Utils::file_to_eigen(const std::strin
         if (found_fields != expected_cols)
         {
             std::cerr << "RobotsIO::Utils::read_data_from_file. Error: malformed input file " << file_path << std::endl
-                      << "Detailed error: found less columns than expected." << std::endl;
+                      << "Detailed error: found less columns (" << found_fields << ") than expected (" << expected_cols << ")." << std::endl;
 
             return std::make_pair(false, MatrixXd());
         }
