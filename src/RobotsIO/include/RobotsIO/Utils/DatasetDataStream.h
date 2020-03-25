@@ -32,7 +32,12 @@ public:
 
     Eigen::VectorXd data();
 
-    bool freeze();
+    virtual bool freeze();
+
+protected:
+    int get_head();
+
+    bool set_head(const int& value);
 
 private:
     Eigen::MatrixXd data_;

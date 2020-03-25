@@ -60,7 +60,7 @@ DatasetDataStream::~DatasetDataStream()
 double DatasetDataStream::rx_time()
 {
     if (data_rx_time_.size() != 0)
-        return data_rx_time_(head_);
+        return data_rx_time_(get_head());
 
     return 0.0;
 }
@@ -69,7 +69,7 @@ double DatasetDataStream::rx_time()
 double DatasetDataStream::tx_time()
 {
     if (data_tx_time_.size() != 0)
-        return data_tx_time_(head_);
+        return data_tx_time_(get_head());
 
     return 0.0;
 }
@@ -77,17 +77,28 @@ double DatasetDataStream::tx_time()
 
 VectorXd DatasetDataStream::data()
 {
-    return data_.col(head_);
+    return data_.col(get_head());
 }
 
 
 bool DatasetDataStream::freeze()
 {
-    /* Step the head. */
-    head_++;
+    return set_head(get_head() + 1);
+}
 
-    if (head_ >= data_.cols())
+
+int DatasetDataStream::get_head()
+{
+    return head_;
+}
+
+
+bool DatasetDataStream::set_head(const int& value)
+{
+    if (value >= data_.cols())
         return false;
+
+    head_ = value;
 
     return true;
 }
