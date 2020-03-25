@@ -19,6 +19,8 @@ namespace RobotsIO {
 class RobotsIO::Utils::DataStream
 {
 public:
+    virtual ~DataStream();
+
     virtual bool freeze(const bool blocking = false) = 0;
 };
 

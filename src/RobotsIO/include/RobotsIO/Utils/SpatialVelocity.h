@@ -22,6 +22,8 @@ namespace RobotsIO {
 class RobotsIO::Utils::SpatialVelocity : public RobotsIO::Utils::DataStream
 {
 public:
+    virtual ~SpatialVelocity();
+
     virtual Eigen::Vector3d angular_velocity();
 
     virtual Eigen::Vector3d linear_velocity_origin();

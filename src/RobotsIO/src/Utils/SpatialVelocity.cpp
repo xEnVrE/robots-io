@@ -11,6 +11,10 @@ using namespace Eigen;
 using namespace RobotsIO::Utils;
 
 
+SpatialVelocity::~SpatialVelocity()
+{}
+
+
 Eigen::Vector3d SpatialVelocity::angular_velocity()
 {
     return twist().segment<3>(3);

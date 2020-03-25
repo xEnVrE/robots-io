@@ -22,6 +22,8 @@ namespace RobotsIO {
 class RobotsIO::Utils::Transform : public RobotsIO::Utils::DataStream
 {
 public:
+    virtual ~Transform();
+
     virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
 };
 

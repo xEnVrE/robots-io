@@ -74,6 +74,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_CAMERA
 set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
+    src/Utils/DataStream.cpp
     src/Utils/DatasetDataStream.cpp
     src/Utils/DatasetSpatialVelocity.cpp
     src/Utils/DatasetTransform.cpp
@@ -83,6 +84,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
     src/Utils/SpatialVelocity.cpp
+    src/Utils/Transform.cpp
 )
 
 if (USE_YARP)
