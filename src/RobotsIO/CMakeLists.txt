@@ -49,6 +49,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/Data.h
     include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/DatasetDataStream.h
+    include/RobotsIO/Utils/DatasetDataStreamDelayed.h
     include/RobotsIO/Utils/DatasetSpatialVelocity.h
     include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/FileToEigen.h
@@ -76,6 +77,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DataStream.cpp
     src/Utils/DatasetDataStream.cpp
+    src/Utils/DatasetDataStreamDelayed.cpp
     src/Utils/DatasetSpatialVelocity.cpp
     src/Utils/DatasetTransform.cpp
     src/Utils/FileToEigen.cpp
