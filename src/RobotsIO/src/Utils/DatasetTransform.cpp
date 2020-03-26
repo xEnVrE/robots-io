@@ -11,7 +11,15 @@ using namespace Eigen;
 using namespace RobotsIO::Utils;
 
 
-DatasetTransform::DatasetTransform(const std::string& file_path, const std::size_t& skip_rows, const std::size_t& skip_cols, const std::size_t& expected_cols, const int rx_time_index, const int tx_time_index) :
+DatasetTransform::DatasetTransform
+(
+    const std::string& file_path,
+    const std::size_t& skip_rows,
+    const std::size_t& skip_cols,
+    const std::size_t& expected_cols,
+    const int rx_time_index,
+    const int tx_time_index
+) :
     DatasetDataStream(file_path, skip_rows, skip_cols, expected_cols, rx_time_index, tx_time_index)
 {}
 
