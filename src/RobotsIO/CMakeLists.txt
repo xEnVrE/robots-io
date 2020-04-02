@@ -54,6 +54,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/DatasetTransformDelayed.h
     include/RobotsIO/Utils/FileToEigen.h
+    include/RobotsIO/Utils/ImageFileProbe.h
     include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/ParametersExtractor.h
     include/RobotsIO/Utils/ParametersFiller.h
@@ -83,6 +84,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DatasetTransform.cpp
     src/Utils/DatasetTransformDelayed.cpp
     src/Utils/FileToEigen.cpp
+    src/Utils/ImageFileProbe.cpp
     src/Utils/Parameters.cpp
     src/Utils/ParametersExtractor.cpp
     src/Utils/Probe.cpp
