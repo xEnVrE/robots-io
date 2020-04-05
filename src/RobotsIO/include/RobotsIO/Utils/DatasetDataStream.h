@@ -39,6 +39,8 @@ protected:
 
     bool set_head(const int& value);
 
+    Eigen::VectorXd data(const int& index);
+
 private:
     Eigen::MatrixXd data_;
 

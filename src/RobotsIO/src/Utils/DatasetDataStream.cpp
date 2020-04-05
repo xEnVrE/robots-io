@@ -102,3 +102,12 @@ bool DatasetDataStream::set_head(const int& value)
 
     return true;
 }
+
+
+VectorXd DatasetDataStream::data(const int& index)
+{
+    if (index < 0 || index >= data_.cols())
+        throw(std::runtime_error(log_name_ + "::data(const int& index). Error: invalid index provided (index = " + std::to_string(index) + ")."));
+
+    return data_.col(index);
+}
