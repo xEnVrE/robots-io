@@ -30,7 +30,7 @@ public:
 
     double tx_time();
 
-    Eigen::VectorXd data();
+    virtual Eigen::VectorXd data();
 
     virtual bool freeze();
 
