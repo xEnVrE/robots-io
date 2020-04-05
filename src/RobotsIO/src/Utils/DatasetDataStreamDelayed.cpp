@@ -7,6 +7,7 @@
 
 #include <RobotsIO/Utils/DatasetDataStreamDelayed.h>
 
+using namespace Eigen;
 using namespace RobotsIO::Utils;
 
 
@@ -25,27 +26,36 @@ DatasetDataStreamDelayed::DatasetDataStreamDelayed
     DatasetDataStream(file_path, skip_rows, skip_cols, expected_cols, rx_time_index, tx_time_index),
     delay_(static_cast<int>(fps / simulated_fps)),
     simulate_inference_time_(simulate_inference_time)
-{}
+{
+    if (simulate_inference_time_)
+        set_head(get_head() - delay_);
+}
 
 
 DatasetDataStreamDelayed::~DatasetDataStreamDelayed()
 {}
 
 
+VectorXd DatasetDataStreamDelayed::data()
+{
+    int head = get_head();
+
+    if (simulate_inference_time_)
+    {
+        if (head < 0)
+            head = 0;
+    }
+
+    return DatasetDataStream::data(head);
+}
+
+
 bool DatasetDataStreamDelayed::freeze()
 {
     DatasetDataStream::freeze();
 
-    int head = get_head();
-
-    if (simulate_inference_time_)
-        head -= delay_;
-
-    if ((head % delay_) != 0)
+    if ((get_head() % delay_) != 0)
         return false;
 
-    if (head < 0)
-        head = 0;
-
-    return set_head(head);
+    return true;
 }

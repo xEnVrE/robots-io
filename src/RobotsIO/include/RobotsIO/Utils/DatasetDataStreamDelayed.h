@@ -24,6 +24,8 @@ public:
 
     virtual ~DatasetDataStreamDelayed();
 
+    virtual Eigen::VectorXd data() override;
+
     bool freeze() override;
 
 private:
