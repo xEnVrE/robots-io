@@ -41,6 +41,12 @@ bool DatasetTransform::freeze(const bool blocking)
 
     VectorXd transform_data = data();
 
+    bool invalid_pose = true;
+    for (std::size_t i = 0; i < transform_data.size(); i++)
+        invalid_pose &= (transform_data(i) == 0.0);
+    if (invalid_pose)
+        return false;
+
     transform_ = Translation<double, 3>(transform_data.head<3>());
     AngleAxisd rotation(transform_data(6), transform_data.segment<3>(3));
     transform_.rotate(rotation);
