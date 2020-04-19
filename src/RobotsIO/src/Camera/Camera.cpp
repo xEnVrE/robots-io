@@ -615,6 +615,7 @@ std::pair<bool, MatrixXd> Camera::load_data()
                 std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
                 std::cout << log_name_ + "::read_data_from_file.        Found more than expected fields. Skipping content parsing." << std::endl;
                 dataset_parameters_.data_available(false);
+                number_frames_ = data.cols();
                 return std::make_pair(true, data);
             }
 
@@ -628,6 +629,7 @@ std::pair<bool, MatrixXd> Camera::load_data()
                 std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
                 std::cout << log_name_ + "::read_data_from_file.        Found unexpected fields. Skipping content parsing." << std::endl;
                 dataset_parameters_.data_available(false);
+                number_frames_ = data.cols();
                 return std::make_pair(true, data);
             }
 
@@ -639,6 +641,7 @@ std::pair<bool, MatrixXd> Camera::load_data()
             std::cout << log_name_ + "::read_data_from_file. Error: malformed input file " << file_name << std::endl;
             std::cout << log_name_ + "::read_data_from_file.        Found less than expected fields. Skipping content parsing." << std::endl;
             dataset_parameters_.data_available(false);
+            number_frames_ = data.cols();
             return std::make_pair(true, data);
         }
         found_lines++;
