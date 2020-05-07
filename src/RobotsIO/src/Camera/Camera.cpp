@@ -11,6 +11,7 @@
 #endif
 
 #include <RobotsIO/Camera/Camera.h>
+#include <RobotsIO/Camera/CameraDeprojectionMatrix.h>
 #include <RobotsIO/Utils/Parameters.h>
 
 #include <opencv2/core/eigen.hpp>
@@ -338,22 +339,8 @@ bool Camera::evaluate_deprojection_matrix()
     if (!parameters_.initialized())
         throw(std::runtime_error(log_name_ + "::reset. Camera parameters not initialized. Did you initialize the class member 'parameters_' in the derived class?."));
 
-    /* Allocate storage. */
-    deprojection_matrix_.resize(3, parameters_.width() * parameters_.height());
-
     // Evaluate deprojection matrix
-    int i = 0;
-    for (std::size_t u = 0; u < parameters_.width(); u++)
-    {
-        for (std::size_t v = 0; v < parameters_.height(); v++)
-        {
-            deprojection_matrix_(0, i) = (u - parameters_.cx()) / parameters_.fx();
-            deprojection_matrix_(1, i) = (v - parameters_.cy()) / parameters_.fy();
-            deprojection_matrix_(2, i) = 1.0;
-
-            i++;
-        }
-    }
+    deprojection_matrix_ = RobotsIO::Camera::deprojection_matrix(parameters_.width(), parameters_.height(), parameters_.fx(), parameters_.fy(), parameters_.cx(), parameters_.cy());
 
     deprojection_matrix_initialized_ = true;
 
