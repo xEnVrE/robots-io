@@ -54,6 +54,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DatasetSpatialVelocity.h
     include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/DatasetTransformDelayed.h
+    include/RobotsIO/Utils/FileToDepth.h
     include/RobotsIO/Utils/FileToEigen.h
     include/RobotsIO/Utils/ImageFileProbe.h
     include/RobotsIO/Utils/Parameters.h
@@ -85,6 +86,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DatasetSpatialVelocity.cpp
     src/Utils/DatasetTransform.cpp
     src/Utils/DatasetTransformDelayed.cpp
+    src/Utils/FileToDepth.cpp
     src/Utils/FileToEigen.cpp
     src/Utils/ImageFileProbe.cpp
     src/Utils/Parameters.cpp
