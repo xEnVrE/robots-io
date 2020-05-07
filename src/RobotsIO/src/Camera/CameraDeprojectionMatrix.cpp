@@ -29,3 +29,9 @@ MatrixXd RobotsIO::Camera::deprojection_matrix(const std::size_t& width, const s
 
     return deprojection_matrix;
 }
+
+
+Eigen::MatrixXd RobotsIO::Camera::deprojection_matrix(const CameraParameters& parameters)
+{
+    return RobotsIO::Camera::deprojection_matrix(parameters.width(), parameters.height(), parameters.fx(), parameters.fy(), parameters.cx(), parameters.cy());
+}

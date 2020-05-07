@@ -340,7 +340,7 @@ bool Camera::evaluate_deprojection_matrix()
         throw(std::runtime_error(log_name_ + "::reset. Camera parameters not initialized. Did you initialize the class member 'parameters_' in the derived class?."));
 
     // Evaluate deprojection matrix
-    deprojection_matrix_ = RobotsIO::Camera::deprojection_matrix(parameters_.width(), parameters_.height(), parameters_.fx(), parameters_.fy(), parameters_.cx(), parameters_.cy());
+    deprojection_matrix_ = RobotsIO::Camera::deprojection_matrix(parameters_);
 
     deprojection_matrix_initialized_ = true;
 
