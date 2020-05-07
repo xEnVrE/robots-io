@@ -12,6 +12,7 @@
 
 #include <RobotsIO/Camera/Camera.h>
 #include <RobotsIO/Camera/CameraDeprojectionMatrix.h>
+#include <RobotsIO/Utils/FileToDepth.h>
 #include <RobotsIO/Utils/Parameters.h>
 
 #include <opencv2/core/eigen.hpp>
@@ -392,35 +393,13 @@ std::pair<bool, MatrixXf> Camera::depth_offline()
     if (!status())
         return std::make_pair(false, MatrixXf());
 
-    std::FILE* in;
     const std::string file_name = dataset_parameters_.path() + dataset_parameters_.depth_prefix() + compose_index(frame_index() + depth_offset_) + "." + dataset_parameters_.depth_format();
-    if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
-    {
-        std::cout << log_name_ << "::depth_offline. Error: cannot load depth frame " + file_name << std::endl;
+
+    MatrixXf float_image;
+    bool valid_image = false;
+    std::tie(valid_image, float_image) = file_to_depth(file_name);
+    if (!valid_image)
         return std::make_pair(false, MatrixXf());
-    }
-
-    /* Load image size .*/
-    std::size_t dims[2];
-    if (std::fread(dims, sizeof(dims), 1, in) != 1)
-    {
-        std::cout << log_name_ << "::depth_offline. Error: cannot load depth size for frame " + file_name << std::endl;
-        return std::make_pair(false, MatrixXf());
-    }
-
-    /* Load image. */
-    float float_image_raw[dims[0] * dims[1]];
-    if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
-    {
-        std::cout << log_name_ << "::depth_offline. Error: cannot load depth data for frame " + file_name << std::endl;
-        return std::make_pair(false, MatrixXf());
-    }
-
-    std::fclose(in);
-
-    /* Store image. */
-    MatrixXf float_image(dims[1], dims[0]);
-    float_image = Map<Matrix<float, -1, -1, RowMajor>>(float_image_raw, dims[1], dims[0]);
 
     /* Resize image. */
     MatrixXf depth;
