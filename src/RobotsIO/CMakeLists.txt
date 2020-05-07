@@ -38,6 +38,7 @@ endif()
 # Header files
 set(${LIBRARY_TARGET_NAME}_HDR_CAMERA
     include/RobotsIO/Camera/Camera.h
+    include/RobotsIO/Camera/CameraDeprojectionMatrix.h
     include/RobotsIO/Camera/CameraParameters.h
     include/RobotsIO/Camera/DatasetCamera.h
     include/RobotsIO/Camera/DatasetParameters.h
@@ -69,6 +70,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
 # Source files
 set(${LIBRARY_TARGET_NAME}_SRC_CAMERA
     src/Camera/Camera.cpp
+    src/Camera/CameraDeprojectionMatrix.cpp
     src/Camera/CameraParameters.cpp
     src/Camera/DatasetCamera.cpp
     src/Camera/DatasetParameters.cpp
