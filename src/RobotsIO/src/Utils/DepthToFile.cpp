@@ -31,12 +31,18 @@ bool RobotsIO::Utils::depth_to_file(const std::string& output_path, const cv::Ma
     if (std::fwrite(dims, sizeof(dims), 1, out) != 1)
     {
         std::cout << log_name << "Error: cannot write image size to " + output_path << std::endl;
+
+        fclose(out);
+
         return false;
     }
 
     if (std::fwrite(depth.data, sizeof(float), dims[0] * dims[1], out) != dims[0] * dims[1])
     {
         std::cout << log_name << "Error: cannot write image data to " + output_path << std::endl;
+
+        fclose(out);
+
         return false;
     }
 
@@ -44,6 +50,7 @@ bool RobotsIO::Utils::depth_to_file(const std::string& output_path, const cv::Ma
 
     return true;
 }
+
 
 bool RobotsIO::Utils::depth_to_file(const std::string& output_path, const MatrixXf& depth)
 {

@@ -31,6 +31,9 @@ std::pair<bool, Eigen::MatrixXf> RobotsIO::Utils::file_to_depth(const std::strin
     if (std::fread(dims, sizeof(dims), 1, in) != 1)
     {
         std::cout << log_name << "Error: cannot load depth size for frame " + file_name << std::endl;
+
+        fclose(in);
+
         return std::make_pair(false, MatrixXf());
     }
 
@@ -39,6 +42,9 @@ std::pair<bool, Eigen::MatrixXf> RobotsIO::Utils::file_to_depth(const std::strin
     if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
     {
         std::cout << log_name << "Error: cannot load depth data for frame " + file_name << std::endl;
+
+        fclose(in);
+
         return std::make_pair(false, MatrixXf());
     }
 
