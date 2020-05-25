@@ -12,6 +12,7 @@
 #include <RobotsIO/Utils/ParametersFiller.h>
 
 #include <string>
+#include <stdexcept>
 #include <unordered_map>
 #include <vector>
 
