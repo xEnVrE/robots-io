@@ -12,9 +12,9 @@
 #include <RobotsIO/Utils/Probe.h>
 #include <RobotsIO/Utils/any.h>
 
-#include <string>
+#include <opencv2/opencv.hpp>
 
-#include <yarp/cv/Cv.h>
+#include <string>
 
 namespace RobotsIO {
     namespace Utils {
