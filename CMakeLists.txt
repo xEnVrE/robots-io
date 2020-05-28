@@ -65,9 +65,10 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
     endif()
   endif()
 
-# options for YARP and ICUB
+# options
 option(USE_YARP "Use YARP" OFF)
 option(USE_ICUB "Use ICUB" OFF)
+option(USE_SUPERIMPOSE "Use SuperimposeMesh" OFF)
 
 # if ICUB is available use ICUBcontrib helpers for installation
 if (USE_ICUB)
@@ -94,6 +95,9 @@ if (USE_YARP)
 endif()
 if (USE_ICUB)
   set(DEPENDENCIES ${DEPENDENCIES} "ICUB")
+endif()
+if (USE_SUPERIMPOSE)
+  set(DEPENDENCIES ${DEPENDENCIES} "SuperimposeMesh")
 endif()
 
 include(InstallBasicPackageFiles)

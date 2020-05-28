@@ -21,6 +21,11 @@ if (USE_OPENMP)
   find_package(OpenMP REQUIRED)
 endif()
 
+if (USE_SUPERIMPOSE)
+    # SuperimposeMesh
+    find_package(SuperimposeMesh 0.11.100 REQUIRED)
+endif()
+
 if (USE_YARP)
     find_package(YARP REQUIRED COMPONENTS
                  cv
@@ -97,7 +102,17 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/ProbeContainer.cpp
     src/Utils/SpatialVelocity.cpp
     src/Utils/Transform.cpp
-)
+    )
+
+if (USE_SUPERIMPOSE)
+    list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
+         include/RobotsIO/Camera/SegmentationCamera.h
+    )
+
+    list(APPEND ${LIBRARY_TARGET_NAME}_SRC_CAMERA
+         src/Camera/SegmentationCamera.cpp
+    )
+endif()
 
 if (USE_YARP)
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
@@ -208,6 +223,10 @@ endif()
 
 if (USE_ICUB)
     target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${ICUB_LIBRARIES})
+endif()
+
+if (USE_SUPERIMPOSE)
+    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC SI::SuperimposeMesh)
 endif()
 
 # Specify installation targets, typology and destination folders.
