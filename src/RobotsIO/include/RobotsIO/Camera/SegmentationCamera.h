@@ -9,18 +9,13 @@
 #define ROBOTSIO_SEGMENTATIONCAMERA_H
 
 #include <RobotsIO/Camera/Camera.h>
+#include <RobotsIO/Camera/CameraParameters.h>
 #include <RobotsIO/Utils/Transform.h>
 
 #include <SuperimposeMesh/SICAD.h>
 
-/* #include <Eigen/Dense> */
+#include <Eigen/Dense>
 
-/* #include <limits> */
-/* #include <opencv2/opencv.hpp> */
-
-/* #include <cstdint> */
-/* #include <fstream> */
-/* #include <string> */
 
 namespace RobotsIO {
     namespace Camera {
@@ -33,27 +28,27 @@ namespace RobotsIO {
 class RobotsIO::Camera::SegmentationCamera
 {
 public:
-    SegmentationCamera(std::shared_ptr<Camera> camera, std::shared_ptr<RobotsIO::Utils::Transform> object_transform, const std::string& mesh_path);
+    SegmentationCamera(const RobotsIO::Camera::CameraParameters& camera_parameters, const std::string& mesh_path);
 
     ~SegmentationCamera();
 
     void add_object();
 
     /**
-     * Segmentation mask.
+     * Segmentation mask given a depth image and an object Eigen::Transform<double, 3, Affine>
      */
-    std::pair<bool, cv::Mat> mask();
+    std::pair<bool, cv::Mat> mask(const Eigen::MatrixXf& scene_depth, const Eigen::Transform<double, 3, Eigen::Affine> object_transform);
+
+    /**
+     * Segmentation mask given a RobotsIO::Camera::Camera and a RobotsIO::Utils::Transform
+     */
+    std::pair<bool, cv::Mat> mask(std::shared_ptr<RobotsIO::Camera::Camera> camera, std::shared_ptr<RobotsIO::Utils::Transform> object_transform);
 
 private:
     /**
-     * Pointer to the underlying camera.
+     * Rendering method.
      */
-    std::shared_ptr<RobotsIO::Camera::Camera> camera_;
-
-    /**
-     * Object transform.
-     */
-    std::shared_ptr<RobotsIO::Utils::Transform> transform_;
+    std::pair<bool, cv::Mat> render_mask(const Eigen::MatrixXf& scene_depth, const Eigen::Transform<double, 3, Eigen::Affine> object_transform);
 
     /**
      * Object renderer.
@@ -63,9 +58,7 @@ private:
     /**
      * Camera parameters.
      */
-    std::size_t width_;
-
-    std::size_t height_;
+    RobotsIO::Camera::CameraParameters parameters_;
 
     /**
      * Log name to be used in messages printed by the class.
