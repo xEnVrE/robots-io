@@ -14,8 +14,9 @@ using namespace RobotsIO::Camera;
 using namespace Eigen;
 
 
-SegmentationCamera::SegmentationCamera(const CameraParameters& camera_parameters, const std::string& object_mesh_path) :
-    parameters_(camera_parameters)
+SegmentationCamera::SegmentationCamera(const CameraParameters& camera_parameters, const std::string& object_mesh_path, const double& threshold) :
+    parameters_(camera_parameters),
+    threshold_(threshold)
 {
     /* Configure renderer. */
     SICAD::ModelPathContainer model;
@@ -108,7 +109,7 @@ std::pair<bool, cv::Mat> SegmentationCamera::render_mask(const Eigen::MatrixXf& 
     {
         const cv::Point& p = non_zero_coordinates.at<cv::Point>(i);
 
-        if (std::abs(scene_depth(p.y, p.x) - rendered_depth.at<float>(p)) > 0.03)
+        if (std::abs(scene_depth(p.y, p.x) - rendered_depth.at<float>(p)) > threshold_)
             mask.at<uchar>(p) = 0.0;
     }
 

@@ -28,7 +28,7 @@ namespace RobotsIO {
 class RobotsIO::Camera::SegmentationCamera
 {
 public:
-    SegmentationCamera(const RobotsIO::Camera::CameraParameters& camera_parameters, const std::string& mesh_path);
+    SegmentationCamera(const RobotsIO::Camera::CameraParameters& camera_parameters, const std::string& mesh_path, const double& threshold = 0.01);
 
     ~SegmentationCamera();
 
@@ -59,6 +59,11 @@ private:
      * Camera parameters.
      */
     RobotsIO::Camera::CameraParameters parameters_;
+
+    /**
+     * Threshold for depth/rendered depth comparison.
+     */
+    const double threshold_;
 
     /**
      * Log name to be used in messages printed by the class.
