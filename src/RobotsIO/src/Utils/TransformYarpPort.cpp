@@ -17,7 +17,7 @@ using namespace yarp::sig;
 
 
 TransformYarpPort::TransformYarpPort(const std::string& port_name) :
-    YarpVectorOfProbe<double>(port_name)
+    YarpBufferedPort<yarp::sig::Vector>(port_name)
 {}
 
 

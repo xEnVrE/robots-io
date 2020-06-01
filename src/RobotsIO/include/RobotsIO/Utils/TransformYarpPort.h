@@ -9,7 +9,9 @@
 #define ROBOTSIO_TRANSFORMYARPVECTOR_H
 
 #include <RobotsIO/Utils/Transform.h>
-#include <RobotsIO/Utils/YarpVectorOfProbe.hpp>
+#include <RobotsIO/Utils/YarpBufferedPort.hpp>
+
+#include <yarp/sig/Vector.h>
 
 #include <Eigen/Dense>
 
@@ -20,7 +22,7 @@ namespace RobotsIO {
 }
 
 class RobotsIO::Utils::TransformYarpPort : public RobotsIO::Utils::Transform,
-                                           public RobotsIO::Utils::YarpVectorOfProbe<double>
+                                           public RobotsIO::Utils::YarpBufferedPort<yarp::sig::Vector>
 {
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
