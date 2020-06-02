@@ -52,6 +52,8 @@ set(${LIBRARY_TARGET_NAME}_HDR_CAMERA
 set(${LIBRARY_TARGET_NAME}_HDR_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_HDR_UTILS
+    include/RobotsIO/Utils/Clock.h
+    include/RobotsIO/Utils/ClockedComponent.h
     include/RobotsIO/Utils/Data.h
     include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/DatasetDataStream.h
@@ -86,6 +88,8 @@ set(${LIBRARY_TARGET_NAME}_SRC_CAMERA
 set(${LIBRARY_TARGET_NAME}_SRC_HAND "")
 
 set(${LIBRARY_TARGET_NAME}_SRC_UTILS
+    src/Utils/Clock.cpp
+    src/Utils/ClockedComponent.cpp
     src/Utils/DataStream.cpp
     src/Utils/DatasetDataStream.cpp
     src/Utils/DatasetDataStreamDelayed.cpp
@@ -121,6 +125,7 @@ if (USE_YARP)
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
+         include/RobotsIO/Utils/ClockYarp.h
          include/RobotsIO/Utils/Parameters2YarpBottle.h
          include/RobotsIO/Utils/ParametersYarpPort.h
          include/RobotsIO/Utils/SpatialVelocityYarpPort.h
@@ -133,6 +138,7 @@ if (USE_YARP)
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
+         src/Utils/ClockYarp.cpp
          src/Utils/Parameters2YarpBottle.cpp
          src/Utils/ParametersYarpPort.cpp
          src/Utils/SpatialVelocityYarpPort.cpp
