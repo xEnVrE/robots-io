@@ -232,7 +232,7 @@ iCubCamera::~iCubCamera()
 {
     /* Close driver. */
     if (use_driver_gaze_)
-      driver_gaze_.close();
+        driver_gaze_.close();
     else
     {
         drv_torso_.close();
@@ -246,26 +246,15 @@ iCubCamera::~iCubCamera()
 }
 
 
-bool iCubCamera::look_at(const Eigen::Vector3d& fixation_point)
+bool iCubCamera::is_controller_available()
 {
-    if (use_driver_gaze_)
-    {
-        yarp::sig::Vector vector(3);
-        toEigen(vector) = fixation_point;
-
-        return gaze_control_->lookAtFixationPointSync(vector);
-    }
-
-    return false;
+    return use_driver_gaze_;
 }
 
 
-bool iCubCamera::stop_motion()
+yarp::dev::IGazeControl& iCubCamera::controller()
 {
-    if (use_driver_gaze_)
-        return gaze_control_->stopControl();
-
-    return false;
+    return *gaze_control_;
 }
 
 

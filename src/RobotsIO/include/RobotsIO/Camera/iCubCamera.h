@@ -44,9 +44,13 @@ public:
 
     ~iCubCamera();
 
-    bool look_at(const Eigen::Vector3d& fixation_point);
+    /**
+     * Gaze control interface.
+     */
 
-    bool stop_motion();
+    bool is_controller_available();
+
+    yarp::dev::IGazeControl& controller();
 
     /**
      * RGB-D and pose.
