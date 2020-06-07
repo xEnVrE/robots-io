@@ -5,8 +5,8 @@
  * GPL-2+ license. See the accompanying LICENSE file for details.
  */
 
-#ifndef ROBOTSIO_TRANSFORMYARPVECTOR_H
-#define ROBOTSIO_TRANSFORMYARPVECTOR_H
+#ifndef ROBOTSIO_TRANSFORMYARPTRANSFORMCLIENT_H
+#define ROBOTSIO_TRANSFORMYARPTRANSFORMCLIENTR_H
 
 #include <RobotsIO/Utils/Transform.h>
 
@@ -54,4 +54,4 @@ private:
     const std::string log_name_ = "TransformYarpTransformClient";
 };
 
-#endif /* ROBOTSIO_TRANSFORMYARPVECTOR_H */
+#endif /* ROBOTSIO_TRANSFORMYARPTRANSFORMCLIENT_H */

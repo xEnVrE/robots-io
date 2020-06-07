@@ -5,8 +5,8 @@
  * GPL-2+ license. See the accompanying LICENSE file for details.
  */
 
-#ifndef ROBOTSIO_TRANSFORMYARPVECTOR_H
-#define ROBOTSIO_TRANSFORMYARPVECTOR_H
+#ifndef ROBOTSIO_TRANSFORMYARPPORT_H
+#define ROBOTSIO_TRANSFORMYARPPORT_H
 
 #include <RobotsIO/Utils/Transform.h>
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
@@ -39,4 +39,4 @@ private:
     Eigen::Transform<double, 3, Eigen::Affine> transform_;
 };
 
-#endif /* ROBOTSIO_TRANSFORMYARPVECTOR_H */
+#endif /* ROBOTSIO_TRANSFORMYARPPORT_H */
