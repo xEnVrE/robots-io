@@ -72,6 +72,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/ProbeContainer.h
     include/RobotsIO/Utils/SpatialVelocity.h
     include/RobotsIO/Utils/Transform.h
+    include/RobotsIO/Utils/TransformWithVelocity.h
     include/RobotsIO/Utils/any.h
 )
 
@@ -106,6 +107,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/ProbeContainer.cpp
     src/Utils/SpatialVelocity.cpp
     src/Utils/Transform.cpp
+    src/Utils/TransformWithVelocity.cpp
     )
 
 if (USE_SUPERIMPOSE)
@@ -130,6 +132,7 @@ if (USE_YARP)
          include/RobotsIO/Utils/ParametersYarpPort.h
          include/RobotsIO/Utils/SpatialVelocityYarpPort.h
          include/RobotsIO/Utils/TransformYarpTransformClient.h
+         include/RobotsIO/Utils/TransformWithVelocityYarpPort.h
          include/RobotsIO/Utils/TransformYarpPort.h
          include/RobotsIO/Utils/YarpBottleProbe.hpp
          include/RobotsIO/Utils/YarpBufferedPort.hpp
@@ -143,6 +146,7 @@ if (USE_YARP)
          src/Utils/ParametersYarpPort.cpp
          src/Utils/SpatialVelocityYarpPort.cpp
          src/Utils/TransformYarpTransformClient.cpp
+         src/Utils/TransformWithVelocityYarpPort.cpp
          src/Utils/TransformYarpPort.cpp
          src/Utils/YarpBottleProbe.cpp
          src/Utils/YarpVectorOfProbe.cpp

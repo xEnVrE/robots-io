@@ -33,3 +33,21 @@ yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Tr
 
     return tmp;
 }
+
+
+template <>
+yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, RobotsIO::Utils::TransformWithVelocityStorage>::convert_from(const RobotsIO::Utils::TransformWithVelocityStorage& data)
+{
+    /* Assume by default transformation to x-y-z-axis-angle. */
+    yarp::sig::VectorOf<double> tmp(13);
+    yarp::eigen::toEigen(tmp).head<3>() = data.transform.translation();
+
+    Eigen::AngleAxisd axis_angle(data.transform.rotation());
+    yarp::eigen::toEigen(tmp).segment<3>(3) = axis_angle.axis();
+    yarp::eigen::toEigen(tmp)(6) = axis_angle.angle();
+
+    yarp::eigen::toEigen(tmp).segment<3>(7) = data.linear_velocity;
+    yarp::eigen::toEigen(tmp).tail<3>() = data.angular_velocity;
+
+    return tmp;
+}

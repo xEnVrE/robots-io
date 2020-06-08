@@ -12,6 +12,7 @@
 
 #include <RobotsIO/Utils/Data.h>
 #include <RobotsIO/Utils/Probe.h>
+#include <RobotsIO/Utils/TransformWithVelocity.h>
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
 #include <RobotsIO/Utils/any.h>
 
@@ -82,5 +83,9 @@ yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Ve
 
 template <>
 yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Transform<double, 3, Eigen::Affine>>::convert_from(const Eigen::Transform<double, 3, Eigen::Affine>& data);
+
+
+template <>
+yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, RobotsIO::Utils::TransformWithVelocityStorage>::convert_from(const RobotsIO::Utils::TransformWithVelocityStorage& data);
 
 #endif /* ROBOTSIO_YARPVECTOROFPROBE_H */
