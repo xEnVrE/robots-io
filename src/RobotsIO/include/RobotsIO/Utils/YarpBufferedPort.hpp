@@ -37,12 +37,16 @@ public:
 
     double time_stamp();
 
+    void set_time_stamp(const double& stamp);
+
     std::size_t flush();
 
 protected:
     yarp::os::Network yarp_;
 
     yarp::os::BufferedPort<T> port_;
+
+    yarp::os::Stamp stamp_;
 
     const std::string log_name_ = "YarpBufferedPort";
 };
@@ -76,6 +80,8 @@ void RobotsIO::Utils::YarpBufferedPort<T>::send_data(const T& data)
 {
     T& data_to_be_sent = port_.prepare();
 
+    port_.setEnvelope(stamp_);
+
     data_to_be_sent = data;
 
     port_.write();
@@ -96,6 +102,13 @@ double RobotsIO::Utils::YarpBufferedPort<T>::time_stamp()
     port_.getEnvelope(stamp);
 
     return stamp.getTime();
+}
+
+
+template <class T>
+void RobotsIO::Utils::YarpBufferedPort<T>::set_time_stamp(const double& stamp)
+{
+    stamp_.update(stamp);
 }
 
 
