@@ -64,6 +64,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DepthToFile.h
     include/RobotsIO/Utils/FileToDepth.h
     include/RobotsIO/Utils/FileToEigen.h
+    include/RobotsIO/Utils/FloatMatrix.h
     include/RobotsIO/Utils/ImageFileProbe.h
     include/RobotsIO/Utils/Parameters.h
     include/RobotsIO/Utils/ParametersExtractor.h
@@ -100,6 +101,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DepthToFile.cpp
     src/Utils/FileToDepth.cpp
     src/Utils/FileToEigen.cpp
+    src/Utils/FloatMatrix.cpp
     src/Utils/ImageFileProbe.cpp
     src/Utils/Parameters.cpp
     src/Utils/ParametersExtractor.cpp
