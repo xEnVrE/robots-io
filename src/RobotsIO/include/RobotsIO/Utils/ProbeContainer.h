@@ -25,9 +25,9 @@ class RobotsIO::Utils::ProbeContainer
 public:
     virtual ~ProbeContainer();
 
-    bool is_probe(const std::string& name);
+    bool is_probe(const std::string& name) const;
 
-    RobotsIO::Utils::Probe& get_probe(const std::string& name);
+    RobotsIO::Utils::Probe& get_probe(const std::string& name) const;
 
     void set_probe(const std::string& name, std::unique_ptr<RobotsIO::Utils::Probe> probe);
 

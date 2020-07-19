@@ -14,13 +14,13 @@ ProbeContainer::~ProbeContainer()
 {}
 
 
-bool ProbeContainer::is_probe(const std::string& name)
+bool ProbeContainer::is_probe(const std::string& name) const
 {
     return (probes_.find(name) != probes_.end());
 }
 
 
-Probe& ProbeContainer::get_probe(const std::string& name)
+Probe& ProbeContainer::get_probe(const std::string& name) const
 {
     return *(probes_.at(name));
 }
