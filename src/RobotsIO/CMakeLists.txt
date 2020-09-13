@@ -141,6 +141,7 @@ if (USE_YARP)
          include/RobotsIO/Utils/YarpBottleProbe.hpp
          include/RobotsIO/Utils/YarpBufferedPort.hpp
          include/RobotsIO/Utils/YarpImageOfProbe.hpp
+         include/RobotsIO/Utils/YarpRGBFilterDataProbe.h
          include/RobotsIO/Utils/YarpVectorOfProbe.hpp
     )
 
@@ -155,6 +156,7 @@ if (USE_YARP)
          src/Utils/TransformWithVelocityYarpPort.cpp
          src/Utils/TransformYarpPort.cpp
          src/Utils/YarpBottleProbe.cpp
+         src/Utils/YarpRGBFilterDataProbe.cpp
          src/Utils/YarpVectorOfProbe.cpp
     )
 
