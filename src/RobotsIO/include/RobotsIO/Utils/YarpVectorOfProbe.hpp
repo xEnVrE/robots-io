@@ -16,6 +16,8 @@
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
 #include <RobotsIO/Utils/any.h>
 
+#include <opencv2/opencv.hpp>
+
 #include <string>
 
 #include <yarp/eigen/Eigen.h>
@@ -87,5 +89,8 @@ yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, Eigen::Tr
 
 template <>
 yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, RobotsIO::Utils::TransformWithVelocityStorage>::convert_from(const RobotsIO::Utils::TransformWithVelocityStorage& data);
+
+template <>
+yarp::sig::VectorOf<int> RobotsIO::Utils::YarpVectorOfProbe<int, cv::Rect>::convert_from(const cv::Rect& data);
 
 #endif /* ROBOTSIO_YARPVECTOROFPROBE_H */

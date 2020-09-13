@@ -51,3 +51,16 @@ yarp::sig::VectorOf<double> RobotsIO::Utils::YarpVectorOfProbe<double, RobotsIO:
 
     return tmp;
 }
+
+template <>
+yarp::sig::VectorOf<int> RobotsIO::Utils::YarpVectorOfProbe<int, cv::Rect>::convert_from(const cv::Rect& data)
+{
+    /* Assume by default a top_left x, top_left right, width, height data. */
+    yarp::sig::VectorOf<int> tmp(4);
+    tmp(0) = data.x;
+    tmp(1) = data.y;
+    tmp(2) = data.width;
+    tmp(3) = data.height;
+
+    return tmp;
+}
