@@ -58,6 +58,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/DatasetDataStream.h
     include/RobotsIO/Utils/DatasetDataStreamDelayed.h
+    include/RobotsIO/Utils/DatasetDetection.h
     include/RobotsIO/Utils/DatasetSpatialVelocity.h
     include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/DatasetTransformDelayed.h
@@ -97,6 +98,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DataStream.cpp
     src/Utils/DatasetDataStream.cpp
     src/Utils/DatasetDataStreamDelayed.cpp
+    src/Utils/DatasetDetection.cpp
     src/Utils/DatasetSpatialVelocity.cpp
     src/Utils/DatasetTransform.cpp
     src/Utils/DatasetTransformDelayed.cpp
