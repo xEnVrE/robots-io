@@ -29,7 +29,7 @@ public:
 
     virtual ~DetectionYarpPort();
 
-    cv::Rect detection() override;
+    cv::Rect detection() const override;
 
     bool freeze(const bool blocking = false) override;
 

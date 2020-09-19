@@ -24,7 +24,7 @@ DetectionYarpPort:: ~DetectionYarpPort()
 {}
 
 
-cv::Rect DetectionYarpPort::detection()
+cv::Rect DetectionYarpPort::detection() const
 {
     return detection_;
 }
