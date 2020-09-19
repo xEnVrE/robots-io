@@ -26,7 +26,7 @@ class RobotsIO::Utils::Detection : public RobotsIO::Utils::DataStream
 public:
     virtual ~Detection();
 
-    virtual cv::Rect detection() = 0;
+    virtual cv::Rect detection() const = 0;
 };
 
 #endif /* ROBOTSIO_DETECTION_H */
