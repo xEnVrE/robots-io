@@ -8,3 +8,4 @@
 #===============================================================================
 
 add_subdirectory(Parameters)
+add_subdirectory(BOPDatasetDetection)

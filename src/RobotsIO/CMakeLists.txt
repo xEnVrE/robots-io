@@ -7,7 +7,7 @@
 #
 #===============================================================================
 
-option(USE_OPENMP "Use OpenMP" OFF)
+option(USE_JSONCPP "Use jsoncpp (this enables BOPDatasetDetection)" OFF)
 
 set(LIBRARY_TARGET_NAME RobotsIO)
 
@@ -17,8 +17,10 @@ find_package(Eigen3 REQUIRED)
 # OpenCV
 find_package(OpenCV REQUIRED)
 
-if (USE_OPENMP)
-  find_package(OpenMP REQUIRED)
+if (USE_JSONCPP)
+   # jsoncpp
+   find_package(PkgConfig REQUIRED)
+   pkg_check_modules(JSONCPP jsoncpp)
 endif()
 
 if (USE_SUPERIMPOSE)
@@ -117,6 +119,16 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/Transform.cpp
     src/Utils/TransformWithVelocity.cpp
     )
+
+if (USE_JSONCPP)
+    list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
+         include/RobotsIO/Utils/BOPDatasetDetection.h
+    )
+
+    list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
+         src/Utils/BOPDatasetDetection.cpp
+    )
+endif()
 
 if (USE_SUPERIMPOSE)
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
@@ -223,17 +235,9 @@ target_include_directories(${LIBRARY_TARGET_NAME} PUBLIC "$<BUILD_INTERFACE:${CM
 # Linker configuration
 target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC Eigen3::Eigen ${OpenCV_LIBS})
 
-if (USE_OPENMP)
-    if(NOT TARGET OpenMP::OpenMP_CXX)
-        find_package(Threads REQUIRED)
-        add_library(OpenMP::OpenMP_CXX IMPORTED INTERFACE)
-        set_property(TARGET OpenMP::OpenMP_CXX
-                     PROPERTY INTERFACE_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
-        # Only works if the same flag is passed to the linker; use CMake 3.9+ otherwise (Intel, AppleClang)
-        set_property(TARGET OpenMP::OpenMP_CXX
-                     PROPERTY INTERFACE_LINK_LIBRARIES ${OpenMP_CXX_FLAGS} Threads::Threads)
-    endif()
-    target_link_libraries(${LIBRARY_TARGET_NAME} PRIVATE OpenMP::OpenMP_CXX)
+if (USE_JSONCPP)
+   message(${JSONCPP_LIBRARIES})
+   target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${JSONCPP_LIBRARIES})
 endif()
 
 if (USE_YARP)
