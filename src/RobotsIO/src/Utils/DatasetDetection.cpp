@@ -33,7 +33,7 @@ bool DatasetDetection::freeze(const bool blocking)
 }
 
 
-cv::Rect DatasetDetection::detection()
+cv::Rect DatasetDetection::detection() const
 {
     return detection_;
 }

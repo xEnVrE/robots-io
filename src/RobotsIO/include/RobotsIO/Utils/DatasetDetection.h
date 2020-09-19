@@ -32,7 +32,7 @@ public:
 
     bool freeze(const bool blocking = false) override;
 
-    cv::Rect detection() override;
+    cv::Rect detection() const override;
 
 private:
     cv::Rect detection_;
