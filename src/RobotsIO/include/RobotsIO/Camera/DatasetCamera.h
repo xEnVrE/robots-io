@@ -44,4 +44,4 @@ private:
     const std::string log_name_ = "DatasetCamera";
 };
 
-#endif /* ROBOTSIO_CAMERA_H */
+#endif /* ROBOTSIO_DATASETCAMERA_H */
