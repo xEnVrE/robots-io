@@ -98,7 +98,7 @@ std::pair<bool, cv::Mat> SegmentationCamera::render_mask(const Eigen::MatrixXf& 
 #if CV_MAJOR_VERSION >= 4
         cv::threshold(rendered_depth, mask, 0.001, 255, cv::THRESH_BINARY);
 #else
-        cv::threshold(rendererd_depth, mask, 0.001, 255, CV_THRESH_BINARY);
+        cv::threshold(rendered_depth, mask, 0.001, 255, CV_THRESH_BINARY);
 #endif
     mask.convertTo(mask, CV_8UC1);
 
