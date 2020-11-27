@@ -254,7 +254,7 @@ if (USE_YARP)
 endif()
 
 if (USE_ICUB)
-    target_link_libraries(${LIBRARY_TARGET_NAME} PUBLIC ${ICUB_LIBRARIES})
+    target_link_libraries(${LIBRARY_TARGET_NAME} PRIVATE ICUB::iKin ICUB::learningMachine)
 endif()
 
 if (USE_SUPERIMPOSE)
