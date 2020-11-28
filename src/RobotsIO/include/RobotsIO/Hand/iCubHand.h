@@ -13,6 +13,7 @@
 #include <iCub/iKin/iKinFwd.h>
 
 #include <yarp/dev/IAnalogSensor.h>
+#include <yarp/dev/IControlLimits.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/sig/Matrix.h>
@@ -60,6 +61,8 @@ protected:
     yarp::dev::PolyDriver drv_analog_;
 
     yarp::dev::IAnalogSensor *ianalog_;
+
+    yarp::dev::IControlLimits *ilimits_;
 
     yarp::dev::PolyDriver drv_arm_;
 

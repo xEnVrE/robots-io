@@ -12,6 +12,7 @@
 #include <yarp/os/ResourceFinder.h>
 #include <yarp/sig/Vector.h>
 
+#include <deque>
 #include <iostream>
 
 using namespace Eigen;
@@ -114,6 +115,10 @@ iCubHand::iCubHand
         /* Try to retrieve the view. */
         if (drv_arm_.view(iarm_) && iarm_ != nullptr)
             use_interface_arm_ = true;
+
+        /* Try to retrieve the control limits view. */
+        if (!(drv_arm_.view(ilimits_)) || (ilimits_ == nullptr))
+            throw std::runtime_error(log_name_ + "::ctor. Error: unable get view for finger control limits.");
     }
 
     if (!use_interface_arm_)
@@ -136,6 +141,12 @@ iCubHand::iCubHand
     fingers_["middle"] = iCubFinger(laterality + "_middle");
     fingers_["ring"] = iCubFinger(laterality + "_ring");
     fingers_["little"] = iCubFinger(laterality + "_little");
+
+    /* Align joint bounds using those of the real robot. */
+    std::deque<IControlLimits*> limits;
+    limits.push_back(ilimits_);
+    for (auto& finger : fingers_)
+        finger.second.alignJointsBounds(limits);
 }
 
 
