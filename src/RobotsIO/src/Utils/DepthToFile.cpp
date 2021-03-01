@@ -9,6 +9,8 @@
 
 #include <opencv2/core/eigen.hpp>
 
+#include <iostream>
+
 using namespace Eigen;
 
 
