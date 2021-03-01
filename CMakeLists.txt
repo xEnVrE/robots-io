@@ -89,7 +89,7 @@ add_subdirectory(src)
 # Install the files necessary to call find_package(RobotsIO) in CMake projects
 
 # Dependencies
-set(DEPENDENCIES "Eigen3")
+set(DEPENDENCIES "Eigen3" "OpenCV")
 # if (USE_ICUB)
 #   set(DEPENDENCIES ${DEPENDENCIES} "ICUB COMPONENTS iKin")
 # endif()
