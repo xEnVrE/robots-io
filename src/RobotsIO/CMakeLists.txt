@@ -66,7 +66,6 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DatasetTransformDelayed.h
     include/RobotsIO/Utils/DepthToFile.h
     include/RobotsIO/Utils/Detection.h
-    include/RobotsIO/Utils/DetectionYarpPort.h
     include/RobotsIO/Utils/FileToDepth.h
     include/RobotsIO/Utils/FileToEigen.h
     include/RobotsIO/Utils/FloatMatrix.h
@@ -107,7 +106,6 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DatasetTransformDelayed.cpp
     src/Utils/DepthToFile.cpp
     src/Utils/Detection.cpp
-    src/Utils/DetectionYarpPort.cpp
     src/Utils/FileToDepth.cpp
     src/Utils/FileToEigen.cpp
     src/Utils/FloatMatrix.cpp
@@ -150,6 +148,7 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
          include/RobotsIO/Utils/ClockYarp.h
+         include/RobotsIO/Utils/DetectionYarpPort.h
          include/RobotsIO/Utils/FloatMatrixYarpPort.h
          include/RobotsIO/Utils/Parameters2YarpBottle.h
          include/RobotsIO/Utils/ParametersYarpPort.h
@@ -167,6 +166,7 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
          src/Utils/ClockYarp.cpp
+         src/Utils/DetectionYarpPort.cpp
          src/Utils/FloatMatrixYarpPort.cpp
          src/Utils/Parameters2YarpBottle.cpp
          src/Utils/ParametersYarpPort.cpp
