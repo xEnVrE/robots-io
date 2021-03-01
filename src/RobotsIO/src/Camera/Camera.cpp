@@ -6,9 +6,9 @@
  */
 
 #include <utility>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
+// #ifdef _OPENMP
+// #include <omp.h>
+// #endif
 
 #include <RobotsIO/Camera/Camera.h>
 #include <RobotsIO/Camera/CameraDeprojectionMatrix.h>
@@ -106,7 +106,7 @@ std::pair<bool, Eigen::MatrixXd> Camera::point_cloud
 
     /* Find 3D points having positive and less than max_depth_ depth. */
     MatrixXi valid_points(parameters_.height(), parameters_.width());
-#pragma omp parallel for collapse(2)
+// #pragma omp parallel for collapse(2)
     for (std::size_t v = 0; v < parameters_.height(); v++)
     {
         for (std::size_t u = 0; u < parameters_.width(); u++)

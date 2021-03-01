@@ -5,9 +5,9 @@
  * GPL-2+ license. See the accompanying LICENSE file for details.
  */
 
-#ifdef _OPENMP
-#include <omp.h>
-#endif
+// #ifdef _OPENMP
+// #include <omp.h>
+// #endif
 
 #include <RobotsIO/Camera/iCubCameraDepth.h>
 
@@ -155,7 +155,7 @@ std::pair<bool, Eigen::MatrixXf> iCubCameraDepth::depth(const bool& blocking)
 
     /* Compute depth. */
     MatrixXf depth(rgb_left.rows, rgb_left.cols);
-#pragma omp parallel for collapse(2)
+// #pragma omp parallel for collapse(2)
     for (int v = 0; v < rgb_left.rows; v++)
         for (int u = 0; u < rgb_left.cols; u++)
         {
