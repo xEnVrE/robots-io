@@ -17,6 +17,7 @@
 
 #include <opencv2/core/eigen.hpp>
 
+#include <iomanip>
 #include <iostream>
 
 using namespace Eigen;
