@@ -20,7 +20,7 @@ std::pair<bool, Eigen::MatrixXf> RobotsIO::Utils::file_to_depth(const std::strin
     const std::string log_name = "RobotsIO::Utils::file_to_depth";
 
     /* Identify format */
-    auto dot_position = file_name.find('.');
+    auto dot_position = file_name.find_last_of('.');
     if (dot_position == std::string::npos)
     {
         std::cout << log_name << "Error: invalid file extension in provided file name " + file_name << std::endl;
