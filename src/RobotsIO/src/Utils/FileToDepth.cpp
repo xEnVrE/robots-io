@@ -9,7 +9,8 @@
 
 #include <Eigen/Dense>
 
-#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/eigen.hpp>
 
 using namespace Eigen;
 
@@ -18,41 +19,76 @@ std::pair<bool, Eigen::MatrixXf> RobotsIO::Utils::file_to_depth(const std::strin
 {
     const std::string log_name = "RobotsIO::Utils::file_to_depth";
 
-    std::FILE* in;
-
-    if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
+    /* Identify format */
+    auto dot_position = file_name.find('.');
+    if (dot_position == std::string::npos)
     {
-        std::cout << log_name << "Error: cannot load depth frame " + file_name << std::endl;
+        std::cout << log_name << "Error: invalid file extension in provided file name " + file_name << std::endl;
         return std::make_pair(false, MatrixXf());
     }
+    std::string format = file_name.substr(dot_position);
 
-    /* Load image size .*/
-    std::size_t dims[2];
-    if (std::fread(dims, sizeof(dims), 1, in) != 1)
+    if (format == ".float")
     {
-        std::cout << log_name << "Error: cannot load depth size for frame " + file_name << std::endl;
+        std::FILE* in;
+
+        if ((in = std::fopen(file_name.c_str(), "rb")) == nullptr)
+        {
+            std::cout << log_name << "Error: cannot open file " + file_name << std::endl;
+            return std::make_pair(false, MatrixXf());
+        }
+
+        /* Load image size .*/
+        std::size_t dims[2];
+        if (std::fread(dims, sizeof(dims), 1, in) != 1)
+        {
+            std::cout << log_name << "Error: cannot load depth size for frame " + file_name << std::endl;
+
+            fclose(in);
+
+            return std::make_pair(false, MatrixXf());
+        }
+
+        /* Load image. */
+        float float_image_raw[dims[0] * dims[1]];
+        if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
+        {
+            std::cout << log_name << "Error: cannot load depth data for frame " + file_name << std::endl;
+
+            fclose(in);
+
+            return std::make_pair(false, MatrixXf());
+        }
+
+        /* Store image. */
+        MatrixXf float_image(dims[1], dims[0]);
+        float_image = Map<Matrix<float, -1, -1, RowMajor>>(float_image_raw, dims[1], dims[0]);
 
         fclose(in);
 
-        return std::make_pair(false, MatrixXf());
+        return std::make_pair(true, float_image);
     }
-
-    /* Load image. */
-    float float_image_raw[dims[0] * dims[1]];
-    if (std::fread(float_image_raw, sizeof(float), dims[0] * dims[1], in) != dims[0] * dims[1])
+    else if (format == ".png")
     {
-        std::cout << log_name << "Error: cannot load depth data for frame " + file_name << std::endl;
+        cv::Mat image = cv::imread(file_name, cv::IMREAD_UNCHANGED);
 
-        fclose(in);
+        if (image.empty())
+        {
+            std::cout << log_name << "Error: cannot load depth data for frame " + file_name << std::endl;
 
-        return std::make_pair(false, MatrixXf());
+            return std::make_pair(false, MatrixXf());
+        }
+
+        MatrixXf float_image(image.rows, image.cols);
+        cv::cv2eigen(image, float_image);
+
+        /* FIXME: the depth_scale should be an input parameter. */
+        float depth_scale = 0.1 / 1000.0;
+        float_image *= depth_scale;
+
+        return std::make_pair(true, float_image);
     }
 
-    std::fclose(in);
-
-    /* Store image. */
-    MatrixXf float_image(dims[1], dims[0]);
-    float_image = Map<Matrix<float, -1, -1, RowMajor>>(float_image_raw, dims[1], dims[0]);
-
-    return std::make_pair(true, float_image);
+    std::cout << log_name << "Error: not supported file extension in provided file name " + file_name << std::endl;
+    return std::make_pair(false, MatrixXf());
 }
