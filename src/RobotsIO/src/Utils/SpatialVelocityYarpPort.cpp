@@ -28,7 +28,7 @@ SpatialVelocityYarpPort:: ~SpatialVelocityYarpPort()
 bool SpatialVelocityYarpPort::freeze(const bool blocking)
 {
     /* Data reception .*/
-    Vector* velocity_yarp = receive_data(blocking);
+    yarp::sig::Vector* velocity_yarp = receive_data(blocking);
     if (velocity_yarp == nullptr)
         return false;
 

@@ -45,7 +45,7 @@ Eigen::Vector3d TransformWithVelocityYarpPort::angular_velocity()
 
 bool TransformWithVelocityYarpPort::freeze(const bool blocking)
 {
-    Vector* transform_yarp = receive_data(blocking);
+    yarp::sig::Vector* transform_yarp = receive_data(blocking);
 
     if (transform_yarp == nullptr)
         return false;

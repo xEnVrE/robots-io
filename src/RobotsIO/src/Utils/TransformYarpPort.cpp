@@ -33,7 +33,7 @@ Eigen::Transform<double, 3, Affine> TransformYarpPort::transform()
 
 bool TransformYarpPort::freeze(const bool blocking)
 {
-    Vector* transform_yarp = receive_data(blocking);
+    yarp::sig::Vector* transform_yarp = receive_data(blocking);
 
     if (transform_yarp == nullptr)
         return false;
