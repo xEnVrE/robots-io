@@ -28,7 +28,7 @@ DatasetDataStreamDelayed::DatasetDataStreamDelayed
     simulate_inference_time_(simulate_inference_time)
 {
     if (simulate_inference_time_)
-        set_head(get_head() - delay_);
+        set_head(get_head() - delay_ + skip_rows);
 }
 
 

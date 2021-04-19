@@ -16,7 +16,7 @@ DatasetDataStream::DatasetDataStream(const std::string& file_path, const std::si
 {
     bool valid_file;
     MatrixXd data_all;
-    std::tie(valid_file, data_all) = file_to_eigen(file_path, skip_rows, skip_cols, expected_cols);
+    std::tie(valid_file, data_all) = file_to_eigen(file_path, 0, skip_cols, expected_cols);
 
     if (!valid_file)
         throw(std::runtime_error(log_name_ + "::ctor. Error cannot read data from file " + file_path + "."));
