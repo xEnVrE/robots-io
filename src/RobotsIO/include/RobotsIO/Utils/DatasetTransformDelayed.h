@@ -34,8 +34,14 @@ public:
 
     bool freeze(const bool blocking = false) override;
 
+    int get_frames_between_iterations() const override;
+
 private:
     Eigen::Transform<double, 3, Eigen::Affine> transform_;
+
+    double fps_;
+
+    double simulated_fps_;
 
     const std::string log_name_ = "DatasetTransformDelayed";
 };

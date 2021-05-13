@@ -23,7 +23,9 @@ DatasetTransformDelayed::DatasetTransformDelayed
     const int rx_time_index,
     const int tx_time_index
 ) :
-    DatasetDataStreamDelayed(fps, simulated_fps, simulate_inference_time, file_path, skip_rows, skip_cols, expected_cols, rx_time_index, tx_time_index)
+    DatasetDataStreamDelayed(fps, simulated_fps, simulate_inference_time, file_path, skip_rows, skip_cols, expected_cols, rx_time_index, tx_time_index),
+    fps_(fps),
+    simulated_fps_(simulated_fps)
 {}
 
 
@@ -55,4 +57,10 @@ bool DatasetTransformDelayed::freeze(const bool blocking)
     transform_.rotate(rotation);
 
     return true;
+}
+
+
+int DatasetTransformDelayed::get_frames_between_iterations() const
+{
+    return int(fps_ / simulated_fps_);
 }
