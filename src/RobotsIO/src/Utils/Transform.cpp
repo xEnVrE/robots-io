@@ -12,3 +12,10 @@ using namespace RobotsIO::Utils;
 
 Transform::~Transform()
 {}
+
+
+int Transform::get_frames_between_iterations() const
+{
+    /* 1 indicates that the transform stream is, by default, available at all frames. */
+    return 1;
+}

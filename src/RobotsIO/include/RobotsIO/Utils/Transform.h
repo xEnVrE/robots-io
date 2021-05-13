@@ -25,6 +25,8 @@ public:
     virtual ~Transform();
 
     virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
+
+    virtual int get_frames_between_iterations() const;
 };
 
 #endif /* ROBOTSIO_TRANSFORM_H */
