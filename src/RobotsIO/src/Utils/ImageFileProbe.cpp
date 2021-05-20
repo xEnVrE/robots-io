@@ -19,7 +19,8 @@ ImageFileProbe::ImageFileProbe(const std::string& output_path, const std::string
     if (output_prefix_.back() != '/')
         output_prefix_ += '/';
 
-    output_prefix_ += (prefix + "_");
+    if (!prefix.empty())
+        output_prefix_ += (prefix + "_");
 }
 
 
