@@ -38,6 +38,12 @@ bool TransformYarpPort::freeze(const bool blocking)
     if (transform_yarp == nullptr)
         return false;
 
+    bool invalid_pose = true;
+    for (std::size_t i = 0; i < transform_yarp->size(); i++)
+        invalid_pose &= ((*transform_yarp)(i) == 0.0);
+    if (invalid_pose)
+        return false;
+
     transform_ = Translation<double, 3>(toEigen(*transform_yarp).head<3>());
     AngleAxisd rotation((*transform_yarp)(6), toEigen(*transform_yarp).segment<3>(3));
     transform_.rotate(rotation);
