@@ -45,7 +45,7 @@ RealsenseCameraYarp::RealsenseCameraYarp(const std::string& port_prefix, const b
     if (driver.open(driver_properties) && driver.view(interface) && (interface != nullptr))
     {
         Property camera_intrinsics;
-        interface->getRgbIntrinsicParam(camera_intrinsics);
+        interface->getDepthIntrinsicParam(camera_intrinsics);
 
         std::size_t camera_width = interface->getRgbWidth();
         std::size_t camera_height = interface->getRgbHeight();
