@@ -75,6 +75,7 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/ParametersFiller.h
     include/RobotsIO/Utils/Probe.h
     include/RobotsIO/Utils/ProbeContainer.h
+    include/RobotsIO/Utils/Segmentation.h
     include/RobotsIO/Utils/SpatialVelocity.h
     include/RobotsIO/Utils/SpatialVelocityBuffer.h
     include/RobotsIO/Utils/Transform.h
@@ -114,6 +115,7 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/ParametersExtractor.cpp
     src/Utils/Probe.cpp
     src/Utils/ProbeContainer.cpp
+    src/Utils/Segmentation.cpp
     src/Utils/SpatialVelocity.cpp
     src/Utils/SpatialVelocityBuffer.cpp
     src/Utils/Transform.cpp
