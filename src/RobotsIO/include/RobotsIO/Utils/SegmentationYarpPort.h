@@ -13,8 +13,14 @@
 
 #include <yarp/sig/Image.h>
 
+namespace RobotsIO {
+    namespace Utils {
+        class SegmentationYarpPort;
+    }
+}
 
-class SegmentationYarpPort : RobotsIO::Utils::Segmentation
+
+class RobotsIO::Utils::SegmentationYarpPort : public RobotsIO::Utils::Segmentation
 {
 public:
 
