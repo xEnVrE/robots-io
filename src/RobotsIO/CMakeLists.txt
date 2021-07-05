@@ -155,6 +155,7 @@ if (USE_YARP)
          include/RobotsIO/Utils/Parameters2YarpBottle.h
          include/RobotsIO/Utils/ParametersYarpPort.h
          include/RobotsIO/Utils/RGBFilterData.h
+         include/RobotsIO/Utils/SegmentationYarpPort.h
          include/RobotsIO/Utils/SpatialVelocityYarpPort.h
          include/RobotsIO/Utils/TransformYarpTransformClient.h
          include/RobotsIO/Utils/TransformWithVelocityYarpPort.h
@@ -173,6 +174,7 @@ if (USE_YARP)
          src/Utils/Parameters2YarpBottle.cpp
          src/Utils/ParametersYarpPort.cpp
          src/Utils/RGBFilterData.cpp
+         src/Utils/SegmentationYarpPort.cpp
          src/Utils/SpatialVelocityYarpPort.cpp
          src/Utils/TransformYarpTransformClient.cpp
          src/Utils/TransformWithVelocityYarpPort.cpp
