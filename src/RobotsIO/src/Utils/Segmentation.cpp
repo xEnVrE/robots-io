@@ -43,7 +43,7 @@ int Segmentation::get_frames_between_iterations() const
 }
 
 
-void set_rgb_image(const cv::Mat& image)
+void Segmentation::set_rgb_image(const cv::Mat& image)
 {
     /* By default, the input image is not used. */
 }
