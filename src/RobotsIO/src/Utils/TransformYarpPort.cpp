@@ -7,17 +7,21 @@
 
 #include <RobotsIO/Utils/TransformYarpPort.h>
 
+#include <yarp/cv/Cv.h>
 #include <yarp/eigen/Eigen.h>
 #include <yarp/sig/Vector.h>
 
 using namespace Eigen;
 using namespace RobotsIO::Utils;
+using namespace yarp::cv;
 using namespace yarp::eigen;
 using namespace yarp::sig;
 
 
-TransformYarpPort::TransformYarpPort(const std::string& port_name) :
-    YarpBufferedPort<yarp::sig::Vector>(port_name)
+TransformYarpPort::TransformYarpPort(const std::string& port_prefix, const bool& provide_rgb) :
+    YarpBufferedPort<yarp::sig::Vector>(port_prefix + "/transform:i"),
+    rgb_out_(port_prefix + "/rgb:o"),
+    provide_rgb_(provide_rgb)
 {}
 
 
@@ -49,4 +53,16 @@ bool TransformYarpPort::freeze(const bool blocking)
     transform_.rotate(rotation);
 
     return true;
+}
+
+
+void TransformYarpPort::set_rgb_image(const cv::Mat& image)
+{
+    if (!provide_rgb_)
+        return;
+
+    cv_rgb_out_ = image.clone();
+    yarp_rgb_out_ = yarp::cv::fromCvMat<yarp::sig::PixelRgb>(cv_rgb_out_);
+
+    rgb_out_.send_data(yarp_rgb_out_);
 }

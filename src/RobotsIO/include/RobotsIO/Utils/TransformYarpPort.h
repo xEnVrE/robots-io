@@ -11,6 +11,7 @@
 #include <RobotsIO/Utils/Transform.h>
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
 
+#include <yarp/sig/Image.h>
 #include <yarp/sig/Vector.h>
 
 #include <Eigen/Dense>
@@ -27,7 +28,13 @@ class RobotsIO::Utils::TransformYarpPort : public RobotsIO::Utils::Transform,
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-    TransformYarpPort(const std::string& port_name);
+    /**
+     * Initialize a Transform instance which uses YARP ports to receive transforms and
+     * (optionally) provide RGB images to the module which extract transforms.
+     *
+     * Required port names are composed as <port_prefix>/transform:i and <port_prefix>/rgb:o.
+     */
+    TransformYarpPort(const std::string& port_prefix, const bool& provide_rgb);
 
     virtual ~TransformYarpPort();
 
@@ -35,8 +42,17 @@ public:
 
     bool freeze(const bool blocking = false) override;
 
+    virtual void set_rgb_image(const cv::Mat& image) override;
+
 private:
     Eigen::Transform<double, 3, Eigen::Affine> transform_;
+
+    RobotsIO::Utils::YarpBufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb>> rgb_out_;
+
+    const bool provide_rgb_;
+
+    cv::Mat cv_rgb_out_;
+    yarp::sig::ImageOf<yarp::sig::PixelRgb> yarp_rgb_out_;
 };
 
 #endif /* ROBOTSIO_TRANSFORMYARPPORT_H */
