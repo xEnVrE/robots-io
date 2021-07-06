@@ -10,6 +10,8 @@
 
 #include <RobotsIO/Utils/DataStream.h>
 
+#include <opencv2/opencv.hpp>
+
 #include <Eigen/Dense>
 
 namespace RobotsIO {
@@ -27,6 +29,12 @@ public:
     virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
 
     virtual int get_frames_between_iterations() const;
+
+    /**
+     * If required, the user might override this method to set the RGB image
+     * on which the transform has to be evaluated.
+     */
+    virtual void set_rgb_image(const cv::Mat& image);
 };
 
 #endif /* ROBOTSIO_TRANSFORM_H */

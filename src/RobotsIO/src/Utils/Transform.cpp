@@ -19,3 +19,8 @@ int Transform::get_frames_between_iterations() const
     /* 1 indicates that the transform stream is, by default, available at all frames. */
     return 1;
 }
+
+void Transform::set_rgb_image(const cv::Mat& image)
+{
+    /* By default, the input image is not used. */
+}
