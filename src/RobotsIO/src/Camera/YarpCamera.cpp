@@ -167,27 +167,7 @@ std::pair<bool, MatrixXf> YarpCamera::depth(const bool& blocking)
     cv::Mat image = yarp::cv::toCvMat(*image_in);
     Map<Eigen::Matrix<float, Dynamic, Dynamic, Eigen::RowMajor>> float_image(image.ptr<float>(), image.rows, image.cols);
 
-    /* Resize depth map if required. */
-    MatrixXf depth;
-    if ((float_image.cols() > parameters_.width()) && (float_image.rows() > parameters_.height()))
-    {
-        /* Resize depth map if possible. */
-        if ((float_image.cols() % parameters_.width() == 0) && ((float_image.rows() % parameters_.height() == 0)))
-        {
-            std::size_t ratio = float_image.cols() / parameters_.width();
-            if (ratio == (float_image.rows() / parameters_.height()))
-            {
-                depth.resize(parameters_.height(), parameters_.width());
-                for (std::size_t i = 0; i < float_image.rows(); i += ratio)
-                    for (std::size_t j = 0; j < float_image.cols(); j += ratio)
-                        depth(i / ratio, j / ratio) = float_image(i, j);
-            }
-        }
-    }
-    else
-        depth = float_image;
-
-    return std::make_pair(true, depth);
+    return std::make_pair(true, float_image);
 }
 
 
