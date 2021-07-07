@@ -27,7 +27,7 @@ SegmentationYarpPort::~SegmentationYarpPort()
 
 bool SegmentationYarpPort::is_stepping_required() const
 {
-    return true;
+    return false;
 }
 
 
