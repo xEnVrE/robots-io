@@ -31,6 +31,12 @@ bool SegmentationYarpPort::is_stepping_required() const
 }
 
 
+int SegmentationYarpPort::get_frames_between_iterations() const
+{
+    return -1;
+}
+
+
 std::pair<bool, cv::Mat> SegmentationYarpPort::segmentation(const bool& blocking)
 {
     ImageOf<PixelMono>* yarp_mask = segmentation_in_.receive_data(blocking);

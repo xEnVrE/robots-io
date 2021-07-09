@@ -36,6 +36,8 @@ public:
 
     bool is_stepping_required() const override;
 
+    int get_frames_between_iterations() const override;
+
     std::pair<bool, cv::Mat> segmentation(const bool& blocking) override;
 
     virtual void set_rgb_image(const cv::Mat& image) override;
