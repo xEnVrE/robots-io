@@ -44,7 +44,9 @@ public:
 
     int get_frames_between_iterations() const override;
 
-    virtual void set_rgb_image(const cv::Mat& image) override;
+    void set_rgb_image(const cv::Mat& image) override;
+
+    bool transform_received() override;
 
 private:
     Eigen::Transform<double, 3, Eigen::Affine> transform_;
@@ -55,6 +57,8 @@ private:
 
     cv::Mat cv_rgb_out_;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> yarp_rgb_out_;
+
+    bool transform_received_ = false;
 };
 
 #endif /* ROBOTSIO_TRANSFORMYARPPORT_H */

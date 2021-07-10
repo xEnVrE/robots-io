@@ -38,8 +38,9 @@ Eigen::Transform<double, 3, Affine> TransformYarpPort::transform()
 bool TransformYarpPort::freeze(const bool blocking)
 {
     yarp::sig::Vector* transform_yarp = receive_data(blocking);
+    transform_received_ = (transform_yarp != nullptr);
 
-    if (transform_yarp == nullptr)
+    if (!transform_received_)
         return false;
 
     bool invalid_pose = true;
@@ -71,4 +72,10 @@ void TransformYarpPort::set_rgb_image(const cv::Mat& image)
     yarp_rgb_out_ = yarp::cv::fromCvMat<yarp::sig::PixelRgb>(cv_rgb_out_);
 
     rgb_out_.send_data(yarp_rgb_out_);
+}
+
+
+bool TransformYarpPort::transform_received()
+{
+    return transform_received_;
 }
