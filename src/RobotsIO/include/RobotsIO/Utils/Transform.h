@@ -28,6 +28,13 @@ public:
 
     virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
 
+    /**
+     * N > 1 indicates that the segmentation is available every N frames
+     * N = 1 indicates that the segmentation is available at all frames
+     * N < 1 indicates that this information is not available
+     *
+     * By default, this method returns N = 1. User might override this setting by re-implementing this method.
+     */
     virtual int get_frames_between_iterations() const;
 
     /**
