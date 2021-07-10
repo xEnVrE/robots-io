@@ -42,6 +42,8 @@ public:
 
     bool freeze(const bool blocking = false) override;
 
+    int get_frames_between_iterations() const override;
+
     virtual void set_rgb_image(const cv::Mat& image) override;
 
 private:

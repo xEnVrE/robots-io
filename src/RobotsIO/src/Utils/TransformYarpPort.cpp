@@ -56,6 +56,12 @@ bool TransformYarpPort::freeze(const bool blocking)
 }
 
 
+int TransformYarpPort::get_frames_between_iterations() const
+{
+    return -1;
+}
+
+
 void TransformYarpPort::set_rgb_image(const cv::Mat& image)
 {
     if (!provide_rgb_)
