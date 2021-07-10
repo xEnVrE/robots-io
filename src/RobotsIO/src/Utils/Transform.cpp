@@ -20,7 +20,16 @@ int Transform::get_frames_between_iterations() const
     return 1;
 }
 
+
 void Transform::set_rgb_image(const cv::Mat& image)
 {
     /* By default, the input image is not used. */
+}
+
+
+bool Transform::transform_received()
+{
+    /* By default, it returns true. */
+
+    return true;
 }

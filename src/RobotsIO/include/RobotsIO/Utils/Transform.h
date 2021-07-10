@@ -42,6 +42,22 @@ public:
      * on which the transform has to be evaluated.
      */
     virtual void set_rgb_image(const cv::Mat& image);
+
+    /**
+     * Indicate whether a new transform has been received or not.
+     * Please note that this method might return true even if
+     * DataStream::freeze() is false, e.g. if the transform is invalid.
+     *
+     * User might override this method in order to comunicate
+     * when a network-based transform source is ready,
+     * independently from the validity of the received transform.
+     *
+     * The default returned value is True.
+     *
+     * Warning: this method should be called after DataStream::freeze(),
+     * as the reception status might be updated after that.
+     */
+    virtual bool transform_received();
 };
 
 #endif /* ROBOTSIO_TRANSFORM_H */
