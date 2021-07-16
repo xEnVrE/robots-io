@@ -40,6 +40,8 @@ public:
 
     std::pair<bool, cv::Mat> segmentation(const bool& blocking) override;
 
+    std::pair<bool, cv::Mat> latest_segmentation() override;
+
     virtual void set_rgb_image(const cv::Mat& image) override;
 
 private:
@@ -53,7 +55,8 @@ private:
     cv::Mat cv_rgb_out_;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> yarp_rgb_out_;
 
-    yarp::sig::ImageOf<yarp::sig::PixelMono> mask_in_;
+    cv::Mat cv_mask_in_;
+    yarp::sig::ImageOf<yarp::sig::PixelMono> yarp_mask_in_;
 
     const std::string log_name_ = "SegmentationYarpPort";
 };

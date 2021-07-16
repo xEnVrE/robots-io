@@ -44,7 +44,17 @@ public:
      */
     virtual int get_frames_between_iterations() const;
 
+    /**
+     * Provide a new segmentation mask.
+     */
     virtual std::pair<bool, cv::Mat> segmentation(const bool& blocking) = 0;
+
+    /**
+     * Provide the latest valid segmentation mask that has been received.
+     *
+     * By default, this return (false, cv::Mat()). User might override this method if required.
+     */
+    virtual std::pair<bool, cv::Mat> latest_segmentation();
 
     /**
      * If required, the user might override this method to set the RGB image

@@ -42,12 +42,24 @@ std::pair<bool, cv::Mat> SegmentationYarpPort::segmentation(const bool& blocking
     ImageOf<PixelMono>* yarp_mask = segmentation_in_.receive_data(blocking);
 
     if (yarp_mask == nullptr)
+    {
+        cv_mask_in_ = cv::Mat();
+        return std::make_pair(false, cv::Mat());
+    }
+
+    yarp_mask_in_.copy(*yarp_mask);
+    cv_mask_in_ = toCvMat(yarp_mask_in_);
+
+    return std::make_pair(true, cv_mask_in_);
+}
+
+
+std::pair<bool, cv::Mat> SegmentationYarpPort::latest_segmentation()
+{
+    if (cv_mask_in_.empty())
         return std::make_pair(false, cv::Mat());
 
-    mask_in_.copy(*yarp_mask);
-    cv::Mat mask = toCvMat(mask_in_);
-
-    return std::make_pair(true, mask);
+    return std::make_pair(true, cv_mask_in_);
 }
 
 

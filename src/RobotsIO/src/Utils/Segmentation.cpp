@@ -43,6 +43,12 @@ int Segmentation::get_frames_between_iterations() const
 }
 
 
+std::pair<bool, cv::Mat> Segmentation::latest_segmentation()
+{
+    return std::make_pair(false, cv::Mat());
+}
+
+
 void Segmentation::set_rgb_image(const cv::Mat& image)
 {
     /* By default, the input image is not used. */
