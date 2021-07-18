@@ -82,8 +82,10 @@ YarpCamera::YarpCamera
     const double& cx,
     const double& fy,
     const double& cy,
-    const std::string& port_prefix
-)
+    const std::string& port_prefix,
+    const bool& enable_camera_pose
+) :
+    enable_camera_pose_(enable_camera_pose)
 {
     /* Check YARP network. */
     if (!yarp_.checkNetwork())
@@ -112,6 +114,16 @@ YarpCamera::YarpCamera
     {
         std::string err = log_name_ + "::ctor. Error: cannot open depth input port.";
         throw(std::runtime_error(err));
+    }
+
+    /* OPen camera pose input port. */
+    if (enable_camera_pose_)
+    {
+        if (!(port_pose_.open("/" + port_prefix + "/pose:i")))
+        {
+            std::string err = log_name_ + "::ctor. Error: cannot open pose input port.";
+            throw(std::runtime_error(err));
+        }
     }
 
     Camera::initialize();
@@ -173,7 +185,35 @@ std::pair<bool, MatrixXf> YarpCamera::depth(const bool& blocking)
 
 std::pair<bool, Transform<double, 3, Affine>> YarpCamera::pose(const bool& blocking)
 {
-    return std::make_pair(true, Transform<double, 3, Affine>::Identity());
+    if (enable_camera_pose_)
+    {
+        Vector* pose_in = port_pose_.read(blocking);
+
+        if (pose_in != nullptr)
+        {
+            last_camera_pose_ = *pose_in;
+        }
+
+        if (last_camera_pose_.size() == 7)
+        {
+            /* If available, always return the last camera pose. */
+            Transform<double, 3, Affine> pose;
+            pose = Translation<double, 3>(Vector3d(last_camera_pose_[0], last_camera_pose_[1], last_camera_pose_[2]));
+            pose.rotate(AngleAxisd(last_camera_pose_[6], Vector3d(last_camera_pose_[3], last_camera_pose_[4], last_camera_pose_[5])));
+
+            return std::make_pair(true, pose);
+        }
+        else
+        {
+            /* Camera pose enabled but not available, return (false, empty). */
+            return std::make_pair(false, Transform<double, 3, Affine>());
+        }
+    }
+    else
+    {
+        /* Camera pose not enabled, always return (true, identity). */
+        return std::make_pair(true, Transform<double, 3, Affine>::Identity());
+    }
 }
 
 
