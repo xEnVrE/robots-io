@@ -32,7 +32,7 @@ public:
 
     YarpCamera(const std::string& port_prefix, const bool& network_bootstrap = false);
 
-    YarpCamera(const std::size_t& width, const double& height, const double& fx, const double& cx, const double& fy, const double& cy, const std::string& port_prefix);
+    YarpCamera(const std::size_t& width, const std::size_t& height, const double& fx, const double& cx, const double& fy, const double& cy, const std::string& port_prefix);
 
     YarpCamera(const std::string& data_path, const std::size_t& width, const double& height, const double& fx, const double& cx, const double& fy, const double& cy);
 
