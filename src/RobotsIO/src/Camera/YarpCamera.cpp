@@ -160,6 +160,9 @@ YarpCamera::~YarpCamera()
     port_rgb_.close();
 
     port_depth_.close();
+
+    if (enable_camera_pose_)
+        port_pose_.close();
 }
 
 
