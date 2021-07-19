@@ -24,12 +24,10 @@ iCubCameraDepth::iCubCameraDepth
 (
     const std::string& robot_name,
     const std::string& port_prefix,
-    const std::string& fallback_context_name,
-    const std::string& fallback_configuration_name,
     const bool& use_calibration,
     const std::string& calibration_path
 ) :
-    iCubCameraRelative(robot_name, port_prefix, fallback_context_name, fallback_configuration_name, use_calibration, calibration_path)
+    iCubCameraRelative(robot_name, port_prefix, use_calibration, calibration_path)
 {
     configure_sgbm();
 }

@@ -14,17 +14,15 @@ iCubCameraRelative::iCubCameraRelative
 (
     const std::string& robot_name,
     const std::string& port_prefix,
-    const std::string& fallback_context_name,
-    const std::string& fallback_configuration_name,
     const bool& use_calibration,
     const std::string& calibration_path
 ) :
-    iCubCamera(robot_name, "right", port_prefix + "_relative_right", fallback_context_name, fallback_configuration_name, use_calibration, calibration_path)
+    iCubCamera(robot_name, "right", port_prefix + "_relative_right", use_calibration, calibration_path)
 {
     /* Initialize left camera. */
     left_camera_= std::unique_ptr<iCubCamera>
     (
-        new iCubCamera(robot_name, "left", port_prefix + "_relative_left", fallback_context_name, fallback_configuration_name)
+        new iCubCamera(robot_name, "left", port_prefix + "_relative_left")
     );
 }
 
