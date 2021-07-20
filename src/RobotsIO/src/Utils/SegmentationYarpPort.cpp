@@ -25,6 +25,14 @@ SegmentationYarpPort::~SegmentationYarpPort()
 {}
 
 
+bool SegmentationYarpPort::reset()
+{
+    segmentation_in_.flush();
+
+    return true;
+}
+
+
 bool SegmentationYarpPort::is_stepping_required() const
 {
     return false;

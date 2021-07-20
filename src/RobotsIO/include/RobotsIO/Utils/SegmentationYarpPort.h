@@ -34,6 +34,8 @@ public:
 
     virtual ~SegmentationYarpPort();
 
+    bool reset() override;
+
     bool is_stepping_required() const override;
 
     int get_frames_between_iterations() const override;
