@@ -62,14 +62,14 @@ iCubHand::iCubHand
         if (use_bounds_)
         {
             bool valid_vector;
-            Vector bounds_col_0;
+            yarp::sig::Vector bounds_col_0;
             std::tie(valid_vector, bounds_col_0) = load_vector_double(inner_rf, "bounds_col_0", 16);
             if (!valid_vector)
             {
                 throw std::runtime_error(log_name_ + "::ctor. Error: bounds requested but not available in the configuration file.");
             }
 
-            Vector bounds_col_1;
+            yarp::sig::Vector bounds_col_1;
             std::tie(valid_vector, bounds_col_1) = load_vector_double(inner_rf, "bounds_col_1", 16);
             if (!valid_vector)
             {
@@ -267,17 +267,17 @@ std::pair<bool, yarp::sig::Vector> iCubHand::load_vector_double(const ResourceFi
         ok = false;
 
     if (!ok)
-        return std::make_pair(false, Vector());
+        return std::make_pair(false, yarp::sig::Vector());
 
-    Vector vector(size);
+    yarp::sig::Vector vector(size);
     for (std::size_t i = 0; i < b->size(); i++)
     {
         Value item_v = b->get(i);
         if (item_v.isNull())
-            return std::make_pair(false, Vector());
+            return std::make_pair(false, yarp::sig::Vector());
 
         if (!item_v.isDouble())
-            return std::make_pair(false, Vector());
+            return std::make_pair(false, yarp::sig::Vector());
 
         vector(i) = item_v.asDouble();
     }

@@ -190,7 +190,7 @@ std::pair<bool, Transform<double, 3, Affine>> YarpCamera::pose(const bool& block
 {
     if (enable_camera_pose_)
     {
-        Vector* pose_in = port_pose_.read(blocking);
+        yarp::sig::Vector* pose_in = port_pose_.read(blocking);
 
         if (pose_in != nullptr)
         {
