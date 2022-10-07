@@ -61,7 +61,7 @@ const std::pair<bool, std::size_t> ParametersYarpPort::fill_size_t(const std::st
     if (value.isNull())
         return std::make_pair(false, std::size_t());
 
-    return std::make_pair(true, value.asInt());
+    return std::make_pair(true, value.asInt32());
 }
 
 
@@ -74,7 +74,7 @@ const std::pair<bool, int> ParametersYarpPort::fill_int(const std::string& key) 
     if (value.isNull())
         return std::make_pair(false, int());
 
-    return std::make_pair(true, value.asInt());
+    return std::make_pair(true, value.asInt32());
 }
 
 
@@ -87,7 +87,7 @@ const std::pair<bool, double> ParametersYarpPort::fill_double(const std::string&
     if (value.isNull())
         return std::make_pair(false, double());
 
-    return std::make_pair(true, value.asDouble());
+    return std::make_pair(true, value.asFloat64());
 }
 
 

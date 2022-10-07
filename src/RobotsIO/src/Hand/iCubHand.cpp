@@ -184,7 +184,7 @@ std::pair<bool, std::unordered_map<std::string, Eigen::VectorXd>> iCubHand::enco
             if (bottle_analogs != nullptr)
             {
                 for (size_t i = 0; i < analogs.size(); i++)
-                    analogs(i) = bottle_analogs->get(i).asDouble();
+                    analogs(i) = bottle_analogs->get(i).asFloat64();
 
                 outcome_analog = true;
             }
@@ -208,7 +208,7 @@ std::pair<bool, std::unordered_map<std::string, Eigen::VectorXd>> iCubHand::enco
             if (bottle_arm != nullptr)
             {
                 for (size_t i = 0; i < arm.size(); i++)
-                    arm(i) = bottle_arm->get(i).asDouble();
+                    arm(i) = bottle_arm->get(i).asFloat64();
 
                 outcome_arm = true;
             }
@@ -276,10 +276,10 @@ std::pair<bool, yarp::sig::Vector> iCubHand::load_vector_double(const ResourceFi
         if (item_v.isNull())
             return std::make_pair(false, yarp::sig::Vector());
 
-        if (!item_v.isDouble())
+        if (!item_v.isFloat64())
             return std::make_pair(false, yarp::sig::Vector());
 
-        vector(i) = item_v.asDouble();
+        vector(i) = item_v.asFloat64();
     }
 
     return std::make_pair(true, vector);
