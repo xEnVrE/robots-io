@@ -143,10 +143,13 @@ iCubHand::iCubHand
     fingers_["little"] = iCubFinger(laterality + "_little");
 
     /* Align joint bounds using those of the real robot. */
-    std::deque<IControlLimits*> limits;
-    limits.push_back(ilimits_);
-    for (auto& finger : fingers_)
-        finger.second.alignJointsBounds(limits);
+    if (ilimits_)
+    {
+        std::deque<IControlLimits*> limits;
+        limits.push_back(ilimits_);
+        for (auto& finger : fingers_)
+            finger.second.alignJointsBounds(limits);
+    }
 }
 
 
