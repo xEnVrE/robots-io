@@ -73,7 +73,7 @@ iCubCamera::iCubCamera
             std::string err = log_name_ + "::ctor. Error: cannot load iCub " + laterality_ + " camera width.";
             throw(std::runtime_error(err));
         }
-        parameters_.width(info.find(key).asInt());
+        parameters_.width(info.find(key).asInt32());
 
         key = "camera_height_" + laterality_;
         if (info.find(key).isNull())
@@ -81,7 +81,7 @@ iCubCamera::iCubCamera
             std::string err = log_name_ + "::ctor. Error: cannot load iCub " + laterality_ + " camera height.";
             throw(std::runtime_error(err));
         }
-        parameters_.height(info.find(key).asInt());
+        parameters_.height(info.find(key).asInt32());
 
         key = "camera_intrinsics_" + laterality_;
         if (info.find(key).isNull())
@@ -90,10 +90,10 @@ iCubCamera::iCubCamera
             throw(std::runtime_error(err));
         }
         Bottle *list = info.find(key).asList();
-        parameters_.fx(list->get(0).asDouble());
-        parameters_.cx(list->get(2).asDouble());
-        parameters_.fy(list->get(5).asDouble());
-        parameters_.cy(list->get(6).asDouble());
+        parameters_.fx(list->get(0).asFloat64());
+        parameters_.cx(list->get(2).asFloat64());
+        parameters_.fy(list->get(5).asFloat64());
+        parameters_.cy(list->get(6).asFloat64());
 
         parameters_.initialized(true);
     }

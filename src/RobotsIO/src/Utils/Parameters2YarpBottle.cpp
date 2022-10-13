@@ -38,26 +38,26 @@ void Parameters2YarpBottle::extract_field(const std::string& key, const std::str
 void Parameters2YarpBottle::extract_field(const std::string& key, const std::size_t& value)
 {
     bottle_.addString(key);
-    bottle_.addInt(value);
+    bottle_.addInt32(value);
 }
 
 
 void Parameters2YarpBottle::extract_field(const std::string& key, const int& value)
 {
     bottle_.addString(key);
-    bottle_.addInt(value);
+    bottle_.addInt32(value);
 }
 
 
 void Parameters2YarpBottle::extract_field(const std::string& key, const double& value)
 {
     bottle_.addString(key);
-    bottle_.addDouble(value);
+    bottle_.addFloat64(value);
 }
 
 
 void Parameters2YarpBottle::extract_field(const std::string& key, const bool& value)
 {
     bottle_.addString(key);
-    bottle_.addInt(value ? 1 : 0);
+    bottle_.addInt32(value ? 1 : 0);
 }

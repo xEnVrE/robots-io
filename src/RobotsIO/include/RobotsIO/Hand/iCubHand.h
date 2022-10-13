@@ -60,13 +60,13 @@ protected:
 
     yarp::dev::PolyDriver drv_analog_;
 
-    yarp::dev::IAnalogSensor *ianalog_;
+    yarp::dev::IAnalogSensor *ianalog_{nullptr};
 
-    yarp::dev::IControlLimits *ilimits_;
+    yarp::dev::IControlLimits *ilimits_{nullptr};
 
     yarp::dev::PolyDriver drv_arm_;
 
-    yarp::dev::IEncoders *iarm_;
+    yarp::dev::IEncoders *iarm_{nullptr};
 
     /**
      * To be used if the interface is not available.
