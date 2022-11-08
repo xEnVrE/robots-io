@@ -1,2 +1,6 @@
 build*
 *.user
+src/RobotsIO/include/RobotsIO/Utils/YarpImageOfMonoFloat.h
+src/RobotsIO/mono_float_image_index.txt
+src/RobotsIO/src/RobotsIO/*
+src/RobotsIO/yarp_image_mono_float_index.txt
