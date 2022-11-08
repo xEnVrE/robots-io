@@ -7,8 +7,6 @@
 #
 #===============================================================================
 
-option(USE_JSONCPP "Use jsoncpp (this enables BOPDatasetDetection)" OFF)
-
 set(LIBRARY_TARGET_NAME RobotsIO)
 
 # Eigen3
@@ -16,12 +14,6 @@ find_package(Eigen3 REQUIRED)
 
 # OpenCV
 find_package(OpenCV REQUIRED)
-
-if (USE_JSONCPP)
-   # jsoncpp
-   find_package(PkgConfig REQUIRED)
-   pkg_check_modules(JSONCPP jsoncpp)
-endif()
 
 if (USE_SUPERIMPOSE)
     # SuperimposeMesh
@@ -60,12 +52,10 @@ set(${LIBRARY_TARGET_NAME}_HDR_UTILS
     include/RobotsIO/Utils/DataStream.h
     include/RobotsIO/Utils/DatasetDataStream.h
     include/RobotsIO/Utils/DatasetDataStreamDelayed.h
-    include/RobotsIO/Utils/DatasetDetection.h
     include/RobotsIO/Utils/DatasetSpatialVelocity.h
     include/RobotsIO/Utils/DatasetTransform.h
     include/RobotsIO/Utils/DatasetTransformDelayed.h
     include/RobotsIO/Utils/DepthToFile.h
-    include/RobotsIO/Utils/Detection.h
     include/RobotsIO/Utils/FileToDepth.h
     include/RobotsIO/Utils/FileToEigen.h
     include/RobotsIO/Utils/FloatMatrix.h
@@ -101,12 +91,10 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/DataStream.cpp
     src/Utils/DatasetDataStream.cpp
     src/Utils/DatasetDataStreamDelayed.cpp
-    src/Utils/DatasetDetection.cpp
     src/Utils/DatasetSpatialVelocity.cpp
     src/Utils/DatasetTransform.cpp
     src/Utils/DatasetTransformDelayed.cpp
     src/Utils/DepthToFile.cpp
-    src/Utils/Detection.cpp
     src/Utils/FileToDepth.cpp
     src/Utils/FileToEigen.cpp
     src/Utils/FloatMatrix.cpp
@@ -121,16 +109,6 @@ set(${LIBRARY_TARGET_NAME}_SRC_UTILS
     src/Utils/Transform.cpp
     src/Utils/TransformWithVelocity.cpp
     )
-
-if (USE_JSONCPP)
-    list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
-         include/RobotsIO/Utils/BOPDatasetDetection.h
-    )
-
-    list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
-         src/Utils/BOPDatasetDetection.cpp
-    )
-endif()
 
 if (USE_SUPERIMPOSE)
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_CAMERA
@@ -150,11 +128,9 @@ if (USE_YARP)
 
     list(APPEND ${LIBRARY_TARGET_NAME}_HDR_UTILS
          include/RobotsIO/Utils/ClockYarp.h
-         include/RobotsIO/Utils/DetectionYarpPort.h
          include/RobotsIO/Utils/FloatMatrixYarpPort.h
          include/RobotsIO/Utils/Parameters2YarpBottle.h
          include/RobotsIO/Utils/ParametersYarpPort.h
-         include/RobotsIO/Utils/RGBFilterData.h
          include/RobotsIO/Utils/SegmentationYarpPort.h
          include/RobotsIO/Utils/SpatialVelocityYarpPort.h
          include/RobotsIO/Utils/TransformYarpTransformClient.h
@@ -163,24 +139,20 @@ if (USE_YARP)
          include/RobotsIO/Utils/YarpBottleProbe.hpp
          include/RobotsIO/Utils/YarpBufferedPort.hpp
          include/RobotsIO/Utils/YarpImageOfProbe.hpp
-         include/RobotsIO/Utils/YarpRGBFilterDataProbe.h
          include/RobotsIO/Utils/YarpVectorOfProbe.hpp
     )
 
     list(APPEND ${LIBRARY_TARGET_NAME}_SRC_UTILS
          src/Utils/ClockYarp.cpp
-         src/Utils/DetectionYarpPort.cpp
          src/Utils/FloatMatrixYarpPort.cpp
          src/Utils/Parameters2YarpBottle.cpp
          src/Utils/ParametersYarpPort.cpp
-         src/Utils/RGBFilterData.cpp
          src/Utils/SegmentationYarpPort.cpp
          src/Utils/SpatialVelocityYarpPort.cpp
          src/Utils/TransformYarpTransformClient.cpp
          src/Utils/TransformWithVelocityYarpPort.cpp
          src/Utils/TransformYarpPort.cpp
          src/Utils/YarpBottleProbe.cpp
-         src/Utils/YarpRGBFilterDataProbe.cpp
          src/Utils/YarpVectorOfProbe.cpp
     )
 
