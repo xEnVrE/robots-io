@@ -44,6 +44,12 @@ public:
     virtual void set_rgb_image(const cv::Mat& image);
 
     /**
+     * If required, the user might override this method to set the Depth / Segmentation pair
+     * on which the transform has to be evaluated.
+     */
+    virtual void set_depth_segmentation_image(const Eigen::MatrixXf& depth, const cv::Mat& segmentation);
+
+    /**
      * Indicate whether a new transform has been received or not.
      * Please note that this method might return true even if
      * DataStream::freeze() is false, e.g. if the transform is invalid.

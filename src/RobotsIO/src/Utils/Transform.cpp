@@ -27,6 +27,12 @@ void Transform::set_rgb_image(const cv::Mat& image)
 }
 
 
+void Transform::set_depth_segmentation_image(const Eigen::MatrixXf& depth, const cv::Mat& segmentation)
+{
+    /* By default, the input images are not used. */
+}
+
+
 bool Transform::transform_received()
 {
     /* By default, it returns true. */
