@@ -55,7 +55,7 @@ target_include_directories(${SWIG_MODULE_robotsio_REAL_NAME} BEFORE PRIVATE ${Py
 
 # Target properties
 set_target_properties(${SWIG_MODULE_robotsio_REAL_NAME}
-                      PROPERTIES OUTPUT_NAME "robotsio"
+                      PROPERTIES OUTPUT_NAME "_robotsio"
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/python3"
                       # treat Python3_INCLUDE_DIRS as non-system so that it can be overriden
                       NO_SYSTEM_FROM_IMPORTED TRUE)
