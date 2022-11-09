@@ -10,6 +10,7 @@
 
 #include <RobotsIO/Utils/Transform.h>
 #include <RobotsIO/Utils/YarpBufferedPort.hpp>
+#include <RobotsIO/Utils/YarpImageOfMonoFloat.h>
 
 #include <yarp/sig/Image.h>
 #include <yarp/sig/Vector.h>
@@ -30,11 +31,12 @@ public:
 
     /**
      * Initialize a Transform instance which uses YARP ports to receive transforms and
-     * (optionally) provide RGB images to the module which extract transforms.
+     * (optionally) provide RGB images, or Depth + Segmentation, to the module which extract transforms.
      *
-     * Required port names are composed as <port_prefix>/transform:i and <port_prefix>/rgb:o.
+     * Required port names are composed as <port_prefix>/transform:i, <port_prefix>/rgb:o
+     * and <port_prefix>/depth_segmentation:o.
      */
-    TransformYarpPort(const std::string& port_prefix, const bool& provide_rgb);
+    TransformYarpPort(const std::string& port_prefix, const bool& provide_rgb, const bool& provide_depth_segmentation);
 
     virtual ~TransformYarpPort();
 
@@ -46,6 +48,8 @@ public:
 
     void set_rgb_image(const cv::Mat& image) override;
 
+    void set_depth_segmentation_image(const Eigen::MatrixXf& depth, const cv::Mat& segmentation) override;
+
     bool transform_received() override;
 
 private:
@@ -53,10 +57,18 @@ private:
 
     RobotsIO::Utils::YarpBufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb>> rgb_out_;
 
+    RobotsIO::Utils::YarpBufferedPort<RobotsIO::Utils::YarpImageOfMonoFloat> depth_segmentation_out_;
+
     const bool provide_rgb_;
+
+    const bool provide_depth_segmentation_;
 
     cv::Mat cv_rgb_out_;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> yarp_rgb_out_;
+
+    cv::Mat cv_depth_out_;
+    cv::Mat cv_segmentation_out_;
+    RobotsIO::Utils::YarpImageOfMonoFloat yarp_depth_segmentation_out_;
 
     bool transform_received_ = false;
 };
