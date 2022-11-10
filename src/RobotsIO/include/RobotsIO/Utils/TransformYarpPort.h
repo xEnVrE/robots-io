@@ -42,6 +42,8 @@ public:
 
     Eigen::Transform<double, 3, Eigen::Affine> transform() override;
 
+    Eigen::MatrixXd bounding_box() override;
+
     bool freeze(const bool blocking = false) override;
 
     int get_frames_between_iterations() const override;
@@ -54,6 +56,8 @@ public:
 
 private:
     Eigen::Transform<double, 3, Eigen::Affine> transform_;
+
+    Eigen::MatrixXd bbox_points_;
 
     RobotsIO::Utils::YarpBufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb>> rgb_out_;
 

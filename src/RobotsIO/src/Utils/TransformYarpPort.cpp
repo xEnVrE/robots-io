@@ -39,23 +39,38 @@ Eigen::Transform<double, 3, Affine> TransformYarpPort::transform()
 }
 
 
+Eigen::MatrixXd TransformYarpPort::bounding_box()
+{
+    return bbox_points_;
+}
+
+
 bool TransformYarpPort::freeze(const bool blocking)
 {
-    yarp::sig::Vector* transform_yarp = receive_data(blocking);
-    transform_received_ = (transform_yarp != nullptr);
+    yarp::sig::Vector* data_yarp = receive_data(blocking);
+    transform_received_ = (data_yarp != nullptr);
 
     if (!transform_received_)
         return false;
 
     bool invalid_pose = true;
-    for (std::size_t i = 0; i < transform_yarp->size(); i++)
-        invalid_pose &= ((*transform_yarp)(i) == 0.0);
+    for (std::size_t i = 0; i < 7; i++)
+        invalid_pose &= ((*data_yarp)(i) == 0.0);
     if (invalid_pose)
         return false;
 
-    transform_ = Translation<double, 3>(toEigen(*transform_yarp).head<3>());
-    AngleAxisd rotation((*transform_yarp)(6), toEigen(*transform_yarp).segment<3>(3));
+    transform_ = Translation<double, 3>(toEigen(*data_yarp).head<3>());
+    AngleAxisd rotation((*data_yarp)(6), toEigen(*data_yarp).segment<3>(3));
     transform_.rotate(rotation);
+
+    // FIXME: this might be moved somewhere else.
+    if (data_yarp->size() > 7)
+    {
+        Eigen::VectorXd bbox_points_data = toEigen(*data_yarp).segment<24>(7);
+        bbox_points_.resize(3, 8);
+        for (std::size_t i = 0; i < 8; i++)
+            bbox_points_.col(i) = bbox_points_data.segment<3>(3 * i);
+    }
 
     return true;
 }
