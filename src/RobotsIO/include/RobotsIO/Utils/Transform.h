@@ -29,8 +29,20 @@ public:
     virtual Eigen::Transform<double, 3, Eigen::Affine> transform() = 0;
 
     /**
-     * N > 1 indicates that the segmentation is available every N frames
-     * N = 1 indicates that the segmentation is available at all frames
+     * FIXME: this might be moved somewhere else.
+     *
+     * Optionally, a transform might contain information on the bounding box enclosing the object
+     * whose transform is transmitted.
+     *
+     * It returns a 3x8 matrix containing the coordinates of the 8 vertices of the bounding box.
+     *
+     * The points of the bounding box are to be expressed in the root frame of the transformation.
+     */
+    virtual Eigen::MatrixXd bounding_box();
+
+    /**
+     * N > 1 indicates that the transform is available every N frames
+     * N = 1 indicates that the transform is available at all frames
      * N < 1 indicates that this information is not available
      *
      * By default, this method returns N = 1. User might override this setting by re-implementing this method.

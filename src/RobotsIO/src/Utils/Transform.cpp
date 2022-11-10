@@ -14,6 +14,14 @@ Transform::~Transform()
 {}
 
 
+Eigen::MatrixXd Transform::bounding_box()
+{
+    /* By default, this return an empty matrix. */
+    Eigen::MatrixXd empty;
+    return empty;
+}
+
+
 int Transform::get_frames_between_iterations() const
 {
     /* 1 indicates that the transform stream is, by default, available at all frames. */
