@@ -66,7 +66,16 @@ bool TransformYarpPort::freeze(const bool blocking)
     // FIXME: this might be moved somewhere else.
     if (data_yarp->size() > 7)
     {
-        Eigen::VectorXd bbox_points_data = toEigen(*data_yarp).segment<24>(7);
+        int offset;
+        /* Check if this stream is also carrying object velocities. */
+        if (data_yarp->size() == (7 + 6 + 8 * 3))
+            offset = 7 + 6;
+        else if (data_yarp->size() == (7 + 8 * 3))
+            offset = 7;
+        else
+            throw(std::runtime_error(log_name_ + "::freeze(). Error: the data stream carries a wrong number of items"));
+
+        Eigen::VectorXd bbox_points_data = toEigen(*data_yarp).segment<24>(offset);
         bbox_points_.resize(3, 8);
         for (std::size_t i = 0; i < 8; i++)
             bbox_points_.col(i) = bbox_points_data.segment<3>(3 * i);

@@ -75,6 +75,8 @@ private:
     RobotsIO::Utils::YarpImageOfMonoFloat yarp_depth_segmentation_out_;
 
     bool transform_received_ = false;
+
+    const std::string log_name_ = "RobotsIO::Utils::TransformYarpPort";
 };
 
 #endif /* ROBOTSIO_TRANSFORMYARPPORT_H */
