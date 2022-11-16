@@ -57,6 +57,7 @@ std::pair<bool, cv::Mat> SegmentationYarpPort::segmentation(const bool& blocking
 
     yarp_mask_in_.copy(*yarp_mask);
     cv_mask_in_ = toCvMat(yarp_mask_in_);
+    time_stamp_mask_in_ = segmentation_in_.time_stamp();
 
     return std::make_pair(true, cv_mask_in_);
 }
@@ -71,7 +72,13 @@ std::pair<bool, cv::Mat> SegmentationYarpPort::latest_segmentation()
 }
 
 
-void SegmentationYarpPort::set_rgb_image(const cv::Mat& image)
+double SegmentationYarpPort::get_time_stamp()
+{
+    return time_stamp_mask_in_;
+}
+
+
+void SegmentationYarpPort::set_rgb_image(const cv::Mat& image, const double& timestamp)
 {
     if (!provide_rgb_)
         return;
@@ -79,5 +86,6 @@ void SegmentationYarpPort::set_rgb_image(const cv::Mat& image)
     cv_rgb_out_ = image.clone();
     yarp_rgb_out_ = yarp::cv::fromCvMat<yarp::sig::PixelRgb>(cv_rgb_out_);
 
+    rgb_out_.set_time_stamp(timestamp);
     rgb_out_.send_data(yarp_rgb_out_);
 }

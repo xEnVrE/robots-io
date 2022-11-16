@@ -44,7 +44,9 @@ public:
 
     std::pair<bool, cv::Mat> latest_segmentation() override;
 
-    virtual void set_rgb_image(const cv::Mat& image) override;
+    virtual double get_time_stamp() override;
+
+    virtual void set_rgb_image(const cv::Mat& image, const double& timestamp) override;
 
 private:
 
@@ -59,6 +61,7 @@ private:
 
     cv::Mat cv_mask_in_;
     yarp::sig::ImageOf<yarp::sig::PixelMono> yarp_mask_in_;
+    double time_stamp_mask_in_;
 
     const std::string log_name_ = "SegmentationYarpPort";
 };
