@@ -57,6 +57,13 @@ public:
     virtual std::pair<bool, cv::Mat> latest_segmentation();
 
     /**
+     * Provide the timestamp of the latest valid segmentation that has been received.
+     *
+     * By default, this return -1. User might override this method if required.
+     */
+    virtual double get_time_stamp();
+
+    /**
      * If required, the user might override this method to set the RGB image
      * on which the segmentation has to be evaluated.
      */

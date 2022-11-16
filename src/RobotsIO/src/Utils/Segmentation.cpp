@@ -49,6 +49,12 @@ std::pair<bool, cv::Mat> Segmentation::latest_segmentation()
 }
 
 
+double Segmentation::get_time_stamp()
+{
+    return -1;
+}
+
+
 void Segmentation::set_rgb_image(const cv::Mat& image)
 {
     /* By default, the input image is not used. */
