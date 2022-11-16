@@ -67,7 +67,7 @@ public:
      * If required, the user might override this method to set the RGB image
      * on which the segmentation has to be evaluated.
      */
-    virtual void set_rgb_image(const cv::Mat& image);
+    virtual void set_rgb_image(const cv::Mat& image, const double& timestamp);
 
 private:
 

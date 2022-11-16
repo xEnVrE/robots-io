@@ -55,7 +55,7 @@ double Segmentation::get_time_stamp()
 }
 
 
-void Segmentation::set_rgb_image(const cv::Mat& image)
+void Segmentation::set_rgb_image(const cv::Mat& image, const double& timestamp)
 {
     /* By default, the input image is not used. */
 }
