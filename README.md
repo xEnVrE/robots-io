@@ -3,6 +3,8 @@
 Small C++ library to ease access to some devices of a robot using standard
 formats from `Eigen` and `OpenCV`.
 
+![CI badge](https://github.com/xenvre/robots-io/workflows/C++%20CI%20Workflow/badge.svg)
+
 ### Browsable API
 
 - [RobotsIO](https://xenvre.github.io/robots-io/docs/html/annotated.html)
