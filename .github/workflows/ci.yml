@@ -55,6 +55,16 @@ jobs:
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
         cmake --build . --config ${{ matrix.build_type }} --target install
 
+        # icub-contrib
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/icub-contrib-common
+        cd icub-contrib-common
+        git checkout v1.19.0
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
         # icub-main
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/icub-main
