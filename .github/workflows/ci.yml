@@ -1,0 +1,78 @@
+name: C++ CI Workflow
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: '[${{ matrix.os }}@${{ matrix.build_type }}]'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build_type: [Release]
+        os: [ubuntu-20.04]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Remove broken apt repos [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      run: for apt_file in `grep -lr microsoft /etc/apt/sources.list.d/`; do sudo rm $apt_file; done
+
+    - name: Dependencies [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
+      run: |
+        sudo apt-get update
+        sudo apt install -y bash-completion build-essential cmake cmake-curses-gui coinor-libipopt-dev gfortran freeglut3-dev git libace-dev libassimp-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libedit-dev libeigen3-dev libgsl0-dev libi2c-dev libjpeg-dev liblua5.2-dev lua5.2 libode-dev libopencv-dev libsdl1.2-dev libtinyxml-dev libv4l-dev libxml2-dev lsb-release portaudio19-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings qml-module-qtmultimedia qml-module-qtquick-controls qml-module-qtquick-dialogs qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev libqt5opengl5-dev swig libmatio-dev libirrlicht-dev libspdlog-dev libblas-dev liblapack-dev libgraphviz-dev libsoxr-dev libgl1-mesa-dev libvulkan-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-glx0-dev libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-randr0-dev libxrandr-dev libxxf86vm-dev mesa-common-dev libglfw3-dev libglew-dev libglm-dev libfreetype6-dev libsqlite3-dev
+
+    - name: Dependencies (from source) [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
+      run: |
+        # YCM
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/ycm
+        cd ycm
+        git checkout v0.14.2
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # yarp
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/yarp
+        cd yarp
+        git checkout v3.7.2
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+        # icub-main
+        cd ${GITHUB_WORKSPACE}
+        git clone https://github.com/robotology/icub-main
+        cd icub-main
+        git checkout v2.0.2
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
+        cmake --build . --config ${{ matrix.build_type }} --target install
+
+    - name: Configure CMake [Ubuntu]
+      if: contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} DUSE_ICUB:BOOL=ON -DUSE_YARP:BOOL=ON
+
+    - name: Build
+      shell: bash -l {0}
+      run: |
+        cd build
+        cmake --build . --config ${{matrix.build_type}}
