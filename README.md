@@ -1,5 +1,4 @@
 # RobotsIO
-## [WIP]
 
 Small C++ library to ease access to some devices of a robot using standard
 formats from `Eigen` and `OpenCV`.
@@ -31,4 +30,3 @@ find_package(RobotsIO REQUIRED)
 (...)
 target_link_libraries(... RobotsIO::RobotsIO ...)
 ```
-
