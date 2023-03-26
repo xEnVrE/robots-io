@@ -30,6 +30,14 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install -y bash-completion build-essential cmake cmake-curses-gui coinor-libipopt-dev gfortran freeglut3-dev git libace-dev libassimp-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libedit-dev libeigen3-dev libgsl0-dev libi2c-dev libjpeg-dev liblua5.2-dev lua5.2 libode-dev libopencv-dev libsdl1.2-dev libtinyxml-dev libv4l-dev libxml2-dev lsb-release portaudio19-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings qml-module-qtmultimedia qml-module-qtquick-controls qml-module-qtquick-dialogs qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev libqt5opengl5-dev swig libmatio-dev libirrlicht-dev libspdlog-dev libblas-dev liblapack-dev libgraphviz-dev libsoxr-dev libgl1-mesa-dev libvulkan-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-glx0-dev libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-randr0-dev libxrandr-dev libxxf86vm-dev mesa-common-dev libglfw3-dev libglew-dev libglm-dev libfreetype6-dev libsqlite3-dev
+        # As per https://github.com/actions/runner-images/issues/7336#issuecomment-1482778271
+        # CMake v3.26.0 has a regression which causes issues to icub-contrib-common at configuration time
+        # The following commands temporarily force the update to CMake v3.26.1
+        # These can be removed once the runner images get updated upstream
+        sudo curl -sL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.sh -o cmakeinstall.sh && \
+        sudo chmod +x cmakeinstall.sh && \
+        sudo ./cmakeinstall.sh --prefix=/usr/local --exclude-subdir && \
+        sudo rm cmakeinstall.sh
 
     - name: Dependencies (from source) [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
