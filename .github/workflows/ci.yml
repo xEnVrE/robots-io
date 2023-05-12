@@ -39,7 +39,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/ycm
         cd ycm
-        git checkout v0.14.2
+        git checkout v0.15.1
         mkdir -p build
         cd build
         cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
@@ -49,7 +49,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/yarp
         cd yarp
-        git checkout v3.7.2
+        git checkout v3.8.0
         mkdir -p build
         cd build
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
@@ -69,7 +69,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/icub-main
         cd icub-main
-        git checkout v2.0.2
+        git checkout v2.1.1
         mkdir -p build
         cd build
         cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
