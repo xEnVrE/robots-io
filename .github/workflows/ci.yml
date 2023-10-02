@@ -8,6 +8,12 @@ on:
   schedule:
   - cron:  '0 2 * * *'
 
+env:
+  YCM_TAG: v0.15.1
+  YARP_TAG: v3.8.0
+  ICUB_CONTRIB_TAG: v1.19.0
+  ICUB_TAG: v2.1.1
+
 jobs:
   build:
     name: '[${{ matrix.os }}@${{ matrix.build_type }}]'
@@ -18,7 +24,7 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Remove broken apt repos [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
@@ -30,58 +36,61 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install -y bash-completion build-essential cmake cmake-curses-gui coinor-libipopt-dev gfortran freeglut3-dev git libace-dev libassimp-dev libboost-filesystem-dev libboost-system-dev libboost-thread-dev libedit-dev libeigen3-dev libgsl0-dev libi2c-dev libjpeg-dev liblua5.2-dev lua5.2 libode-dev libopencv-dev libsdl1.2-dev libtinyxml-dev libv4l-dev libxml2-dev lsb-release portaudio19-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings qml-module-qtmultimedia qml-module-qtquick-controls qml-module-qtquick-dialogs qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtmultimedia5-dev libqt5opengl5-dev swig libmatio-dev libirrlicht-dev libspdlog-dev libblas-dev liblapack-dev libgraphviz-dev libsoxr-dev libgl1-mesa-dev libvulkan-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-glx0-dev libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-randr0-dev libxrandr-dev libxxf86vm-dev mesa-common-dev libglfw3-dev libglew-dev libglm-dev libfreetype6-dev libsqlite3-dev
-        # As per https://github.com/actions/runner-images/issues/7336#issuecomment-1482778271
-        # CMake v3.26.0 has a regression which causes issues to icub-contrib-common at configuration time
-        # The following commands temporarily force the update to CMake v3.26.1
-        # These can be removed once the runner images get updated upstream
-        sudo curl -sL https://github.com/Kitware/CMake/releases/download/v3.26.1/cmake-3.26.1-linux-x86_64.sh -o cmakeinstall.sh && \
-        sudo chmod +x cmakeinstall.sh && \
-        sudo ./cmakeinstall.sh --prefix=/usr/local --exclude-subdir && \
-        sudo rm cmakeinstall.sh
+
+    - name: Get number of cores to speed up cmake build [Ubuntu]
+      if: startsWith(matrix.os, 'ubuntu')
+      run: echo "NUM_CORES_FOR_CMAKE_BUILD=`nproc --all`" >> $GITHUB_ENV
+
+    - name: Cache dependencies from source
+      id: cache-src-deps
+      uses: actions/cache@v3
+      with:
+        path: ${{ github.workspace }}/install
+        key: src-deps-${{ runner.os }}-os-${{ matrix.os }}-build-${{ matrix.build_type }}-ycm-${{ env.YCM_TAG }}-yarp-${{ env.YARP_TAG }}-icub-contrib-${{ env.ICUB_CONTRIB_TAG }}-icub-${{ env.ICUB_TAG }}
 
     - name: Dependencies (from source) [Ubuntu]
-      if: contains(matrix.os, 'ubuntu')
+      if: steps.cache-src-deps.outputs.cache-hit != 'true' && contains(matrix.os, 'ubuntu')
       shell: bash -l {0}
       run: |
         # YCM
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/ycm
         cd ycm
-        git checkout v0.15.1
+        git checkout ${{ env.YCM_TAG }}
         mkdir -p build
         cd build
-        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
+        cmake -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install -j${{env.NUM_CORES_FOR_CMAKE_BUILD}}
 
         # yarp
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/yarp
         cd yarp
-        git checkout v3.8.0
+        git checkout ${{ env.YARP_TAG }}
         mkdir -p build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install -j${{env.NUM_CORES_FOR_CMAKE_BUILD}}
 
         # icub-contrib
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/icub-contrib-common
         cd icub-contrib-common
-        git checkout v1.19.0
+        git checkout ${{ env.ICUB_CONTRIB_TAG }}
         mkdir -p build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install -j${{env.NUM_CORES_FOR_CMAKE_BUILD}}
 
         # icub-main
         cd ${GITHUB_WORKSPACE}
         git clone https://github.com/robotology/icub-main
         cd icub-main
-        git checkout v2.1.1
+        git checkout ${{ env.ICUB_TAG }}
         mkdir -p build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE} ..
-        cmake --build . --config ${{ matrix.build_type }} --target install
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install ..
+        cmake --build . --config ${{ matrix.build_type }} --target install -j${{env.NUM_CORES_FOR_CMAKE_BUILD}}
 
     - name: Configure CMake [Ubuntu]
       if: contains(matrix.os, 'ubuntu')
@@ -89,10 +98,10 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DUSE_ICUB:BOOL=ON -DUSE_YARP:BOOL=ON ..
+        cmake -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/install -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DUSE_ICUB:BOOL=ON -DUSE_YARP:BOOL=ON ..
 
     - name: Build
       shell: bash -l {0}
       run: |
         cd build
-        cmake --build . --config ${{matrix.build_type}}
+        cmake --build . --config ${{matrix.build_type}} -j${{env.NUM_CORES_FOR_CMAKE_BUILD}}
